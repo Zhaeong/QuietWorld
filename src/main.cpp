@@ -1,13 +1,9 @@
+#include "main.h"
 
-#include <SDL.h>
-#include <string>
-#include <iostream>
-
-using namespace std;
-
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
-
+    SDL_Window *window = NULL;
+    SDL_Renderer *renderer = NULL;
     const int FPS = 60;
 
     //How many miliseconds per frame
@@ -17,6 +13,8 @@ int main(int argc, char *argv[])
     float frameTime;
 
     cout << "Starting Quietworld";
+
+    StartGame(window, renderer);
 
     while (1)
     {
@@ -28,8 +26,6 @@ int main(int argc, char *argv[])
         {
             SDL_Delay(frameDelay - frameTime);
         }
-
-        
     }
 
     return 0;
