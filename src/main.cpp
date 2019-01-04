@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 
+using namespace std;
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     Uint32 frameStart;
     float frameTime;
 
+    cout << "Starting Quietworld";
 
     while (1)
     {
