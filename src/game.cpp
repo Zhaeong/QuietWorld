@@ -11,7 +11,6 @@ int StartGame(SDL_Window *window, SDL_Renderer *renderer)
                      SDL_GetError());
     }
 
-    //SDL_WINDOW_FULLSCREEN
 
     if (SDL_CreateWindowAndRenderer(screenWidth,
                                     screenHeight,

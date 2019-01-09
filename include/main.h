@@ -7,6 +7,8 @@
 
 #include "game.h"
 
+#include "obj_texture.h"
+
 using namespace std;
 
 

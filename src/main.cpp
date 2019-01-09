@@ -16,11 +16,24 @@ int main(int argc, char* argv[])
 
     StartGame(window, renderer);
 
+    //Texture gameText(renderer, "res/png/leftCursor.png");
+    
+
     while (1)
     {
         frameStart = SDL_GetTicks();
-	
+
+
+        //The color at which the screen will be if alpha = 0 on all textures
+        SDL_SetRenderDrawColor(renderer, 150, 0, 0, 255);
+
+        SDL_RenderClear(renderer);
+
+ 
         frameTime = SDL_GetTicks() - frameStart;
+
+        //Swap buffers to present backbuffer to screen
+        SDL_RenderPresent(renderer);
 
         if(frameDelay > frameTime)
         {
