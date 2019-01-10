@@ -15,8 +15,9 @@
 #####END REFERENCE#####
 
 CC = g++
-CFLAGS = -Wall
-DEBUG = -g
+
+#-ggdb compiles with debug symbols
+CFLAGS = -Wall -ggdb
 
 LINKERS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf
 
@@ -47,7 +48,7 @@ LIBS = -LD:/MinGWLibs/SDL2-2.0.8/i686-w64-mingw32/lib        \
 
 #Need to put the linkers at the end of the call
 $(BINDIR)/$(EXENAME): $(OBJFILES)
-	$(CC) $(LIBS) $^ -o $@ $(LINKERS)
+	$(CC) $(CFLAGS) $(LIBS) $^ -o $@ $(LINKERS)
 
 #Note the -c tells the compiler to create obj files
 #$(OBJDIR)/%.o: $(SRCS) $(HEADERS)

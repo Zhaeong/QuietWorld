@@ -2,44 +2,42 @@
 
 int main(int argc, char* argv[])
 {
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
-    const int FPS = 60;
+  SDL_Window *window = NULL;
+  SDL_Renderer *renderer = NULL;
+  const int FPS = 60;
 
-    //How many miliseconds per frame
-    const int frameDelay = 1000/FPS;
+  //How many miliseconds per frame
+  const int frameDelay = 1000/FPS;
 
-    Uint32 frameStart;
-    float frameTime;
+  Uint32 frameStart;
+  float frameTime;
 
-    cout << "Starting Quietworld";
+  cout << "Starting Quietworld";
 
-    StartGame(window, renderer);
+  StartGame(&window, &renderer);
 
-    //Texture gameText(renderer, "res/png/leftCursor.png");
-    
+  Texture gameText(renderer, "res/png/leftCursor.png");
 
-    while (1)
+  while (1)
     {
-        frameStart = SDL_GetTicks();
+      frameStart = SDL_GetTicks();
 
+      //The color at which the screen will be if alpha = 0 on all textures
+      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-        //The color at which the screen will be if alpha = 0 on all textures
-        SDL_SetRenderDrawColor(renderer, 150, 0, 0, 255);
+      SDL_RenderClear(renderer);
 
-        SDL_RenderClear(renderer);
+      frameTime = SDL_GetTicks() - frameStart;
 
- 
-        frameTime = SDL_GetTicks() - frameStart;
+      gameText.renderTexture();
+      //Swap buffers to present backbuffer to screen
+      SDL_RenderPresent(renderer);
 
-        //Swap buffers to present backbuffer to screen
-        SDL_RenderPresent(renderer);
-
-        if(frameDelay > frameTime)
+      if(frameDelay > frameTime)
         {
-            SDL_Delay(frameDelay - frameTime);
+          SDL_Delay(frameDelay - frameTime);
         }
     }
 
-    return 0;
+  return 0;
 }

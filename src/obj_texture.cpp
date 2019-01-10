@@ -2,11 +2,8 @@
 
 Texture::Texture(SDL_Renderer *SRen, string imgLocation)
 {
-
   mImgLocation = imgLocation;
-
   mRenderer = SRen;
-  
   loadTexture();
 }
 
@@ -85,4 +82,25 @@ void Texture::loadTexture()
 
       cout << "Finish Loading: " << mImgLocation << "\n";
     }
+}
+
+void Texture::renderTexture()
+{
+  SDL_SetTextureBlendMode(mTexture, SDL_BLENDMODE_BLEND);
+
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = mHeight;
+  srcRect.w = mWidth;
+
+
+  dstRect.x = mX;
+  dstRect.y = mY;
+  dstRect.h = mHeight;
+  dstRect.w = mWidth;
+
+  SDL_RenderCopyEx(mRenderer, mTexture, &srcRect, &dstRect, mRotation, mCenter, mFlip);
 }
