@@ -16,7 +16,10 @@ int main(int argc, char* argv[])
 
   StartGame(&window, &renderer);
 
-  Texture gameText(renderer, "res/png/leftCursor.png");
+  //Create UI vector 
+  vector<Texture> vGameUI;
+
+  InitSpaceUI(renderer, vGameUI);
 
   while (1)
     {
@@ -29,7 +32,8 @@ int main(int argc, char* argv[])
 
       frameTime = SDL_GetTicks() - frameStart;
 
-      gameText.renderTexture();
+      RenderUI(vGameUI);
+    
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);
 

@@ -23,6 +23,21 @@ int StartGame(SDL_Window **window, SDL_Renderer **renderer)
                      SDL_GetError());
     }
 
-
     return 0;
 }
+
+void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
+{
+  vGameUI.clear();
+  Texture gameText(renderer, "res/png/leftCursor.png");
+  vGameUI.push_back(gameText);
+}
+
+void RenderUI(vector<Texture>  vGameUI)
+{
+  for (unsigned i = 0; i < vGameUI.size(); ++i)
+    {
+      vGameUI.at(i).renderTexture();
+    }
+}
+
