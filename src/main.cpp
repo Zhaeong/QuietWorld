@@ -21,7 +21,9 @@ int main(int argc, char* argv[])
 
   InitSpaceUI(renderer, vGameUI);
 
-  while (1)
+  bool runGame = true;
+  
+  while (runGame)
     {
       frameStart = SDL_GetTicks();
 
@@ -32,11 +34,27 @@ int main(int argc, char* argv[])
 
       frameTime = SDL_GetTicks() - frameStart;
 
+      int xMouse = 0;
+      int yMouse = 0;
+      
+      string eventType = GetAction(&xMouse, &yMouse);
+      if(eventType != "NONE")
+        {
+          cout << eventType << "\n";
+        }
+
+      if(eventType == "EXIT")
+        {
+          runGame = false;
+        }
+      
+      //Main Game Code
       RenderUI(vGameUI);
     
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);
 
+      //End of main game code
       if(frameDelay > frameTime)
         {
           SDL_Delay(frameDelay - frameTime);
