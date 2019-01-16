@@ -10,6 +10,9 @@
 
 using namespace std;
 
+#define GAMEWIDTH 640
+#define GAMEHEIGHT 480
+
 int StartGame(SDL_Window **window, SDL_Renderer **renderer);
 
 void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI);

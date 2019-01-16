@@ -2,8 +2,6 @@
 
 int StartGame(SDL_Window **window, SDL_Renderer **renderer)
 {
-    int screenWidth = 640;
-    int screenHeight = 480;
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
@@ -12,8 +10,10 @@ int StartGame(SDL_Window **window, SDL_Renderer **renderer)
     }
 
 
-    if (SDL_CreateWindowAndRenderer(screenWidth,
-                                    screenHeight,
+    //SDL_WINDOW_FULLSCREEN
+    //SDL_WINDOW_RESIZABLE
+    if (SDL_CreateWindowAndRenderer(GAMEWIDTH,
+                                    GAMEHEIGHT,
                                     SDL_WINDOW_RESIZABLE,
                                     window,
                                     renderer))
@@ -30,6 +30,7 @@ void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
 {
   vGameUI.clear();
   Texture gameText(renderer, "res/png/leftCursor.png");
+  gameText.mX = 100;
   vGameUI.push_back(gameText);
 }
 
@@ -55,9 +56,6 @@ string GetAction(int *mouseXpos, int *mouseYpos)
     {
       switch( event.type )
         {
-        case SDL_QUIT:
-          eventName = "QUIT";
-
         case SDL_KEYDOWN:
 
           /* Check the SDLKey values and move change the coords */
@@ -98,6 +96,9 @@ string GetAction(int *mouseXpos, int *mouseYpos)
         case SDL_MOUSEBUTTONUP:
           eventName = "MOUSE_UP";
           break;
+
+        case SDL_QUIT:
+          eventName = "EXIT";
 
         default:
           break;
