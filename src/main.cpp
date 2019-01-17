@@ -34,6 +34,10 @@ int main(int argc, char* argv[])
 
       frameTime = SDL_GetTicks() - frameStart;
 
+      ////////////////////////////////////////////////////////////////////////
+      //Main Game Code
+      ////////////////////////////////////////////////////////////////////////
+      
       int xMouse = 0;
       int yMouse = 0;
       
@@ -48,13 +52,16 @@ int main(int argc, char* argv[])
           runGame = false;
         }
       
-      //Main Game Code
+
       RenderUI(vGameUI);
     
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);
 
+      ////////////////////////////////////////////////////////////////////////
       //End of main game code
+      ////////////////////////////////////////////////////////////////////////
+      
       if(frameDelay > frameTime)
         {
           SDL_Delay(frameDelay - frameTime);

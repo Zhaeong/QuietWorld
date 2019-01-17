@@ -9,7 +9,6 @@ int StartGame(SDL_Window **window, SDL_Renderer **renderer)
                      SDL_GetError());
     }
 
-
     //SDL_WINDOW_FULLSCREEN
     //SDL_WINDOW_RESIZABLE
     if (SDL_CreateWindowAndRenderer(GAMEWIDTH,
@@ -29,9 +28,26 @@ int StartGame(SDL_Window **window, SDL_Renderer **renderer)
 void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
 {
   vGameUI.clear();
-  Texture gameText(renderer, "res/png/leftCursor.png");
-  gameText.mX = 100;
-  vGameUI.push_back(gameText);
+
+  //Add background
+  Texture uiBackground(renderer, GRAYBACKGROUND);
+  uiBackground.mX = 0;
+  uiBackground.mY = GAMEHEIGHT * 2/3;
+
+  uiBackground.mWidth = GAMEWIDTH;
+  uiBackground.mHeight = GAMEHEIGHT / 3;
+  vGameUI.push_back(uiBackground);
+
+  //Add rotation controls  
+  Texture leftButton(renderer, LEFTCURSOR);
+  leftButton.mX = 50;
+  leftButton.mY = GAMEHEIGHT * 2/3 + 50;
+  vGameUI.push_back(leftButton);
+  
+  Texture rightButton(renderer, RIGHTCURSOR);
+  rightButton.mX = leftButton.mX + leftButton.mWidth + 20;
+  rightButton.mY = GAMEHEIGHT * 2/3 + 50;
+  vGameUI.push_back(rightButton);
 }
 
 void RenderUI(vector<Texture>  vGameUI)

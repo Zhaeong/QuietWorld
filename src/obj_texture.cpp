@@ -7,7 +7,6 @@ Texture::Texture(SDL_Renderer *SRen, string imgLocation)
   loadTexture();
 }
 
-
 void Texture::loadTexture()
 {
   cout << "Loading: " << mImgLocation << "\n";

@@ -6,12 +6,11 @@
 #include <iostream>
 #include <vector>
 
+#include "game_defs.h"
 #include "obj_texture.h"
 
 using namespace std;
 
-#define GAMEWIDTH 640
-#define GAMEHEIGHT 480
 
 int StartGame(SDL_Window **window, SDL_Renderer **renderer);
 
