@@ -50,7 +50,7 @@ void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
   vGameUI.push_back(rightButton);
 }
 
-void RenderUI(vector<Texture>  vGameUI)
+void RenderUI(vector<Texture> vGameUI)
 {
   for (unsigned i = 0; i < vGameUI.size(); ++i)
     {
@@ -122,4 +122,23 @@ string GetAction(int *mouseXpos, int *mouseYpos)
     }
   SDL_GetMouseState( mouseXpos, mouseYpos );
   return eventName;
+}
+
+string TextureCollision(vector<Texture> vTexture, int xPos, int yPos)
+{
+  string colTex = "NONE";
+  for (unsigned i = 0; i < vTexture.size(); ++i)
+    {
+      Texture texRef = vTexture.at(i);
+      
+      vTexture.at(i).renderTexture();
+      if(xPos >= texRef.mX
+         && xPos <= (texRef.mX + texRef.mWidth)
+         && yPos >= texRef.mY
+         && yPos <= (texRef.mY + texRef.mHeight))
+        {
+          colTex = texRef.mImgLocation;
+        }
+    }
+  return colTex;
 }

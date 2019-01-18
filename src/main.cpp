@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
       frameStart = SDL_GetTicks();
 
       //The color at which the screen will be if alpha = 0 on all textures
-      SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+      SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
 
       SDL_RenderClear(renderer);
 
@@ -42,16 +42,22 @@ int main(int argc, char* argv[])
       int yMouse = 0;
       
       string eventType = GetAction(&xMouse, &yMouse);
-      if(eventType != "NONE")
-        {
-          cout << eventType << "\n";
-        }
 
       if(eventType == "EXIT")
         {
           runGame = false;
         }
-      
+
+      if(eventType != "NONE")
+        {
+          cout << eventType << "\n";
+          if(eventType == "MOUSE_DOWN")
+            {
+              string texCol = TextureCollision(vGameUI, xMouse, yMouse);
+
+              cout << texCol << "\n";
+            }
+        }
 
       RenderUI(vGameUI);
     

@@ -19,5 +19,7 @@ void RenderUI(vector<Texture> vGameUI);
 
 string GetAction(int *mouseXpos, int *mouseYpos);
 
+string TextureCollision(vector<Texture> vTexture, int xPos, int yPos);
+
 #endif // GAME_H
  
