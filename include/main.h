@@ -7,6 +7,8 @@
 #include <vector>
 
 #include "game.h"
+#include "obj_ship.h"
+
 
 using namespace std;
 

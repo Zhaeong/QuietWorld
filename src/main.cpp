@@ -18,8 +18,16 @@ int main(int argc, char* argv[])
 
   //Create UI vector 
   vector<Texture> vGameUI;
-
   InitSpaceUI(renderer, vGameUI);
+
+  
+
+  //Create ship char
+  Ship mainShip;
+
+  Texture shipTex(renderer, "res/ship/ship.png");
+
+  mainShip.vShipTextures.push_back(shipTex);
 
   bool runGame = true;
   
@@ -37,7 +45,8 @@ int main(int argc, char* argv[])
       ////////////////////////////////////////////////////////////////////////
       //Main Game Code
       ////////////////////////////////////////////////////////////////////////
-      
+
+      //Get input
       int xMouse = 0;
       int yMouse = 0;
       
@@ -59,8 +68,11 @@ int main(int argc, char* argv[])
             }
         }
 
+      //Render to screen
       RenderUI(vGameUI);
-    
+      mainShip.renderShip();
+
+      
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);
 
