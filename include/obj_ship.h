@@ -10,12 +10,25 @@ class Ship
  public:
   int mX = 0;
   int mY = 0;
-  double mRotation = 0;
+  double mRotationValue = 1;
   vector<Texture> vShipTextures;
+
+  enum ShipStates
+    {
+     IDLE,
+     ROTATELEFT,
+     ROTATERIGHT
+    };
+
+  ShipStates curState = ShipStates::IDLE;
 
   Ship();
 
   void renderShip();
+
+  void updateBasedOnState();
+
+  void changeRotation(int rotationVal);
 
 };
 

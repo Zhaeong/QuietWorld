@@ -64,9 +64,23 @@ int main(int argc, char* argv[])
             {
               string texCol = TextureCollision(vGameUI, xMouse, yMouse);
 
+              if(texCol == LEFTCURSOR)
+                {
+
+                  mainShip.curState = Ship::ShipStates::ROTATELEFT;
+                }
+              else if(texCol == RIGHTCURSOR)
+                {
+
+                  mainShip.curState = Ship::ShipStates::ROTATERIGHT;
+                }
+
               cout << texCol << "\n";
             }
         }
+
+      //Update game state
+      mainShip.updateBasedOnState();
 
       //Render to screen
       RenderUI(vGameUI);
