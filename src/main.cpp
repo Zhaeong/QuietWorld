@@ -68,6 +68,7 @@ int main(int argc, char* argv[])
                 {
 
                   mainShip.curState = Ship::ShipStates::ROTATELEFT;
+                  mainShip.changeDirection();
                 }
               else if(texCol == RIGHTCURSOR)
                 {
@@ -83,8 +84,21 @@ int main(int argc, char* argv[])
       mainShip.updateBasedOnState();
 
       //Render to screen
+
+      
+      
+      cout << "x:" << mainShip.mDirection.x << " y:" << mainShip.mDirection.y << "\n";
+      
       RenderUI(vGameUI);
-      mainShip.renderShip();
+      //mainShip.renderShip();
+
+      SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
+
+      SDL_RenderDrawLine(renderer,
+                         mainShip.mPosition.x,
+                         mainShip.mPosition.y,
+                         mainShip.mDirection.x * 10,
+                         mainShip.mDirection.y * 10 );
 
       
       //Swap buffers to present backbuffer to screen

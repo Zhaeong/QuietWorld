@@ -2,16 +2,20 @@
 #define OBJ_SHIP_H
 
 #include <vector>
-#include "obj_texture.h"
+#include <cmath>
 
+#include "obj_texture.h"
+#include "game_defs.h"
 class Ship
 {
 
  public:
-  int mX = 0;
-  int mY = 0;
+
   double mRotationValue = 1;
   vector<Texture> vShipTextures;
+
+  vect2 mPosition;
+  vect2 mDirection;
 
   enum ShipStates
     {
@@ -29,6 +33,8 @@ class Ship
   void updateBasedOnState();
 
   void changeRotation(int rotationVal);
+
+  void changeDirection();
 
 };
 
