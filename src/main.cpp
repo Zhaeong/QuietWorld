@@ -66,14 +66,17 @@ int main(int argc, char* argv[])
 
               if(texCol == LEFTCURSOR)
                 {
-
                   mainShip.curState = Ship::ShipStates::ROTATELEFT;
                   mainShip.changeDirection();
                 }
               else if(texCol == RIGHTCURSOR)
                 {
-
                   mainShip.curState = Ship::ShipStates::ROTATERIGHT;
+                }
+              else if(texCol == ROTSTOPBUTTON)
+                {
+
+                  mainShip.curState = Ship::ShipStates::IDLE;
                 }
 
               cout << texCol << "\n";
@@ -90,7 +93,7 @@ int main(int argc, char* argv[])
       cout << "x:" << mainShip.mDirection.x << " y:" << mainShip.mDirection.y << "\n";
       
       RenderUI(vGameUI);
-      //mainShip.renderShip();
+      mainShip.renderShip();
 
       SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
 

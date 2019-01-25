@@ -15,7 +15,7 @@ using namespace std;
 const string GRAYBACKGROUND = "res/spaceUI/uiGray.png";
 const string LEFTCURSOR     = "res/spaceUI/leftCursor.png";
 const string RIGHTCURSOR    = "res/spaceUI/rightCursor.png";
-
+const string ROTSTOPBUTTON  = "res/spaceUI/stopRotate.png";
 
 struct vect2
 {

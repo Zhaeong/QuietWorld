@@ -44,8 +44,13 @@ void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
   leftButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(leftButton);
   
+  Texture stopButton(renderer, ROTSTOPBUTTON);
+  stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
+  stopButton.mY = GAMEHEIGHT * 2/3 + 50;
+  vGameUI.push_back(stopButton);
+
   Texture rightButton(renderer, RIGHTCURSOR);
-  rightButton.mX = leftButton.mX + leftButton.mWidth + 20;
+  rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
   rightButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(rightButton);
 }

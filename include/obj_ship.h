@@ -12,6 +12,7 @@ class Ship
  public:
 
   double mRotationValue = 1;
+  
   vector<Texture> vShipTextures;
 
   vect2 mPosition;
@@ -32,7 +33,7 @@ class Ship
 
   void updateBasedOnState();
 
-  void changeRotation(int rotationVal);
+  void changeRotation(bool left);
 
   void changeDirection();
 
