@@ -11,7 +11,7 @@ class Ship
 
  public:
 
-  double mRotationValue = 1;
+  double mRotationValue = 180;
   
   vector<Texture> vShipTextures;
 
