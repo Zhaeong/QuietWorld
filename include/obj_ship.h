@@ -11,11 +11,14 @@ class Ship
 
  public:
 
-  double mRotationValue = 180;
+  int mRotation = 0;
+  
+  int mRotationValue = 1;
   
   vector<Texture> vShipTextures;
 
   vect2 mPosition;
+  vect2 mOrigDirection;
   vect2 mDirection;
 
   enum ShipStates
@@ -29,6 +32,8 @@ class Ship
 
   Ship();
 
+  void rotateByDegree(int degrees);
+  
   void renderShip();
 
   void updateBasedOnState();

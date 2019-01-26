@@ -7,6 +7,11 @@ Texture::Texture(SDL_Renderer *SRen, string imgLocation)
   loadTexture();
 }
 
+void Texture::rotateByDegree(int degrees)
+{
+  mRotation = (mRotation + degrees) % 360;
+}
+
 void Texture::loadTexture()
 {
   cout << "Loading: " << mImgLocation << "\n";

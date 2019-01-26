@@ -25,7 +25,7 @@ public:
   int mX = 0;
   int mY = 0;
 
-  double mRotation = 0;
+  int mRotation = 0;
   SDL_Point *mCenter = NULL;
   SDL_RendererFlip mFlip = SDL_FLIP_NONE;
 
@@ -33,6 +33,8 @@ public:
   int mPitch = 0;
 
   Texture(SDL_Renderer *SRen, string imgLocation);
+
+  void rotateByDegree(int degrees);
   void loadTexture();
   void renderTexture();
   

@@ -30,6 +30,12 @@ int main(int argc, char* argv[])
   mainShip.vShipTextures.push_back(shipTex);
 
   bool runGame = true;
+
+  cout << "dirX:" << mainShip.mDirection.x << " dirY:" << mainShip.mDirection.y << "\n";
+
+  //mainShip.changeRotation(true);
+      
+  cout << "dirX:" << mainShip.mDirection.x << " dirY:" << mainShip.mDirection.y << "\n";
   
   while (runGame)
     {
@@ -52,6 +58,9 @@ int main(int argc, char* argv[])
       
       string eventType = GetAction(&xMouse, &yMouse);
 
+
+
+
       if(eventType == "EXIT")
         {
           runGame = false;
@@ -67,7 +76,7 @@ int main(int argc, char* argv[])
               if(texCol == LEFTCURSOR)
                 {
                   mainShip.curState = Ship::ShipStates::ROTATELEFT;
-                  mainShip.changeDirection();
+
                 }
               else if(texCol == RIGHTCURSOR)
                 {
@@ -88,9 +97,6 @@ int main(int argc, char* argv[])
 
       //Render to screen
 
-      
-      
-      cout << "x:" << mainShip.mDirection.x << " y:" << mainShip.mDirection.y << "\n";
       
       RenderUI(vGameUI);
       mainShip.renderShip();
