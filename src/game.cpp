@@ -39,20 +39,34 @@ void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
   vGameUI.push_back(uiBackground);
 
   //Add rotation controls  
-  Texture leftButton(renderer, LEFTCURSOR);
+  Texture leftButton(renderer, BTN_LEFTCURSOR);
   leftButton.mX = 50;
   leftButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(leftButton);
   
-  Texture stopButton(renderer, ROTSTOPBUTTON);
+  Texture stopButton(renderer, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(stopButton);
 
-  Texture rightButton(renderer, RIGHTCURSOR);
+  Texture rightButton(renderer, BTN_RIGHTCURSOR);
   rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
   rightButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(rightButton);
+
+  Texture speedincreaseButton(renderer, BTN_INCREASESPEED);
+  speedincreaseButton.mX = rightButton.mX + rightButton.mWidth + 20;
+  speedincreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
+  vGameUI.push_back(speedincreaseButton);
+
+
+  Texture speeddecreaseButton(renderer, BTN_DECREASESPEED);
+  speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
+  speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
+  vGameUI.push_back(speeddecreaseButton);
+
+
+  
 }
 
 void RenderUI(vector<Texture> vGameUI)

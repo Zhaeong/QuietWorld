@@ -53,7 +53,6 @@ void Ship::changeRotation(bool left)
       vShipTextures.at(i).rotateByDegree(rotationVal);
       
     }
-  cout << "currShiRot:" << mRotation << "\n";
   rotateByDegree(rotationVal);
 
 }
@@ -75,22 +74,30 @@ void Ship::updateBasedOnState()
       cout << "ERROR: ShipState not Recognized";
       break;
     }
+
+  changePosition();
 }
 
-void Ship::changeDirection()
-{
-  //Convert degrees to radians
-  float rad = -10 * PI / 180.0;
-
-  //Normalize the vector
-  float vecLength = sqrt((mDirection.x * mDirection.x) + (mDirection.y * mDirection.y));
-  float dirX = mDirection.x / vecLength;
-  float dirY = mDirection.y / vecLength;
-
-  //Perform rotation by calling the rotation matrix
-  mDirection.x = dirX * cos(rad) - dirY * sin(rad);
-  mDirection.y = dirX * sin(rad) + dirY * cos(rad);
+void Ship::changePosition()
+{  
+  mPosition.x += mDirection.x * mSpeed;
+  mPosition.y += mDirection.y * mSpeed;
   
+  for (unsigned i = 0; i < vShipTextures.size(); ++i)
+    {
+      vShipTextures.at(i).mX = (int)mPosition.x;
+      vShipTextures.at(i).mY = (int)mPosition.y;
+    }
+}
+
+void Ship::changeSpeed(int speed)
+{
+  int newSpeed = mSpeed + speed;
+  if(newSpeed < 0)
+  {
+    newSpeed = 0;
+  }
+  mSpeed = newSpeed;
 }
 
 void Ship::renderShip()

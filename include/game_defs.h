@@ -12,10 +12,14 @@ using namespace std;
 
 
 //SPACE UI
-const string GRAYBACKGROUND = "res/spaceUI/uiGray.png";
-const string LEFTCURSOR     = "res/spaceUI/leftCursor.png";
-const string RIGHTCURSOR    = "res/spaceUI/rightCursor.png";
-const string ROTSTOPBUTTON  = "res/spaceUI/stopRotate.png";
+const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
+
+const string BTN_LEFTCURSOR     = "res/spaceUI/leftCursor.png";
+const string BTN_RIGHTCURSOR    = "res/spaceUI/rightCursor.png";
+const string BTN_STOPROT        = "res/spaceUI/stopRotate.png";
+
+const string BTN_INCREASESPEED  = "res/spaceUI/increaseSpeed.png";
+const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
 
 struct vect2
 {

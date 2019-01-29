@@ -6,14 +6,16 @@
 
 #include "obj_texture.h"
 #include "game_defs.h"
+
 class Ship
 {
 
  public:
 
   int mRotation = 0;
-  
   int mRotationValue = 1;
+
+  int mSpeed = 0;
   
   vector<Texture> vShipTextures;
 
@@ -33,6 +35,10 @@ class Ship
   Ship();
 
   void rotateByDegree(int degrees);
+
+  void changePosition();
+
+  void changeSpeed(int speed);
   
   void renderShip();
 
@@ -40,7 +46,6 @@ class Ship
 
   void changeRotation(bool left);
 
-  void changeDirection();
 
 };
 

@@ -58,9 +58,6 @@ int main(int argc, char* argv[])
       
       string eventType = GetAction(&xMouse, &yMouse);
 
-
-
-
       if(eventType == "EXIT")
         {
           runGame = false;
@@ -73,19 +70,26 @@ int main(int argc, char* argv[])
             {
               string texCol = TextureCollision(vGameUI, xMouse, yMouse);
 
-              if(texCol == LEFTCURSOR)
+              if(texCol == BTN_LEFTCURSOR)
                 {
                   mainShip.curState = Ship::ShipStates::ROTATELEFT;
 
                 }
-              else if(texCol == RIGHTCURSOR)
+              else if(texCol == BTN_RIGHTCURSOR)
                 {
                   mainShip.curState = Ship::ShipStates::ROTATERIGHT;
                 }
-              else if(texCol == ROTSTOPBUTTON)
+              else if(texCol == BTN_STOPROT)
                 {
-
                   mainShip.curState = Ship::ShipStates::IDLE;
+                }
+              else if(texCol == BTN_INCREASESPEED)
+                {
+                  mainShip.changeSpeed(1);
+                }
+              else if(texCol == BTN_DECREASESPEED)
+                {
+                  mainShip.changeSpeed(-1);
                 }
 
               cout << texCol << "\n";
@@ -106,8 +110,8 @@ int main(int argc, char* argv[])
       SDL_RenderDrawLine(renderer,
                          mainShip.mPosition.x,
                          mainShip.mPosition.y,
-                         mainShip.mDirection.x * 10,
-                         mainShip.mDirection.y * 10 );
+                         mainShip.mPosition.x + mainShip.mDirection.x * 10,
+                         mainShip.mPosition.y + mainShip.mDirection.y * 10 );
 
       
       //Swap buffers to present backbuffer to screen
