@@ -161,3 +161,77 @@ string TextureCollision(vector<Texture> vTexture, int xPos, int yPos)
     }
   return colTex;
 }
+
+SDL_Texture* getFontText(SDL_Renderer *SRen, string textLocation)
+{
+  cout << "Loading: " << textLocation << "\n";
+  
+  //Make sure to initialize texture to null or else SDL_DestroyTexture will crash program
+  SDL_Texture *mTexture = NULL;
+
+  void* mPixels = 0;
+  int mPitch = 0;
+
+  SDL_Surface* loadedSurface = IMG_Load( textLocation.c_str() );
+
+  if( loadedSurface == NULL )
+    {
+      printf( "Unable to load image %s! SDL_image Error: %s\n",
+              textLocation.c_str(),
+              IMG_GetError() );
+    }
+  else
+    {
+      //Convert surface to display format
+      SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
+                                                                SDL_PIXELFORMAT_ARGB8888,
+                                                                0 );
+      if( formattedSurface == NULL )
+        {
+          printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
+                  SDL_GetError() );
+        }
+      else
+        {
+          //Create blank streamable texture
+          mTexture = SDL_CreateTexture( SRen,
+                                        SDL_PIXELFORMAT_ARGB8888,
+                                        SDL_TEXTUREACCESS_STREAMING,
+                                        formattedSurface->w,
+                                        formattedSurface->h );
+          if( mTexture == NULL )
+            {
+              printf( "Unable to create blank texture! SDL Error: %s\n",
+                      SDL_GetError() );
+            }
+          else
+            {
+
+              //Lock texture for manipulation
+              SDL_LockTexture( mTexture, NULL, &mPixels, &mPitch );
+
+              //Copy loaded/formatted surface pixels
+              memcpy( mPixels, formattedSurface->pixels,
+                      formattedSurface->pitch * formattedSurface->h );
+
+              //Unlock texture to update
+              SDL_UnlockTexture( mTexture );
+              mPixels = NULL;
+
+              
+            }
+
+          //Get rid of old formatted surface
+          SDL_FreeSurface( formattedSurface );
+        }
+
+      //Get rid of old loaded surface
+      SDL_FreeSurface( loadedSurface );
+
+      cout << "Finish Loading: " << textLocation << "\n";
+
+      
+    }
+  
+  return mTexture;
+}

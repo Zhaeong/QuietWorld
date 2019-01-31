@@ -22,5 +22,7 @@ string GetAction(int *mouseXpos, int *mouseYpos);
 
 string TextureCollision(vector<Texture> vTexture, int xPos, int yPos);
 
+SDL_Texture* getFontText(SDL_Renderer *SRen, string textLocation);
+
 #endif // GAME_H
  

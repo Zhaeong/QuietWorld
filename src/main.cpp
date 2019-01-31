@@ -20,7 +20,9 @@ int main(int argc, char* argv[])
   vector<Texture> vGameUI;
   InitSpaceUI(renderer, vGameUI);
 
-  
+  //Create text texture
+
+  SDL_Texture *mainFontText = getFontText(renderer, "res/text/mainText.png");
 
   //Create ship char
   Ship mainShip;
@@ -31,18 +33,13 @@ int main(int argc, char* argv[])
 
   bool runGame = true;
 
-  cout << "dirX:" << mainShip.mDirection.x << " dirY:" << mainShip.mDirection.y << "\n";
 
-  //mainShip.changeRotation(true);
-      
-  cout << "dirX:" << mainShip.mDirection.x << " dirY:" << mainShip.mDirection.y << "\n";
-  
   while (runGame)
     {
       frameStart = SDL_GetTicks();
 
       //The color at which the screen will be if alpha = 0 on all textures
-      SDL_SetRenderDrawColor(renderer, 10, 10, 10, 255);
+      SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
 
       SDL_RenderClear(renderer);
 
@@ -52,6 +49,7 @@ int main(int argc, char* argv[])
       //Main Game Code
       ////////////////////////////////////////////////////////////////////////
 
+      
       //Get input
       int xMouse = 0;
       int yMouse = 0;
@@ -96,11 +94,14 @@ int main(int argc, char* argv[])
             }
         }
 
+      Text *newText = new Text(renderer, mainFontText, "ShipX " + to_string(mainShip.mPosition.x), 100, 10);
+      Text *newText2 = new Text(renderer, mainFontText, "ShipY " + to_string(mainShip.mPosition.y), 100, 30);
+
+      
       //Update game state
       mainShip.updateBasedOnState();
 
       //Render to screen
-
       
       RenderUI(vGameUI);
       mainShip.renderShip();
@@ -116,6 +117,11 @@ int main(int argc, char* argv[])
       
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);
+
+
+      //delete any objects created
+      delete newText;
+      delete newText2;
 
       ////////////////////////////////////////////////////////////////////////
       //End of main game code
