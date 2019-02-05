@@ -31,8 +31,12 @@ int main(int argc, char* argv[])
 
   mainShip.vShipTextures.push_back(shipTex);
 
-  bool runGame = true;
+  //Create textObj to handle text display
+  Text textDisplay(renderer, mainFontText);
 
+  textDisplay.addTextObj("heyeyeye", 0, 0, 0);
+
+  bool runGame = true;
 
   while (runGame)
     {
@@ -94,9 +98,7 @@ int main(int argc, char* argv[])
             }
         }
 
-      Text *newText = new Text(renderer, mainFontText, "ShipX " + to_string(mainShip.mPosition.x), 100, 10);
-      Text *newText2 = new Text(renderer, mainFontText, "ShipY " + to_string(mainShip.mPosition.y), 100, 30);
-
+      textDisplay.mTextArray[0].textString = "x is: " + to_string(mainShip.mPosition.x);
       
       //Update game state
       mainShip.updateBasedOnState();
@@ -114,14 +116,13 @@ int main(int argc, char* argv[])
                          mainShip.mPosition.x + mainShip.mDirection.x * 10,
                          mainShip.mPosition.y + mainShip.mDirection.y * 10 );
 
+
+      //Render text
+      textDisplay.drawText();
       
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);
 
-
-      //delete any objects created
-      delete newText;
-      delete newText2;
 
       ////////////////////////////////////////////////////////////////////////
       //End of main game code

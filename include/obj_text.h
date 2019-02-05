@@ -8,23 +8,34 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <vector>
 
 using namespace std;
+
+
+struct TextObj
+{
+  string textString = "";
+  int mX = 0;
+  int mY = 0;
+  int textDelay = 0;
+};
+
 class Text
 {
  public:
 
-  int mX = 0;
-  int mY = 0;
   SDL_Renderer *mRenderer = NULL;
   SDL_Texture *mTexture = NULL;
 
-  string mTextDisplay = "";
-
+  vector<TextObj> mTextArray;
   
-  Text(SDL_Renderer *SRen, SDL_Texture *STex, string textDisplay, int x, int y);
+  Text(SDL_Renderer *SRen, SDL_Texture *STex);
 
   void drawText();
+  void addTextObj(string textString, int x, int y, int delay);
+  void clearText();
+  
 };
 
 
