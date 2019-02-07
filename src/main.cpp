@@ -14,7 +14,14 @@ int main(int argc, char* argv[])
 
   cout << "Starting Quietworld";
 
+  //Initiate SDL
   StartGame(&window, &renderer);
+
+  //Initiate Camera coords
+  int camX = 0;
+  int camY = 0;
+  int camW = GAMEWIDTH;
+  int camH = GAMEHEIGHT * 2 / 3;
 
   //Create UI vector 
   vector<Texture> vGameUI;
@@ -22,7 +29,7 @@ int main(int argc, char* argv[])
 
   //Create text texture
 
-  SDL_Texture *mainFontText = getFontText(renderer, "res/text/mainText.png");
+  SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
 
   //Create ship char
   Ship mainShip;
@@ -30,6 +37,13 @@ int main(int argc, char* argv[])
   Texture shipTex(renderer, "res/ship/ship.png");
 
   mainShip.vShipTextures.push_back(shipTex);
+
+  CenterCamOnPlayer(&camX, &camY, camW, camH,
+                                    mainShip.mPosition.x,
+                                    mainShip.mPosition.y,
+                                    mainShip.mWidth,
+                                    mainShip.mHeight);
+  
 
   //Create textObj to handle text display
   Text textDisplay(renderer, mainFontText);
@@ -75,7 +89,7 @@ int main(int argc, char* argv[])
               if(texCol == BTN_LEFTCURSOR)
                 {
                   mainShip.curState = Ship::ShipStates::ROTATELEFT;
-
+                  
                 }
               else if(texCol == BTN_RIGHTCURSOR)
                 {
@@ -106,15 +120,27 @@ int main(int argc, char* argv[])
       //Render to screen
       
       RenderUI(vGameUI);
-      mainShip.renderShip();
+      mainShip.renderShip(camX, camY);
 
       SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
+      
+      if(DEBUG == 1)
+        {
+          SDL_RenderDrawLine(renderer,
+                             mainShip.mPosition.x,
+                             mainShip.mPosition.y,
+                             mainShip.mPosition.x + mainShip.mDirection.x * 10,
+                             mainShip.mPosition.y + mainShip.mDirection.y * 10 );
 
-      SDL_RenderDrawLine(renderer,
-                         mainShip.mPosition.x,
-                         mainShip.mPosition.y,
-                         mainShip.mPosition.x + mainShip.mDirection.x * 10,
-                         mainShip.mPosition.y + mainShip.mDirection.y * 10 );
+          DrawBoundingBox(renderer,
+                          camX,
+                          camY,
+                          mainShip.mPosition.x,
+                          mainShip.mPosition.y,
+                          mainShip.mWidth,
+                          mainShip.mHeight);
+        }
+      
 
 
       //Render text

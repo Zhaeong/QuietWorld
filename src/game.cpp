@@ -59,12 +59,10 @@ void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
   speedincreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(speedincreaseButton);
 
-
   Texture speeddecreaseButton(renderer, BTN_DECREASESPEED);
   speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
   speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
   vGameUI.push_back(speeddecreaseButton);
-
 
   
 }
@@ -162,7 +160,7 @@ string TextureCollision(vector<Texture> vTexture, int xPos, int yPos)
   return colTex;
 }
 
-SDL_Texture* getFontText(SDL_Renderer *SRen, string textLocation)
+SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation)
 {
   cout << "Loading: " << textLocation << "\n";
   
@@ -234,4 +232,59 @@ SDL_Texture* getFontText(SDL_Renderer *SRen, string textLocation)
     }
   
   return mTexture;
+}
+
+void CenterCamOnPlayer(int *camX,
+                       int *camY,
+                       int camW,
+                       int camH,
+                       int plaX,
+                       int plaY,
+                       int plaW,
+                       int plaH)
+{
+  
+  *camX = plaX + (plaW/2) - (camW/2);
+  *camY = plaY + (plaH/2) - (camH/2);
+}
+
+void DrawBoundingBox(SDL_Renderer *renderer,
+                     int camX,
+                     int camY,
+                     int objX,
+                     int objY,
+                     int objW,
+                     int objH)
+{
+  SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+
+  int xPos = objX - camX;
+  int yPos = objY - camY;
+
+  //top
+  SDL_RenderDrawLine(renderer,
+                     xPos,
+                     yPos,
+                     xPos + objW,
+                     yPos);
+  //left
+  SDL_RenderDrawLine(renderer,
+                     xPos,
+                     yPos,
+                     xPos,
+                     yPos + objH);
+
+  //right
+  SDL_RenderDrawLine(renderer,
+                     xPos + objW,
+                     yPos,
+                     xPos + objW,
+                     yPos + objH);
+  //right
+  SDL_RenderDrawLine(renderer,
+                     xPos,
+                     yPos +objH,
+                     xPos + objW,
+                     yPos + objH);
+
 }

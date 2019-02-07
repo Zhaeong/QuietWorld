@@ -14,7 +14,6 @@ class Ship
 
   int mRotation = 0;
   int mRotationValue = 1;
-
   int mSpeed = 0;
   
   vector<Texture> vShipTextures;
@@ -22,6 +21,9 @@ class Ship
   vect2 mPosition;
   vect2 mOrigDirection;
   vect2 mDirection;
+
+  int mWidth = 20;
+  int mHeight = 20;
 
   enum ShipStates
     {
@@ -40,7 +42,7 @@ class Ship
 
   void changeSpeed(int speed);
   
-  void renderShip();
+  void renderShip(int camX, int camY);
 
   void updateBasedOnState();
 

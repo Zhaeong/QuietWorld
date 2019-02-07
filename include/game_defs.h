@@ -4,11 +4,14 @@
 #include <string>
 using namespace std;
 
+//Be carefull to always set a size divisible cleanly by 3
 
 #define GAMEWIDTH  640
 #define GAMEHEIGHT 480
 
 #define PI 3.14159265
+
+#define DEBUG 1
 
 
 //SPACE UI

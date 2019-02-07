@@ -22,7 +22,23 @@ string GetAction(int *mouseXpos, int *mouseYpos);
 
 string TextureCollision(vector<Texture> vTexture, int xPos, int yPos);
 
-SDL_Texture* getFontText(SDL_Renderer *SRen, string textLocation);
+SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation);
 
+void CenterCamOnPlayer(int *camX,
+                       int *camY,
+                       int camW,
+                       int camH,
+                       int plaX,
+                       int plaY,
+                       int plaW,
+                       int plaH);
+
+void DrawBoundingBox(SDL_Renderer *renderer,
+                     int camX,
+                     int camY,
+                     int objX,
+                     int objY,
+                     int objW,
+                     int objH);
 #endif // GAME_H
  

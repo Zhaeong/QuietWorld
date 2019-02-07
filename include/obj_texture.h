@@ -9,6 +9,7 @@
 #include <string>
 #include <cstring>
 
+
 using namespace std;
 
 class Texture
@@ -36,7 +37,9 @@ public:
 
   void rotateByDegree(int degrees);
   void loadTexture();
+  
   void renderTexture();
+  void renderTextureByCam(int camX, int camY);
   
 };
 

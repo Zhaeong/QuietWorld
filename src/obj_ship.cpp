@@ -100,11 +100,11 @@ void Ship::changeSpeed(int speed)
   mSpeed = newSpeed;
 }
 
-void Ship::renderShip()
+void Ship::renderShip(int camX, int camY)
 {
   for (unsigned i = 0; i < vShipTextures.size(); ++i)
     {
-      vShipTextures.at(i).renderTexture();
+      vShipTextures.at(i).renderTextureByCam(camX, camY);
     }
 }
 
