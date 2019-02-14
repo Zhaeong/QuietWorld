@@ -39,6 +39,9 @@ void DrawBoundingBox(SDL_Renderer *renderer,
                      int objX,
                      int objY,
                      int objW,
-                     int objH);
+                     int objH,
+                     int r,
+                     int g,
+                     int b);
 #endif // GAME_H
  

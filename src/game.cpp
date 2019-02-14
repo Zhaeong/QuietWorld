@@ -254,9 +254,12 @@ void DrawBoundingBox(SDL_Renderer *renderer,
                      int objX,
                      int objY,
                      int objW,
-                     int objH)
+                     int objH,
+                     int r,
+                     int g,
+                     int b)
 {
-  SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+  SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
 
   int xPos = objX - camX;
   int yPos = objY - camY;
@@ -288,3 +291,11 @@ void DrawBoundingBox(SDL_Renderer *renderer,
                      yPos + objH);
 
 }
+
+/*
+void MoveCameraBaseOnShip(int *camX, int *camY, int objX, int objY, int objH, int objW)
+{
+  
+}
+*/
+

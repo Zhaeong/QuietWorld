@@ -138,7 +138,10 @@ int main(int argc, char* argv[])
                           mainShip.mPosition.x,
                           mainShip.mPosition.y,
                           mainShip.mWidth,
-                          mainShip.mHeight);
+                          mainShip.mHeight,
+                          255,
+                          0,
+                          0);
         }
       
 
