@@ -2,6 +2,9 @@
 #define GAMEDEFS_H
 
 #include <string>
+
+#include "obj_texture.h"
+
 using namespace std;
 
 //Be carefull to always set a size divisible cleanly by 3

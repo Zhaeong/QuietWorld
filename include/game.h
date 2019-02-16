@@ -43,5 +43,8 @@ void DrawBoundingBox(SDL_Renderer *renderer,
                      int r,
                      int g,
                      int b);
+
+
+void RenderDebris(vector<Texture> vDebris, int camX, int camY);
 #endif // GAME_H
  

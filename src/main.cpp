@@ -27,10 +27,6 @@ int main(int argc, char* argv[])
   vector<Texture> vGameUI;
   InitSpaceUI(renderer, vGameUI);
 
-  //Create text texture
-
-  SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
-
   //Create ship char
   Ship mainShip;
 
@@ -44,11 +40,17 @@ int main(int argc, char* argv[])
                                     mainShip.mWidth,
                                     mainShip.mHeight);
   
-
-  //Create textObj to handle text display
+  //Create texture handling
+  SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
   Text textDisplay(renderer, mainFontText);
-
   textDisplay.addTextObj("heyeyeye", 0, 0, 0);
+
+  //Create debris Array
+  vector<Texture> vDebris;
+  Texture dObj(renderer, "res/debris/debris1.png");
+  dObj.mX = 245;
+  dObj.mY = 0;
+  vDebris.push_back(dObj);
 
   bool runGame = true;
 
@@ -112,20 +114,34 @@ int main(int argc, char* argv[])
             }
         }
 
-      textDisplay.mTextArray[0].textString = "x is: " + to_string(mainShip.mPosition.x);
+      textDisplay.mTextArray[0].textString = "x:" + to_string(mainShip.mPosition.x) + " y:" + to_string(mainShip.mPosition.y)  ;
       
       //Update game state
       mainShip.updateBasedOnState();
 
-      //Render to screen
-      
-      RenderUI(vGameUI);
-      mainShip.renderShip(camX, camY);
+      ////////////////////
+      //Render to screen//
+      ////////////////////
 
-      SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
+      //Render space debris
+
+      RenderDebris(vDebris, camX, camY);
       
+      //Render UI
+      RenderUI(vGameUI);
+
+      //Render Ship
+      mainShip.renderShip(camX, camY); 
+      
+      //Render text
+      textDisplay.drawText();
+
+
+      //Render DEBUG items if turned on
       if(DEBUG == 1)
         {
+          SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
+      
           SDL_RenderDrawLine(renderer,
                              mainShip.mPosition.x,
                              mainShip.mPosition.y,
@@ -143,11 +159,6 @@ int main(int argc, char* argv[])
                           0,
                           0);
         }
-      
-
-
-      //Render text
-      textDisplay.drawText();
       
       //Swap buffers to present backbuffer to screen
       SDL_RenderPresent(renderer);

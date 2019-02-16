@@ -62,6 +62,18 @@ void Text::drawText()
             xTextPos = (int)curChar - 48;
             yTextPos = 40;
           }
+        //minus sign
+        else if((int)curChar == 45)
+          {
+            xTextPos = 0;
+            yTextPos = 60;
+          }
+        //dot
+        else if((int)curChar == 46)
+          {
+            xTextPos = 1;
+            yTextPos = 60;
+          }        
         //black space
         else
           {

@@ -299,3 +299,11 @@ void MoveCameraBaseOnShip(int *camX, int *camY, int objX, int objY, int objH, in
 }
 */
 
+void RenderDebris(vector<Texture> vDebris, int camX, int camY)
+{
+  for (unsigned i = 0; i < vDebris.size(); ++i)
+    {
+      Texture dObj = vDebris.at(i);
+      dObj.renderTextureByCam(camX, camY);      
+    }
+}
