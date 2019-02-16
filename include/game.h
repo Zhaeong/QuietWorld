@@ -33,7 +33,7 @@ void CenterCamOnPlayer(int *camX,
                        int plaW,
                        int plaH);
 
-void DrawBoundingBox(SDL_Renderer *renderer,
+void DrawBoundingBoxCam(SDL_Renderer *renderer,
                      int camX,
                      int camY,
                      int objX,
@@ -44,6 +44,16 @@ void DrawBoundingBox(SDL_Renderer *renderer,
                      int g,
                      int b);
 
+void DrawBoundingBox(SDL_Renderer *renderer,
+                     int objX,
+                     int objY,
+                     int objW,
+                     int objH,
+                     int r,
+                     int g,
+                     int b);
+
+void MoveCameraBaseOnShip(int *camX, int *camY, int objX, int objY, int objH, int objW);
 
 void RenderDebris(vector<Texture> vDebris, int camX, int camY);
 #endif // GAME_H

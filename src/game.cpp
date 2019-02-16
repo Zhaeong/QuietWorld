@@ -248,7 +248,7 @@ void CenterCamOnPlayer(int *camX,
   *camY = plaY + (plaH/2) - (camH/2);
 }
 
-void DrawBoundingBox(SDL_Renderer *renderer,
+void DrawBoundingBoxCam(SDL_Renderer *renderer,
                      int camX,
                      int camY,
                      int objX,
@@ -292,12 +292,52 @@ void DrawBoundingBox(SDL_Renderer *renderer,
 
 }
 
-/*
+void DrawBoundingBox(SDL_Renderer *renderer,
+                     int objX,
+                     int objY,
+                     int objW,
+                     int objH,
+                     int r,
+                     int g,
+                     int b)
+{
+  SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
+
+
+  //top
+  SDL_RenderDrawLine(renderer,
+                     objX,
+                     objY,
+                     objX + objW,
+                     objY);
+  //left
+  SDL_RenderDrawLine(renderer,
+                     objX,
+                     objY,
+                     objX,
+                     objY + objH);
+
+  //right
+  SDL_RenderDrawLine(renderer,
+                     objX + objW,
+                     objY,
+                     objX + objW,
+                     objY + objH);
+  //right
+  SDL_RenderDrawLine(renderer,
+                     objX,
+                     objY +objH,
+                     objX + objW,
+                     objY + objH);
+
+}
+
+
 void MoveCameraBaseOnShip(int *camX, int *camY, int objX, int objY, int objH, int objW)
 {
   
 }
-*/
+
 
 void RenderDebris(vector<Texture> vDebris, int camX, int camY)
 {

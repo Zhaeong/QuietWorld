@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
                              mainShip.mPosition.x + mainShip.mDirection.x * 10,
                              mainShip.mPosition.y + mainShip.mDirection.y * 10 );
 
-          DrawBoundingBox(renderer,
+          DrawBoundingBoxCam(renderer,
                           camX,
                           camY,
                           mainShip.mPosition.x,
@@ -158,6 +158,16 @@ int main(int argc, char* argv[])
                           255,
                           0,
                           0);
+          
+          DrawBoundingBoxCam(renderer,
+                          camX,
+                          camY,
+                          mainShip.mWidth,
+                          mainShip.mHeight,
+                          255,
+                          0,
+                          0);
+          
         }
       
       //Swap buffers to present backbuffer to screen
