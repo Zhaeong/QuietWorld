@@ -159,13 +159,13 @@ int main(int argc, char* argv[])
                           0,
                           0);
           
-          DrawBoundingBoxCam(renderer,
+          DrawBoundingBox(renderer,
                           camX,
                           camY,
-                          mainShip.mWidth,
-                          mainShip.mHeight,
-                          255,
+                          GAMEWIDTH/2,
+                          GAMEHEIGHT/2,
                           0,
+                          255,
                           0);
           
         }
