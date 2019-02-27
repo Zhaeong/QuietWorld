@@ -43,7 +43,10 @@ int main(int argc, char* argv[])
   //Create texture handling
   SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
   Text textDisplay(renderer, mainFontText);
+
+  
   textDisplay.addTextObj("heyeyeye", 0, 0, 0);
+  textDisplay.addTextObj("fdsf",0,50, 0);
 
   //Create debris Array
   vector<Texture> vDebris;
@@ -114,10 +117,18 @@ int main(int argc, char* argv[])
             }
         }
 
-      textDisplay.mTextArray[0].textString = "x:" + to_string(mainShip.mPosition.x) + " y:" + to_string(mainShip.mPosition.y)  ;
+      int worldMouseX = camX + xMouse;
+      int worldMouseY = camY + yMouse;
+      textDisplay.mTextArray[0].textString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+      textDisplay.mTextArray[1].textString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
       
       //Update game state
       mainShip.updateBasedOnState();
+
+      //Update camera position
+      MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
+                           mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
+                           mainShip.mSpeed);
 
       ////////////////////
       //Render to screen//
@@ -159,14 +170,7 @@ int main(int argc, char* argv[])
                           0,
                           0);
           
-          DrawBoundingBox(renderer,
-                          camX,
-                          camY,
-                          GAMEWIDTH/2,
-                          GAMEHEIGHT/2,
-                          0,
-                          255,
-                          0);
+          
           
         }
       

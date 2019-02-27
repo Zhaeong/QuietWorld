@@ -53,7 +53,10 @@ void DrawBoundingBox(SDL_Renderer *renderer,
                      int g,
                      int b);
 
-void MoveCameraBaseOnShip(int *camX, int *camY, int objX, int objY, int objH, int objW);
+void MoveCameraBaseOnShip(SDL_Renderer *renderer,
+                          int *camX, int *camY, int camW, int camH,
+                          int objX, int objY, int objH, int objW,
+                          int speed);
 
 void RenderDebris(vector<Texture> vDebris, int camX, int camY);
 #endif // GAME_H

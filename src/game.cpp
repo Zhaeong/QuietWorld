@@ -303,7 +303,6 @@ void DrawBoundingBox(SDL_Renderer *renderer,
 {
   SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
 
-
   //top
   SDL_RenderDrawLine(renderer,
                      objX,
@@ -332,10 +331,50 @@ void DrawBoundingBox(SDL_Renderer *renderer,
 
 }
 
-
-void MoveCameraBaseOnShip(int *camX, int *camY, int objX, int objY, int objH, int objW)
+void MoveCameraBaseOnShip(SDL_Renderer *renderer,
+                          int *camX, int *camY, int camW, int camH,
+                          int objX, int objY, int objH, int objW,
+                          int objSpeed)
 {
+  int boundD = 150;
+
+  int boundX = camW/2 - boundD/2;
+  int boundY = camH/2 - boundD/2;
+
+  //Convert obj from world coord to screen coord
+  int objXscreen = objX - *camX;
+  int objYscreen = objY - *camY;
   
+  
+  if(objXscreen < boundX)
+    {
+      *camX -= objSpeed;
+    }
+  else if(objXscreen + objW > boundX + boundD)
+    {
+      *camX += objSpeed;
+    }
+
+  if(objYscreen < boundY)
+    {
+      *camY -= objSpeed;
+    }
+  else if(objYscreen + objH > boundY + boundD)
+    {
+      *camY += objSpeed;
+    }
+  
+  if(DEBUG == 1)
+    {
+      DrawBoundingBox(renderer,
+                      boundX,
+                      boundY,
+                      boundD,
+                      boundD,
+                      0,
+                      255,
+                      0);
+    }
 }
 
 
