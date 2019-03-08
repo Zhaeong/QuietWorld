@@ -130,4 +130,10 @@ void Texture::renderTextureByCam(int camX, int camY)
   dstRect.w = mWidth;
 
   SDL_RenderCopyEx(mRenderer, mTexture, &srcRect, &dstRect, mRotation, mCenter, mFlip);
+
+  if(DEBUG == 1)
+    {
+      DrawBoundingBox(mRenderer, xPos, yPos, mWidth, mHeight, 255, 55, 0);
+    }
+  
 }

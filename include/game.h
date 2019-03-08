@@ -12,6 +12,8 @@
 
 using namespace std;
 
+//Forward declaration due to obj_texture including this file
+class Texture;
 
 int StartGame(SDL_Window **window, SDL_Renderer **renderer);
 
