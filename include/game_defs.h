@@ -27,6 +27,8 @@ const string BTN_STOPROT        = "res/spaceUI/stopRotate.png";
 const string BTN_INCREASESPEED  = "res/spaceUI/increaseSpeed.png";
 const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
 
+const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebris.png";
+
 struct vect2
 {
   float x;

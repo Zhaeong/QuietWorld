@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
   cout << "Starting Quietworld";
 
   //Initiate SDL
-  StartGame(&window, &renderer);
+  StartSDL(&window, &renderer);
 
   //Initiate Camera coords
   int camX = 0;
@@ -57,6 +57,9 @@ int main(int argc, char* argv[])
 
   bool runGame = true;
 
+  int debrisIndex = -1;
+  bool debrisUI = false;
+
   while (runGame)
     {
       frameStart = SDL_GetTicks();
@@ -89,7 +92,7 @@ int main(int argc, char* argv[])
           cout << eventType << "\n";
           if(eventType == "MOUSE_DOWN")
             {
-              string texCol = TextureCollision(vGameUI, xMouse, yMouse);
+              string texCol = TextureMouseCollision(vGameUI, xMouse, yMouse);
 
               if(texCol == BTN_LEFTCURSOR)
                 {
@@ -112,6 +115,13 @@ int main(int argc, char* argv[])
                 {
                   mainShip.changeSpeed(-1);
                 }
+              else if(texCol == BTN_HARVESTDEBRIS)
+                {
+                  if(debrisIndex != -1)
+                    {
+                      vDebris.erase(vDebris.begin() + debrisIndex);
+                    }
+                }
 
               cout << texCol << "\n";
             }
@@ -121,6 +131,39 @@ int main(int argc, char* argv[])
       int worldMouseY = camY + yMouse;
       textDisplay.mTextArray[0].textString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
       textDisplay.mTextArray[1].textString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+
+      bool debrisCol = false;
+      for (unsigned i = 0; i < vDebris.size(); ++i)
+        {
+          Texture dObj = vDebris.at(i);
+          if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
+            {
+              debrisCol = true;
+              debrisIndex = i;
+              if(!debrisUI)
+                {
+                  debrisUI = true;
+                  Texture harvestDebrisButton(renderer, BTN_HARVESTDEBRIS);
+                  harvestDebrisButton.mX = GAMEWIDTH - 60;
+                  harvestDebrisButton.mY = GAMEHEIGHT * 2/3 + 50;
+                  vGameUI.push_back(harvestDebrisButton);
+                  
+                }
+            }
+        }
+
+      //Check if current ship is over debris
+      if(!debrisCol)
+        {
+          //Remove harvest icon from UI
+          if(debrisUI)
+            {
+              vGameUI.pop_back();
+              debrisUI = false;
+            }
+          debrisIndex = -1;
+          
+        }
       
       //Update game state
       mainShip.updateBasedOnState();
@@ -138,11 +181,11 @@ int main(int argc, char* argv[])
 
       RenderDebris(vDebris, camX, camY);
       
+      //Render Ship
+      mainShip.renderShip(camX, camY);
+
       //Render UI
       RenderUI(vGameUI);
-
-      //Render Ship
-      mainShip.renderShip(camX, camY); 
       
       //Render text
       textDisplay.drawText();

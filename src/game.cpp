@@ -1,6 +1,6 @@
 #include "game.h"
 
-int StartGame(SDL_Window **window, SDL_Renderer **renderer)
+int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0)
     {
@@ -141,7 +141,7 @@ string GetAction(int *mouseXpos, int *mouseYpos)
   return eventName;
 }
 
-string TextureCollision(vector<Texture> vTexture, int xPos, int yPos)
+string TextureMouseCollision(vector<Texture> vTexture, int xPos, int yPos)
 {
   string colTex = "NONE";
   for (unsigned i = 0; i < vTexture.size(); ++i)
@@ -385,4 +385,24 @@ void RenderDebris(vector<Texture> vDebris, int camX, int camY)
       Texture dObj = vDebris.at(i);
       dObj.renderTextureByCam(camX, camY);      
     }
+}
+
+
+bool TextureCollide(int x, int y, int width, int height , Texture texB)
+{
+  //Check horizontal collision
+  bool horizontalCol = false;
+  if(x + width >= texB.mX && x <= texB.mX + texB.mWidth)
+    {
+      horizontalCol = true;
+    }
+
+  //Check vertical collision
+  bool verticalCol = false;
+  if(y + height >= texB.mY && y <= texB.mY + texB.mHeight)
+    {
+      verticalCol = true;
+    }
+
+  return horizontalCol && verticalCol;
 }

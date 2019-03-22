@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 
-
 #include "game_defs.h"
 #include "obj_texture.h"
 
@@ -15,14 +14,14 @@ using namespace std;
 //Forward declaration due to obj_texture including this file
 class Texture;
 
-int StartGame(SDL_Window **window, SDL_Renderer **renderer);
+int StartSDL(SDL_Window **window, SDL_Renderer **renderer);
 
 void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI);
 void RenderUI(vector<Texture> vGameUI);
 
 string GetAction(int *mouseXpos, int *mouseYpos);
 
-string TextureCollision(vector<Texture> vTexture, int xPos, int yPos);
+string TextureMouseCollision(vector<Texture> vTexture, int xPos, int yPos);
 
 SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation);
 
@@ -61,5 +60,8 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int speed);
 
 void RenderDebris(vector<Texture> vDebris, int camX, int camY);
+
+bool TextureCollide(int x, int y, int width, int height , Texture texB);
+
 #endif // GAME_H
  
