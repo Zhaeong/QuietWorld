@@ -44,16 +44,24 @@ int main(int argc, char* argv[])
   SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
   Text textDisplay(renderer, mainFontText);
 
-  
-  textDisplay.addTextObj("heyeyeye", 0, 0, 0);
-  textDisplay.addTextObj("fdsf",0,50, 0);
+  textDisplay.addTextObj("You are Valued", 0 ,GAMEHEIGHT - 50, 0);
+  textDisplay.addTextObj("", 0, 0, 0);
+  textDisplay.addTextObj("",0,50, 0);
 
   //Create debris Array
   vector<Texture> vDebris;
   Texture dObj(renderer, "res/debris/debris1.png");
-  dObj.mX = 245;
-  dObj.mY = 0;
-  vDebris.push_back(dObj);
+
+  //Initialize random seed as game width
+  srand(GAMEWIDTH);
+
+  for(unsigned i = 0; i < 30; ++i)
+    {
+      dObj.mX = rand() % 200;
+      dObj.mY = rand() % 200;
+      vDebris.push_back(dObj);
+    }
+  
 
   bool runGame = true;
 
@@ -129,8 +137,7 @@ int main(int argc, char* argv[])
 
       int worldMouseX = camX + xMouse;
       int worldMouseY = camY + yMouse;
-      textDisplay.mTextArray[0].textString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
-      textDisplay.mTextArray[1].textString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+      
 
       bool debrisCol = false;
       for (unsigned i = 0; i < vDebris.size(); ++i)
@@ -194,6 +201,9 @@ int main(int argc, char* argv[])
       //Render DEBUG items if turned on
       if(DEBUG == 1)
         {
+          textDisplay.mTextArray[1].textString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+          textDisplay.mTextArray[2].textString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+      
           SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
           SDL_RenderDrawLine(renderer,
