@@ -50,17 +50,11 @@ int main(int argc, char* argv[])
 
   //Create debris Array
   vector<Texture> vDebris;
-  Texture dObj(renderer, "res/debris/debris1.png");
 
   //Initialize random seed as game width
   srand(GAMEWIDTH);
 
-  for(unsigned i = 0; i < 30; ++i)
-    {
-      dObj.mX = rand() % 200;
-      dObj.mY = rand() % 200;
-      vDebris.push_back(dObj);
-    }
+  GenerateDebris(renderer, &vDebris);
   
 
   bool runGame = true;

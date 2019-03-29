@@ -63,5 +63,7 @@ void RenderDebris(vector<Texture> vDebris, int camX, int camY);
 
 bool TextureCollide(int x, int y, int width, int height , Texture texB);
 
+void GenerateDebris(SDL_Renderer *renderer, vector<Texture> *vDebris);
+
 #endif // GAME_H
  

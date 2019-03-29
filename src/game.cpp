@@ -406,3 +406,15 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
 
   return horizontalCol && verticalCol;
 }
+
+void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris)
+{
+  for(unsigned i = 0; i < 30; ++i)
+    {
+      
+      Texture dObj(renderer, "res/debris/debris1.png");
+      dObj.mX = rand() % 200;
+      dObj.mY = rand() % 200;
+      vDebris->push_back(dObj);
+    }
+}
