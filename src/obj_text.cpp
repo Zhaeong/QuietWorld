@@ -33,66 +33,66 @@ void Text::drawText()
   dstRect.w = 20;
 
   for(unsigned int i = 0; i < mTextArray.size(); i++)
-    {
+  {
 
-      TextObj& tObj = mTextArray[i];
+    TextObj& tObj = mTextArray[i];
 
-      int curPos = tObj.mX;
+    int curPos = tObj.mX;
   
-      for(string::size_type i = 0; i < tObj.textString.size(); ++i) {
+    for(string::size_type i = 0; i < tObj.textString.size(); ++i) {
 
-        char curChar = tObj.textString[i];
-        int xTextPos = 0;
-        int yTextPos = 0;
+      char curChar = tObj.textString[i];
+      int xTextPos = 0;
+      int yTextPos = 0;
 
-        //Capitals
-        if((int)curChar >= 65 && (int)curChar <= 90) 
-          {
-            xTextPos = (int)curChar - 65;
-          }
-        //lower case
-        else if((int)curChar >= 97 && (int)curChar <= 122)
-          {
-            xTextPos = (int)curChar - 97;
-            yTextPos = 20;
-          }
-        //numbers
-        else if((int)curChar >= 48 && (int)curChar <= 57)
-          {
-            xTextPos = (int)curChar - 48;
-            yTextPos = 40;
-          }
-        //minus sign
-        else if((int)curChar == 45)
-          {
-            xTextPos = 0;
-            yTextPos = 60;
-          }
-        //dot
-        else if((int)curChar == 46)
-          {
-            xTextPos = 1;
-            yTextPos = 60;
-          }        
-        //black space
-        else
-          {
-            xTextPos = 200;
-            yTextPos = 40;
-          }
-    
-        srcRect.x = 20 * xTextPos;
-        srcRect.y = yTextPos;
-    
-        dstRect.x = curPos;
-        dstRect.y = tObj.mY;
-
-        SDL_RenderCopyEx(mRenderer, mTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
-
-        curPos += 20;
+      //Capitals
+      if((int)curChar >= 65 && (int)curChar <= 90) 
+      {
+        xTextPos = (int)curChar - 65;
       }
-      
+      //lower case
+      else if((int)curChar >= 97 && (int)curChar <= 122)
+      {
+        xTextPos = (int)curChar - 97;
+        yTextPos = 20;
+      }
+      //numbers
+      else if((int)curChar >= 48 && (int)curChar <= 57)
+      {
+        xTextPos = (int)curChar - 48;
+        yTextPos = 40;
+      }
+      //minus sign
+      else if((int)curChar == 45)
+      {
+        xTextPos = 0;
+        yTextPos = 60;
+      }
+      //dot
+      else if((int)curChar == 46)
+      {
+        xTextPos = 1;
+        yTextPos = 60;
+      }        
+      //black space
+      else
+      {
+        xTextPos = 200;
+        yTextPos = 40;
+      }
+    
+      srcRect.x = 20 * xTextPos;
+      srcRect.y = yTextPos;
+    
+      dstRect.x = curPos;
+      dstRect.y = tObj.mY;
+
+      SDL_RenderCopyEx(mRenderer, mTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
+
+      curPos += 20;
     }
+      
+  }
   
 
 }

@@ -2,27 +2,27 @@
 
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                     "Couldn't initialize SDL: %s",
-                     SDL_GetError());
-    }
+  if (SDL_Init(SDL_INIT_VIDEO) < 0)
+  {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+                 "Couldn't initialize SDL: %s",
+                 SDL_GetError());
+  }
 
-    //SDL_WINDOW_FULLSCREEN
-    //SDL_WINDOW_RESIZABLE
-    if (SDL_CreateWindowAndRenderer(GAMEWIDTH,
-                                    GAMEHEIGHT,
-                                    SDL_WINDOW_RESIZABLE,
-                                    window,
-                                    renderer))
-    {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
-                     "Couldn't create window and renderer: %s",
-                     SDL_GetError());
-    }
+  //SDL_WINDOW_FULLSCREEN
+  //SDL_WINDOW_RESIZABLE
+  if (SDL_CreateWindowAndRenderer(GAMEWIDTH,
+                                  GAMEHEIGHT,
+                                  SDL_WINDOW_RESIZABLE,
+                                  window,
+                                  renderer))
+  {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+                 "Couldn't create window and renderer: %s",
+                 SDL_GetError());
+  }
 
-    return 0;
+  return 0;
 }
 
 void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
@@ -70,9 +70,9 @@ void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
 void RenderUI(vector<Texture> vGameUI)
 {
   for (unsigned i = 0; i < vGameUI.size(); ++i)
-    {
-      vGameUI.at(i).renderTexture();
-    }
+  {
+    vGameUI.at(i).renderTexture();
+  }
 }
 
 string GetAction(int *mouseXpos, int *mouseYpos)
@@ -86,57 +86,57 @@ string GetAction(int *mouseXpos, int *mouseYpos)
   SDL_Event event;
   
   while( SDL_PollEvent( &event ) )
+  {
+    switch( event.type )
     {
-      switch( event.type )
-        {
-        case SDL_KEYDOWN:
+    case SDL_KEYDOWN:
 
-          /* Check the SDLKey values and move change the coords */
-          switch( event.key.keysym.sym )
-            {
-            case SDLK_ESCAPE:
-              eventName = "EXIT";
-              break;
-            case SDLK_LEFT:
-              eventName = "MOVE_LEFT";
-              break;
-            case SDLK_RIGHT:
-              eventName = "MOVE_RIGHT";
-              break;
-            case SDLK_UP:
-              eventName = "MOVE_UP";
-              break;
-            case SDLK_DOWN:
-              eventName = "MOVE_DOWN";
-              break;
-            case SDLK_e:
-              eventName = "KEY_E";
-              break;
-            default:
-              eventName = "KEY_DOWN";
-              break;
-            }
-          break;
+      /* Check the SDLKey values and move change the coords */
+      switch( event.key.keysym.sym )
+      {
+      case SDLK_ESCAPE:
+        eventName = "EXIT";
+        break;
+      case SDLK_LEFT:
+        eventName = "MOVE_LEFT";
+        break;
+      case SDLK_RIGHT:
+        eventName = "MOVE_RIGHT";
+        break;
+      case SDLK_UP:
+        eventName = "MOVE_UP";
+        break;
+      case SDLK_DOWN:
+        eventName = "MOVE_DOWN";
+        break;
+      case SDLK_e:
+        eventName = "KEY_E";
+        break;
+      default:
+        eventName = "KEY_DOWN";
+        break;
+      }
+      break;
 
-        case SDL_KEYUP:
-          eventName =  "KEY_UP";
-          break;
+    case SDL_KEYUP:
+      eventName =  "KEY_UP";
+      break;
 
-        case SDL_MOUSEBUTTONDOWN:
-          eventName = "MOUSE_DOWN";
-          break;
+    case SDL_MOUSEBUTTONDOWN:
+      eventName = "MOUSE_DOWN";
+      break;
 
-        case SDL_MOUSEBUTTONUP:
-          eventName = "MOUSE_UP";
-          break;
+    case SDL_MOUSEBUTTONUP:
+      eventName = "MOUSE_UP";
+      break;
 
-        case SDL_QUIT:
-          eventName = "EXIT";
+    case SDL_QUIT:
+      eventName = "EXIT";
 
-        default:
-          break;
-        }
+    default:
+      break;
     }
+  }
   SDL_GetMouseState( mouseXpos, mouseYpos );
   return eventName;
 }
@@ -145,18 +145,18 @@ string TextureMouseCollision(vector<Texture> vTexture, int xPos, int yPos)
 {
   string colTex = "NONE";
   for (unsigned i = 0; i < vTexture.size(); ++i)
-    {
-      Texture texRef = vTexture.at(i);
+  {
+    Texture texRef = vTexture.at(i);
       
-      vTexture.at(i).renderTexture();
-      if(xPos >= texRef.mX
-         && xPos <= (texRef.mX + texRef.mWidth)
-         && yPos >= texRef.mY
-         && yPos <= (texRef.mY + texRef.mHeight))
-        {
-          colTex = texRef.mImgLocation;
-        }
+    vTexture.at(i).renderTexture();
+    if(xPos >= texRef.mX
+       && xPos <= (texRef.mX + texRef.mWidth)
+       && yPos >= texRef.mY
+       && yPos <= (texRef.mY + texRef.mHeight))
+    {
+      colTex = texRef.mImgLocation;
     }
+  }
   return colTex;
 }
 
@@ -173,63 +173,63 @@ SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation)
   SDL_Surface* loadedSurface = IMG_Load( textLocation.c_str() );
 
   if( loadedSurface == NULL )
-    {
-      printf( "Unable to load image %s! SDL_image Error: %s\n",
-              textLocation.c_str(),
-              IMG_GetError() );
-    }
+  {
+    printf( "Unable to load image %s! SDL_image Error: %s\n",
+            textLocation.c_str(),
+            IMG_GetError() );
+  }
   else
+  {
+    //Convert surface to display format
+    SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
+                                                              SDL_PIXELFORMAT_ARGB8888,
+                                                              0 );
+    if( formattedSurface == NULL )
     {
-      //Convert surface to display format
-      SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
-                                                                SDL_PIXELFORMAT_ARGB8888,
-                                                                0 );
-      if( formattedSurface == NULL )
-        {
-          printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
-                  SDL_GetError() );
-        }
+      printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
+              SDL_GetError() );
+    }
+    else
+    {
+      //Create blank streamable texture
+      mTexture = SDL_CreateTexture( SRen,
+                                    SDL_PIXELFORMAT_ARGB8888,
+                                    SDL_TEXTUREACCESS_STREAMING,
+                                    formattedSurface->w,
+                                    formattedSurface->h );
+      if( mTexture == NULL )
+      {
+        printf( "Unable to create blank texture! SDL Error: %s\n",
+                SDL_GetError() );
+      }
       else
-        {
-          //Create blank streamable texture
-          mTexture = SDL_CreateTexture( SRen,
-                                        SDL_PIXELFORMAT_ARGB8888,
-                                        SDL_TEXTUREACCESS_STREAMING,
-                                        formattedSurface->w,
-                                        formattedSurface->h );
-          if( mTexture == NULL )
-            {
-              printf( "Unable to create blank texture! SDL Error: %s\n",
-                      SDL_GetError() );
-            }
-          else
-            {
+      {
 
-              //Lock texture for manipulation
-              SDL_LockTexture( mTexture, NULL, &mPixels, &mPitch );
+        //Lock texture for manipulation
+        SDL_LockTexture( mTexture, NULL, &mPixels, &mPitch );
 
-              //Copy loaded/formatted surface pixels
-              memcpy( mPixels, formattedSurface->pixels,
-                      formattedSurface->pitch * formattedSurface->h );
+        //Copy loaded/formatted surface pixels
+        memcpy( mPixels, formattedSurface->pixels,
+                formattedSurface->pitch * formattedSurface->h );
 
-              //Unlock texture to update
-              SDL_UnlockTexture( mTexture );
-              mPixels = NULL;
+        //Unlock texture to update
+        SDL_UnlockTexture( mTexture );
+        mPixels = NULL;
 
               
-            }
+      }
 
-          //Get rid of old formatted surface
-          SDL_FreeSurface( formattedSurface );
-        }
+      //Get rid of old formatted surface
+      SDL_FreeSurface( formattedSurface );
+    }
 
-      //Get rid of old loaded surface
-      SDL_FreeSurface( loadedSurface );
+    //Get rid of old loaded surface
+    SDL_FreeSurface( loadedSurface );
 
-      cout << "Finish Loading: " << textLocation << "\n";
+    cout << "Finish Loading: " << textLocation << "\n";
 
       
-    }
+  }
   
   return mTexture;
 }
@@ -249,15 +249,15 @@ void CenterCamOnPlayer(int *camX,
 }
 
 void DrawBoundingBoxCam(SDL_Renderer *renderer,
-                     int camX,
-                     int camY,
-                     int objX,
-                     int objY,
-                     int objW,
-                     int objH,
-                     int r,
-                     int g,
-                     int b)
+                        int camX,
+                        int camY,
+                        int objX,
+                        int objY,
+                        int objW,
+                        int objH,
+                        int r,
+                        int g,
+                        int b)
 {
   SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
 
@@ -347,44 +347,44 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
   
   
   if(objXscreen < boundX)
-    {
-      *camX -= objSpeed;
-    }
+  {
+    *camX -= objSpeed;
+  }
   else if(objXscreen + objW > boundX + boundD)
-    {
-      *camX += objSpeed;
-    }
+  {
+    *camX += objSpeed;
+  }
 
   if(objYscreen < boundY)
-    {
-      *camY -= objSpeed;
-    }
+  {
+    *camY -= objSpeed;
+  }
   else if(objYscreen + objH > boundY + boundD)
-    {
-      *camY += objSpeed;
-    }
+  {
+    *camY += objSpeed;
+  }
   
   if(DEBUG == 1)
-    {
-      DrawBoundingBox(renderer,
-                      boundX,
-                      boundY,
-                      boundD,
-                      boundD,
-                      0,
-                      255,
-                      0);
-    }
+  {
+    DrawBoundingBox(renderer,
+                    boundX,
+                    boundY,
+                    boundD,
+                    boundD,
+                    0,
+                    255,
+                    0);
+  }
 }
 
 
 void RenderDebris(vector<Texture> vDebris, int camX, int camY)
 {
   for (unsigned i = 0; i < vDebris.size(); ++i)
-    {
-      Texture dObj = vDebris.at(i);
-      dObj.renderTextureByCam(camX, camY);      
-    }
+  {
+    Texture dObj = vDebris.at(i);
+    dObj.renderTextureByCam(camX, camY);      
+  }
 }
 
 
@@ -393,16 +393,16 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   //Check horizontal collision
   bool horizontalCol = false;
   if(x + width >= texB.mX && x <= texB.mX + texB.mWidth)
-    {
-      horizontalCol = true;
-    }
+  {
+    horizontalCol = true;
+  }
 
   //Check vertical collision
   bool verticalCol = false;
   if(y + height >= texB.mY && y <= texB.mY + texB.mHeight)
-    {
-      verticalCol = true;
-    }
+  {
+    verticalCol = true;
+  }
 
   return horizontalCol && verticalCol;
 }
@@ -410,11 +410,11 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
 void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris)
 {
   for(unsigned i = 0; i < 30; ++i)
-    {
+  {
       
-      Texture dObj(renderer, "res/debris/debris1.png");
-      dObj.mX = rand() % 200;
-      dObj.mY = rand() % 200;
-      vDebris->push_back(dObj);
-    }
+    Texture dObj(renderer, "res/debris/debris1.png");
+    dObj.mX = rand() % 200;
+    dObj.mY = rand() % 200;
+    vDebris->push_back(dObj);
+  }
 }

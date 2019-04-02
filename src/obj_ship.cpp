@@ -24,7 +24,7 @@ void Ship::rotateByDegree(int degrees)
   float vecLength = sqrt(
                          (mOrigDirection.x * mOrigDirection.x) +
                          (mOrigDirection.y * mOrigDirection.y)
-                        );
+                         );
   float dirX = mOrigDirection.x / vecLength;
   float dirY = mOrigDirection.y / vecLength;
 
@@ -43,16 +43,16 @@ void Ship::changeRotation(bool left)
   int rotationVal = mRotationValue;
 
   if(!left)
-    {
-      rotationVal = -mRotationValue;
-    }
+  {
+    rotationVal = -mRotationValue;
+  }
 
   //Rotation sprites
   for (unsigned i = 0; i < vShipTextures.size(); ++i)
-    {
-      vShipTextures.at(i).rotateByDegree(rotationVal);
+  {
+    vShipTextures.at(i).rotateByDegree(rotationVal);
       
-    }
+  }
   rotateByDegree(rotationVal);
 
 }
@@ -60,20 +60,20 @@ void Ship::changeRotation(bool left)
 void Ship::updateBasedOnState()
 {
   switch(curState)
-    {
-    case IDLE:
-      //Do stuff
-      break;
-    case ROTATELEFT:
-      changeRotation(true);
-      break;
-    case ROTATERIGHT:
-      changeRotation(false);
-      break; 
-    default:
-      cout << "ERROR: ShipState not Recognized";
-      break;
-    }
+  {
+  case IDLE:
+    //Do stuff
+    break;
+  case ROTATELEFT:
+    changeRotation(true);
+    break;
+  case ROTATERIGHT:
+    changeRotation(false);
+    break; 
+  default:
+    cout << "ERROR: ShipState not Recognized";
+    break;
+  }
 
   changePosition();
 }
@@ -84,10 +84,10 @@ void Ship::changePosition()
   mPosition.y += mDirection.y * mSpeed;
   
   for (unsigned i = 0; i < vShipTextures.size(); ++i)
-    {
-      vShipTextures.at(i).mX = (int)mPosition.x;
-      vShipTextures.at(i).mY = (int)mPosition.y;
-    }
+  {
+    vShipTextures.at(i).mX = (int)mPosition.x;
+    vShipTextures.at(i).mY = (int)mPosition.y;
+  }
 }
 
 void Ship::changeSpeed(int speed)
@@ -103,8 +103,8 @@ void Ship::changeSpeed(int speed)
 void Ship::renderShip(int camX, int camY)
 {
   for (unsigned i = 0; i < vShipTextures.size(); ++i)
-    {
-      vShipTextures.at(i).renderTextureByCam(camX, camY);
-    }
+  {
+    vShipTextures.at(i).renderTextureByCam(camX, camY);
+  }
 }
 

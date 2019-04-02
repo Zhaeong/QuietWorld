@@ -23,7 +23,7 @@ struct TextObj
 
 class Text
 {
- public:
+public:
 
   SDL_Renderer *mRenderer = NULL;
   SDL_Texture *mTexture = NULL;

@@ -10,7 +10,7 @@
 class Ship
 {
 
- public:
+public:
 
   int mRotation = 0;
   int mRotationValue = 1;
