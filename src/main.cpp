@@ -46,15 +46,16 @@ int main(int argc, char* argv[])
 
   textDisplay.addTextObj("You are Valued", 0 ,GAMEHEIGHT - 50, 0);
   textDisplay.addTextObj("", 0, 0, 0);
-  textDisplay.addTextObj("",0,50, 0);
+  textDisplay.addTextObj("", 0, 30, 0);
+  textDisplay.addTextObj("", 0, 60, 0);
 
   //Create debris Array
   vector<Texture> vDebris;
 
   //Initialize random seed as game width
-  srand(GAMEWIDTH);
+  srand(3234);
 
-  GenerateDebris(renderer, &vDebris);
+  GenerateDebris(renderer, &vDebris, camX, camY);
   
 
   bool runGame = true;
@@ -197,6 +198,7 @@ int main(int argc, char* argv[])
     {
       textDisplay.mTextArray[1].textString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
       textDisplay.mTextArray[2].textString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+      textDisplay.mTextArray[3].textString = "Cam x:" + to_string(camX) + " y:" + to_string(camY);
       
       SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       

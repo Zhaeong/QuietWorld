@@ -343,9 +343,8 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
 
   //Convert obj from world coord to screen coord
   int objXscreen = objX - *camX;
-  int objYscreen = objY - *camY;
-  
-  
+  int objYscreen = objY - *camY;  
+
   if(objXscreen < boundX)
   {
     *camX -= objSpeed;
@@ -407,14 +406,27 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   return horizontalCol && verticalCol;
 }
 
-void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris)
+void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris, int camX, int camY)
 {
+  int genXmin = camX - 100;
+  int genXmax = camX + GAMEWIDTH + 100;
+
+  int genYmin = camY - 100;
+  int genYmax = camY + GAMEHEIGHT + 100;
+
+  cout << "genXmin:" << genXmin << "\n";
+  cout << "genXmax:" << genXmax << "\n";
+  
+  
   for(unsigned i = 0; i < 30; ++i)
   {
       
     Texture dObj(renderer, "res/debris/debris1.png");
-    dObj.mX = rand() % 200;
-    dObj.mY = rand() % 200;
+    dObj.mX = (rand() % (genXmax - genXmin)) + genXmin;
+    dObj.mY = (rand() % (genYmax - genYmin)) + genYmin;
+
+    cout << "deb X:" << dObj.mX << " Y:" << dObj.mY << "\n";
+    
     vDebris->push_back(dObj);
   }
 }
