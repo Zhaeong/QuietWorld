@@ -36,6 +36,7 @@ public:
   int mPitch = 0;
 
   Texture(SDL_Renderer *SRen, string imgLocation);
+  void destroy();
 
   void rotateByDegree(int degrees);
   void loadTexture();

@@ -7,6 +7,15 @@ Texture::Texture(SDL_Renderer *SRen, string imgLocation)
   loadTexture();
 }
 
+void Texture::destroy()
+{
+  //Free loaded image
+  SDL_DestroyTexture( mTexture );
+  mTexture = NULL;
+
+  
+}
+
 void Texture::rotateByDegree(int degrees)
 {
   mRotation = (mRotation + degrees) % 360;

@@ -60,14 +60,26 @@ int main(int argc, char* argv[])
 
   //Mid
   GenerateDebris(renderer, &vDebris, camX, camY);
+  
+  //Top Left
+  GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY - GAMEHEIGHT);
   //Top
   GenerateDebris(renderer, &vDebris, camX, camY - GAMEHEIGHT);
-  //Bottom
-  GenerateDebris(renderer, &vDebris, camX, camY + GAMEHEIGHT);
+  //Top Right
+  GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY - GAMEHEIGHT);  
+  
   //Left
   GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY);
   //Right
   GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY);
+
+  //Bottom Left
+  GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY + GAMEHEIGHT);
+  //Bottom
+  GenerateDebris(renderer, &vDebris, camX, camY + GAMEHEIGHT);
+  //Bottom Right
+  GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY + GAMEHEIGHT);
+  
 
   //Keep track of cur bound so that when player leaves regen and update coord
   int curBoundX = camX;
@@ -138,6 +150,7 @@ int main(int argc, char* argv[])
         {
           if(debrisIndex != -1)
           {
+            vDebris.at(debrisIndex).destroy();
             vDebris.erase(vDebris.begin() + debrisIndex);
           }
         }

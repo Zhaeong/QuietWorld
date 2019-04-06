@@ -443,6 +443,7 @@ void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord)
   int yMin = yCord;
   int yMax = yCord + GAMEHEIGHT;
 
+  /*
   //A weird quirk of STL where erase() invalidates the iterator since it'll reduce the vector size,
   //so we need to make it = erase since it'll return a valid iterator
   for(vector<Texture>::iterator it = vDebris->begin(); it != vDebris->end();)
@@ -462,7 +463,29 @@ void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord)
       ++it;
     }
   }
+  */
 
+  //This method also works
+  for(unsigned i = 0; i < vDebris->size(); ++i)
+  {    
+
+    //Generate a random number between min and max
+    int debrisX = vDebris->at(i).mX;
+    int debrisY= vDebris->at(i).mY;
+
+    if(debrisX >= xMin &&
+       debrisX <= xMax &&
+       debrisY >= yMin &&
+       debrisY <= yMax)
+    {
+      vDebris->at(i).destroy();
+      vDebris->erase(vDebris->begin() + i);
+      //make i check for same index again since erase will reorder the 
+      i--;
+    }
+  }
+
+  vDebris->shrink_to_fit();
 }
 
 void CheckDebrisField(SDL_Renderer *renderer,
@@ -472,26 +495,88 @@ void CheckDebrisField(SDL_Renderer *renderer,
                       int plaW, int plaH)
 {
 
-  //If player moves past left bound, delete debris on right, top, bottom
-  //and regen top, bottom, left
+  //If player moves past left bound, delete the right column
+  //and regen the left column
   if(plaX < *originX)
   {
-    //Top
-    RemoveDebris(vDebris, *originX, *originY - GAMEHEIGHT);
-    //Bottom
-    RemoveDebris(vDebris, *originX, *originY + GAMEHEIGHT);
-    //Right    
+    //Top Right
+    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+    //Right
     RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY);
+    //Bottom Right    
+    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
 
     //Set new originX
     *originX = *originX - GAMEWIDTH;
     
-    //Top
-    GenerateDebris(renderer, vDebris, *originX, *originY - GAMEHEIGHT);
-    //Bottom
-    GenerateDebris(renderer, vDebris, *originX, *originY + GAMEHEIGHT);
+    //Top Left
+    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
     //Left
     GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY);
-    
+    //Bottom Left
+    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+  }
+  //If player moves past right bound, delete the left column
+  //and regen the right column
+  else if(plaX > *originX + GAMEWIDTH)
+  {
+    //Top Left
+    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
+    //Left
+    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY);
+    //Bottom Left
+    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+
+    //Set new originX
+    *originX = *originX + GAMEWIDTH;
+
+    //Top Right
+    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+    //Right
+    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY);
+    //Bottom Right    
+    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+  }
+  //If player moves past top bound, delete the bottom row
+  //and regen the top row
+  else if(plaY < *originY)
+  {
+    //Bottom Left
+    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+    //Bottom
+    RemoveDebris(vDebris, *originX, *originY + GAMEHEIGHT);
+    //Bottom Right
+    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY + GAMEHEIGHT);
+
+    //Set new originX
+    *originY = *originY - GAMEHEIGHT;
+
+    //Top Left
+    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
+    //Top
+    GenerateDebris(renderer, vDebris, *originX, *originY - GAMEHEIGHT);
+    //Top Right    
+    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+  }
+  //If player moves past bottom bound, delete the top row
+  //and regen the bottom row
+  else if(plaY > *originY + GAMEHEIGHT)
+  {
+    //Top Left
+    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
+    //Top
+    RemoveDebris(vDebris, *originX, *originY - GAMEHEIGHT);
+    //Top Right    
+    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+
+    //Set new originX
+    *originY = *originY + GAMEHEIGHT;
+
+    //Bottom Left
+    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+    //Bottom
+    GenerateDebris(renderer, vDebris, *originX, *originY + GAMEHEIGHT);
+    //Bottom Right
+    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY + GAMEHEIGHT);
   }
 }
