@@ -406,27 +406,92 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   return horizontalCol && verticalCol;
 }
 
-void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris, int camX, int camY)
+void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris, int xCord, int yCord)
 {
-  int genXmin = camX - 100;
-  int genXmax = camX + GAMEWIDTH + 100;
+  int genXmin = xCord;
+  int genXmax = xCord + GAMEWIDTH;
 
-  int genYmin = camY - 100;
-  int genYmax = camY + GAMEHEIGHT + 100;
+  int genYmin = yCord;
+  int genYmax = yCord + GAMEHEIGHT;  
 
-  cout << "genXmin:" << genXmin << "\n";
-  cout << "genXmax:" << genXmax << "\n";
+  /*
+  cout << "xMin: " << genXmin << "\n";
+  cout << "xMax: " << genXmax << "\n";
+  cout << "yMin: " << genYmin << "\n";
+  cout << "yMax: " << genYmax << "\n";
+  */
   
-  
-  for(unsigned i = 0; i < 30; ++i)
+  for(unsigned i = 0; i < 20; ++i)
   {
-      
     Texture dObj(renderer, "res/debris/debris1.png");
+
+    //Generate a random number between min and max
     dObj.mX = (rand() % (genXmax - genXmin)) + genXmin;
     dObj.mY = (rand() % (genYmax - genYmin)) + genYmin;
 
-    cout << "deb X:" << dObj.mX << " Y:" << dObj.mY << "\n";
-    
     vDebris->push_back(dObj);
+
+    //cout << "x: " << dObj.mX << " y: " << dObj.mY << "\n";
+  }
+}
+
+void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord)
+{
+  int xMin = xCord;
+  int xMax = xCord + GAMEWIDTH;
+
+  int yMin = yCord;
+  int yMax = yCord + GAMEHEIGHT;
+
+  //A weird quirk of STL where erase() invalidates the iterator since it'll reduce the vector size,
+  //so we need to make it = erase since it'll return a valid iterator
+  for(vector<Texture>::iterator it = vDebris->begin(); it != vDebris->end();)
+  {
+    int debrisX = it->mX;
+    int debrisY = it->mY;
+
+    if(debrisX >= xMin &&
+       debrisX <= xMax &&
+       debrisY >= yMin &&
+       debrisY <= yMax)
+    {
+      it = vDebris->erase(it);      
+    }
+    else
+    {
+      ++it;
+    }
+  }
+
+}
+
+void CheckDebrisField(SDL_Renderer *renderer,
+                      vector<Texture> *vDebris,
+                      int *originX,int *originY,
+                      int plaX, int plaY,
+                      int plaW, int plaH)
+{
+
+  //If player moves past left bound, delete debris on right, top, bottom
+  //and regen top, bottom, left
+  if(plaX < *originX)
+  {
+    //Top
+    RemoveDebris(vDebris, *originX, *originY - GAMEHEIGHT);
+    //Bottom
+    RemoveDebris(vDebris, *originX, *originY + GAMEHEIGHT);
+    //Right    
+    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY);
+
+    //Set new originX
+    *originX = *originX - GAMEWIDTH;
+    
+    //Top
+    GenerateDebris(renderer, vDebris, *originX, *originY - GAMEHEIGHT);
+    //Bottom
+    GenerateDebris(renderer, vDebris, *originX, *originY + GAMEHEIGHT);
+    //Left
+    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY);
+    
   }
 }

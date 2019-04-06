@@ -65,5 +65,12 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB);
 
 void GenerateDebris(SDL_Renderer *renderer, vector<Texture> *vDebris, int camX, int camY);
 
+void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord);
+
+void CheckDebrisField(SDL_Renderer *renderer,
+                      vector<Texture> *vDebris,
+                      int *originX,int *originY,
+                      int plaX, int plaY,
+                      int plaW, int plaH);
 #endif // GAME_H
  

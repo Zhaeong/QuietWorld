@@ -14,7 +14,6 @@ void Texture::rotateByDegree(int degrees)
 
 void Texture::loadTexture()
 {
-  cout << "Loading: " << mImgLocation << "\n";
   
   //Make sure to initialize texture to null or else SDL_DestroyTexture will crash program
   mTexture = NULL;
@@ -69,7 +68,6 @@ void Texture::loadTexture()
         mWidth = formattedSurface->w;
         mHeight = formattedSurface->h;
 
-        cout << "image is w:" << mWidth << " h:" << mHeight << "\n";
       }
 
       //Get rid of old formatted surface
@@ -84,7 +82,6 @@ void Texture::loadTexture()
 
     SDL_FreeSurface( loadedSurface );
 
-    cout << "Finish Loading: " << mImgLocation << "\n";
   }
 }
 

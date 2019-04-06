@@ -55,16 +55,32 @@ int main(int argc, char* argv[])
   //Initialize random seed as game width
   srand(3234);
 
-  GenerateDebris(renderer, &vDebris, camX, camY);
-  
+  //Generate debris in 3x3 shape, so when player moves to one of the
+  //bounds it'll regen that part appearing to be infinite
 
+  //Mid
+  GenerateDebris(renderer, &vDebris, camX, camY);
+  //Top
+  GenerateDebris(renderer, &vDebris, camX, camY - GAMEHEIGHT);
+  //Bottom
+  GenerateDebris(renderer, &vDebris, camX, camY + GAMEHEIGHT);
+  //Left
+  GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY);
+  //Right
+  GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY);
+
+  //Keep track of cur bound so that when player leaves regen and update coord
+  int curBoundX = camX;
+  int curBoundY = camY;
+
+  //RemoveDebris(&vDebris, camX, camY);
   bool runGame = true;
 
   int debrisIndex = -1;
   bool debrisUI = false;
 
   while (runGame)
-  {
+  {    
     frameStart = SDL_GetTicks();
 
     //The color at which the screen will be if alpha = 0 on all textures
@@ -170,17 +186,26 @@ int main(int argc, char* argv[])
     //Update game state
     mainShip.updateBasedOnState();
 
+    //Check if player has breached the debris bounds
+    CheckDebrisField(renderer,
+                     &vDebris,
+                     &curBoundX, &curBoundY,
+                     mainShip.mPosition.x, mainShip.mPosition.y,
+                     mainShip.mWidth, mainShip.mHeight);
+    
+
     //Update camera position
     MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
                          mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
                          mainShip.mSpeed);
+
+
 
     ////////////////////
     //Render to screen//
     ////////////////////
 
     //Render space debris
-
     RenderDebris(vDebris, camX, camY);
       
     //Render Ship
@@ -217,15 +242,13 @@ int main(int argc, char* argv[])
                          mainShip.mHeight,
                          255,
                          0,
-                         0);
-          
+                         0);          
           
           
     }
       
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
-
 
     ////////////////////////////////////////////////////////////////////////
     //End of main game code
