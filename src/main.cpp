@@ -200,12 +200,13 @@ int main(int argc, char* argv[])
     mainShip.updateBasedOnState();
 
     //Check if player has breached the debris bounds
-    CheckDebrisField(renderer,
+    /*
+      CheckDebrisField(renderer,
                      &vDebris,
                      &curBoundX, &curBoundY,
                      mainShip.mPosition.x, mainShip.mPosition.y,
                      mainShip.mWidth, mainShip.mHeight);
-    
+    */
 
     //Update camera position
     MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,

@@ -579,4 +579,6 @@ void CheckDebrisField(SDL_Renderer *renderer,
     //Bottom Right
     GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY + GAMEHEIGHT);
   }
+
+  cout << "debris size: " << vDebris->size() << "\n";
 }

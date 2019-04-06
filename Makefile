@@ -15,8 +15,9 @@
 
 CC = g++
 
+
 #-ggdb compiles with debug symbols
-CFLAGS = -Wall -ggdb
+CFLAGS = -Wall -Wextra -Wshadow -ggdb -O3
 
 LINKERS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
