@@ -19,7 +19,6 @@ class Texture
 public:
   
   string mImgLocation = "";
-  SDL_Renderer *mRenderer = NULL;
   SDL_Texture *mTexture = NULL;
 
   int mWidth = 0;
@@ -35,14 +34,14 @@ public:
   void* mPixels = 0;
   int mPitch = 0;
 
-  Texture(SDL_Renderer *SRen, string imgLocation);
-  void destroy();
+  Texture();
+  Texture(SDL_Texture *sTex, string imgLocation);
 
   void rotateByDegree(int degrees);
-  void loadTexture();
+
   
-  void renderTexture();
-  void renderTextureByCam(int camX, int camY);
+  //void renderTexture();
+  //void renderTextureByCam(int camX, int camY);
   
 };
 

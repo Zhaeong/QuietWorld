@@ -18,6 +18,7 @@ using namespace std;
 
 
 //SPACE UI
+const int NUM_UI_ELEMENTS = 6;
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
 
 const string BTN_LEFTCURSOR     = "res/spaceUI/leftCursor.png";

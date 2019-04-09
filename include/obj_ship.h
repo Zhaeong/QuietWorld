@@ -11,7 +11,7 @@ class Ship
 {
 
 public:
-
+  /*
   int mRotation = 0;
   int mRotationValue = 1;
   int mSpeed = 0;
@@ -47,6 +47,7 @@ public:
   void updateBasedOnState();
 
   void changeRotation(bool left);
+  */
 
 
 };

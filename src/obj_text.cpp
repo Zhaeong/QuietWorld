@@ -39,9 +39,9 @@ void Text::drawText()
 
     int curPos = tObj.mX;
   
-    for(string::size_type i = 0; i < tObj.textString.size(); ++i) {
+    for(string::size_type j = 0; j < tObj.textString.size(); ++j) {
 
-      char curChar = tObj.textString[i];
+      char curChar = tObj.textString[j];
       int xTextPos = 0;
       int yTextPos = 0;
 

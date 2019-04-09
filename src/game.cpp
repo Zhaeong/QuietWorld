@@ -25,63 +25,249 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
   return 0;
 }
 
-void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI)
+SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, string textureLocation)
 {
-  vGameUI.clear();
+  //Make sure to initialize texture to null or else SDL_DestroyTexture will crash program
+  SDL_Texture *texture = NULL;
 
-  //Add background
-  Texture uiBackground(renderer, GRAYBACKGROUND);
-  uiBackground.mX = 0;
-  uiBackground.mY = GAMEHEIGHT * 2/3;
+  SDL_Surface* loadedSurface = IMG_Load( textureLocation.c_str() );
 
-  uiBackground.mWidth = GAMEWIDTH;
-  uiBackground.mHeight = GAMEHEIGHT / 3;
-  vGameUI.push_back(uiBackground);
+  if( loadedSurface == NULL )
+  {
+    printf( "Unable to load image %s! SDL_image Error: %s\n",
+            textureLocation.c_str(),
+            IMG_GetError() );
+  }
+  else
+  {
+    //Convert surface to display format
+    SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
+                                                              SDL_PIXELFORMAT_ARGB8888,
+                                                              0 );
+    if( formattedSurface == NULL )
+    {
+      printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
+              SDL_GetError() );
+    }
+    else
+    {
+      //Create blank streamable texture
+      /*
+      texture = SDL_CreateTexture( renderer,
+                                   SDL_PIXELFORMAT_ARGB8888,
+                                   SDL_TEXTUREACCESS_STREAMING,
+                                   formattedSurface->w,
+                                   formattedSurface->h );
+      */
 
-  //Add rotation controls  
-  Texture leftButton(renderer, BTN_LEFTCURSOR);
-  leftButton.mX = 50;
-  leftButton.mY = GAMEHEIGHT * 2/3 + 50;
-  vGameUI.push_back(leftButton);
-  
-  Texture stopButton(renderer, BTN_STOPROT);
-  stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
-  stopButton.mY = GAMEHEIGHT * 2/3 + 50;
-  vGameUI.push_back(stopButton);
+      texture = SDL_CreateTextureFromSurface( renderer, formattedSurface );
+      if( texture == NULL )
+      {
+        printf( "Unable to create blank texture! SDL Error: %s\n",
+                SDL_GetError() );
+      }      
 
-  Texture rightButton(renderer, BTN_RIGHTCURSOR);
-  rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
-  rightButton.mY = GAMEHEIGHT * 2/3 + 50;
-  vGameUI.push_back(rightButton);
+      //Get rid of old formatted surface
+      SDL_FreeSurface( formattedSurface );
+    }
 
-  Texture speedincreaseButton(renderer, BTN_INCREASESPEED);
-  speedincreaseButton.mX = rightButton.mX + rightButton.mWidth + 20;
-  speedincreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
-  vGameUI.push_back(speedincreaseButton);
+    //Get rid of old loaded surface
+    SDL_FreeSurface( loadedSurface );
 
-  Texture speeddecreaseButton(renderer, BTN_DECREASESPEED);
-  speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
-  speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
-  vGameUI.push_back(speeddecreaseButton);
-
-  
+  }
+  return texture;
 }
 
-void RenderUI(vector<Texture> vGameUI)
+void DrawBoundingBox(SDL_Renderer *renderer,
+                     int objX,
+                     int objY,
+                     int objW,
+                     int objH,
+                     int r,
+                     int g,
+                     int b)
 {
-  for (unsigned i = 0; i < vGameUI.size(); ++i)
+  SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
+
+  //top
+  SDL_RenderDrawLine(renderer,
+                     objX,
+                     objY,
+                     objX + objW,
+                     objY);
+  //left
+  SDL_RenderDrawLine(renderer,
+                     objX,
+                     objY,
+                     objX,
+                     objY + objH);
+
+  //right
+  SDL_RenderDrawLine(renderer,
+                     objX + objW,
+                     objY,
+                     objX + objW,
+                     objY + objH);
+  //right
+  SDL_RenderDrawLine(renderer,
+                     objX,
+                     objY +objH,
+                     objX + objW,
+                     objY + objH);
+
+}
+
+void DrawBoundingBoxCam(SDL_Renderer *renderer,
+                        int camX,
+                        int camY,
+                        int objX,
+                        int objY,
+                        int objW,
+                        int objH,
+                        int r,
+                        int g,
+                        int b)
+{
+  SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
+
+  int xPos = objX - camX;
+  int yPos = objY - camY;
+
+  //top
+  SDL_RenderDrawLine(renderer,
+                     xPos,
+                     yPos,
+                     xPos + objW,
+                     yPos);
+  //left
+  SDL_RenderDrawLine(renderer,
+                     xPos,
+                     yPos,
+                     xPos,
+                     yPos + objH);
+
+  //right
+  SDL_RenderDrawLine(renderer,
+                     xPos + objW,
+                     yPos,
+                     xPos + objW,
+                     yPos + objH);
+  //right
+  SDL_RenderDrawLine(renderer,
+                     xPos,
+                     yPos +objH,
+                     xPos + objW,
+                     yPos + objH);
+
+}
+
+void RenderTexture(SDL_Renderer *renderer, Texture tex)
+{
+  SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
+
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = tex.mHeight;
+  srcRect.w = tex.mWidth;
+
+  dstRect.x = tex.mX;
+  dstRect.y = tex.mY;
+  dstRect.h = tex.mHeight;
+  dstRect.w = tex.mWidth;
+
+  SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+}
+
+void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
+{
+  //Convert character world coord to screen coord
+  int xPos = tex.mX - camX;
+  int yPos = tex.mY - camY;
+ 
+  SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
+
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = tex.mHeight;
+  srcRect.w = tex.mWidth;
+
+  dstRect.x = xPos;
+  dstRect.y = yPos;
+  dstRect.h = tex.mHeight;
+  dstRect.w = tex.mWidth;
+
+  SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+
+  if(DEBUG == 1)
   {
-    vGameUI.at(i).renderTexture();
+    DrawBoundingBox(renderer, xPos, yPos, tex.mWidth, tex.mHeight, 255, 55, 0);
   }
 }
+
+void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray)
+{ 
+  SDL_Texture *backgroundSDLTex = GetSDLTexture(renderer, GRAYBACKGROUND);
+  Texture background(backgroundSDLTex, GRAYBACKGROUND);
+  background.mX = 0;
+  background.mY = GAMEHEIGHT * 2/3;
+  uiArray[0] = background;
+
+  //Add rotation controls  
+  SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, BTN_LEFTCURSOR);
+  Texture leftButton(leftButtonSDLTex, BTN_LEFTCURSOR);
+  leftButton.mX = 50;
+  leftButton.mY = GAMEHEIGHT * 2/3 + 50;
+  uiArray[1] = leftButton;
+  
+  SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, BTN_STOPROT);
+  Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
+  stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
+  stopButton.mY = GAMEHEIGHT * 2/3 + 50;
+  uiArray[2] = stopButton;
+
+  SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, BTN_RIGHTCURSOR);
+  Texture rightButton(rightButtonSDLTex, BTN_RIGHTCURSOR);
+  rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
+  rightButton.mY = GAMEHEIGHT * 2/3 + 50;
+  uiArray[3] = rightButton;
+
+  SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, BTN_INCREASESPEED);
+  Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
+  speedincreaseButton.mX = rightButton.mX + rightButton.mWidth + 20;
+  speedincreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
+  uiArray[4] = speedincreaseButton;
+
+  SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, BTN_DECREASESPEED);
+  Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
+  speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
+  speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
+  uiArray[5] = speeddecreaseButton;
+
+  
+}
+
+void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
+{
+  for (int i = 0; i < size; ++i)
+  {
+    RenderTexture(renderer, uiArray[i]);
+  }
+}
+
 
 string GetAction(int *mouseXpos, int *mouseYpos)
 {
   string eventName = "NONE";
-  /* Poll for events. SDL_PollEvent() returns 0 when there are no  */
-  /* more events on the event queue, our while loop will exit when */
-  /* that occurs.                
-   */
+  // Poll for events. SDL_PollEvent() returns 0 when there are no  
+  // more events on the event queue, our while loop will exit when 
+  // that occurs.                
+  
 
   SDL_Event event;
   
@@ -91,7 +277,7 @@ string GetAction(int *mouseXpos, int *mouseYpos)
     {
     case SDL_KEYDOWN:
 
-      /* Check the SDLKey values and move change the coords */
+      // Check the SDLKey values and move change the coords
       switch( event.key.keysym.sym )
       {
       case SDLK_ESCAPE:
@@ -141,14 +327,13 @@ string GetAction(int *mouseXpos, int *mouseYpos)
   return eventName;
 }
 
-string TextureMouseCollision(vector<Texture> vTexture, int xPos, int yPos)
+string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos)
 {
   string colTex = "NONE";
-  for (unsigned i = 0; i < vTexture.size(); ++i)
+  for (int i = 0; i < size; ++i)
   {
-    Texture texRef = vTexture.at(i);
-      
-    vTexture.at(i).renderTexture();
+    Texture texRef = arrayTexture[i];
+  
     if(xPos >= texRef.mX
        && xPos <= (texRef.mX + texRef.mWidth)
        && yPos >= texRef.mY
@@ -159,7 +344,7 @@ string TextureMouseCollision(vector<Texture> vTexture, int xPos, int yPos)
   }
   return colTex;
 }
-
+/*
 SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation)
 {
   cout << "Loading: " << textLocation << "\n";
@@ -248,88 +433,9 @@ void CenterCamOnPlayer(int *camX,
   *camY = plaY + (plaH/2) - (camH/2);
 }
 
-void DrawBoundingBoxCam(SDL_Renderer *renderer,
-                        int camX,
-                        int camY,
-                        int objX,
-                        int objY,
-                        int objW,
-                        int objH,
-                        int r,
-                        int g,
-                        int b)
-{
-  SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
 
-  int xPos = objX - camX;
-  int yPos = objY - camY;
 
-  //top
-  SDL_RenderDrawLine(renderer,
-                     xPos,
-                     yPos,
-                     xPos + objW,
-                     yPos);
-  //left
-  SDL_RenderDrawLine(renderer,
-                     xPos,
-                     yPos,
-                     xPos,
-                     yPos + objH);
 
-  //right
-  SDL_RenderDrawLine(renderer,
-                     xPos + objW,
-                     yPos,
-                     xPos + objW,
-                     yPos + objH);
-  //right
-  SDL_RenderDrawLine(renderer,
-                     xPos,
-                     yPos +objH,
-                     xPos + objW,
-                     yPos + objH);
-
-}
-
-void DrawBoundingBox(SDL_Renderer *renderer,
-                     int objX,
-                     int objY,
-                     int objW,
-                     int objH,
-                     int r,
-                     int g,
-                     int b)
-{
-  SDL_SetRenderDrawColor(renderer, r, g, b, SDL_ALPHA_OPAQUE);
-
-  //top
-  SDL_RenderDrawLine(renderer,
-                     objX,
-                     objY,
-                     objX + objW,
-                     objY);
-  //left
-  SDL_RenderDrawLine(renderer,
-                     objX,
-                     objY,
-                     objX,
-                     objY + objH);
-
-  //right
-  SDL_RenderDrawLine(renderer,
-                     objX + objW,
-                     objY,
-                     objX + objW,
-                     objY + objH);
-  //right
-  SDL_RenderDrawLine(renderer,
-                     objX,
-                     objY +objH,
-                     objX + objW,
-                     objY + objH);
-
-}
 
 void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int *camX, int *camY, int camW, int camH,
@@ -414,12 +520,12 @@ void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris, int xCord
   int genYmin = yCord;
   int genYmax = yCord + GAMEHEIGHT;  
 
-  /*
-  cout << "xMin: " << genXmin << "\n";
-  cout << "xMax: " << genXmax << "\n";
-  cout << "yMin: " << genYmin << "\n";
-  cout << "yMax: " << genYmax << "\n";
-  */
+ 
+  //cout << "xMin: " << genXmin << "\n";
+  //cout << "xMax: " << genXmax << "\n";
+  //cout << "yMin: " << genYmin << "\n";
+  //cout << "yMax: " << genYmax << "\n";
+  
   
   for(unsigned i = 0; i < 20; ++i)
   {
@@ -443,27 +549,6 @@ void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord)
   int yMin = yCord;
   int yMax = yCord + GAMEHEIGHT;
 
-  /*
-  //A weird quirk of STL where erase() invalidates the iterator since it'll reduce the vector size,
-  //so we need to make it = erase since it'll return a valid iterator
-  for(vector<Texture>::iterator it = vDebris->begin(); it != vDebris->end();)
-  {
-    int debrisX = it->mX;
-    int debrisY = it->mY;
-
-    if(debrisX >= xMin &&
-       debrisX <= xMax &&
-       debrisY >= yMin &&
-       debrisY <= yMax)
-    {
-      it = vDebris->erase(it);      
-    }
-    else
-    {
-      ++it;
-    }
-  }
-  */
 
   //This method also works
   for(unsigned i = 0; i < vDebris->size(); ++i)
@@ -582,3 +667,4 @@ void CheckDebrisField(SDL_Renderer *renderer,
 
   cout << "debris size: " << vDebris->size() << "\n";
 }
+*/

@@ -16,12 +16,38 @@ class Texture;
 
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer);
 
-void InitSpaceUI(SDL_Renderer *renderer, vector<Texture> &vGameUI);
-void RenderUI(vector<Texture> vGameUI);
+SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, string textureLocation);
+
+void DrawBoundingBox(SDL_Renderer *renderer,
+                     int objX,
+                     int objY,
+                     int objW,
+                     int objH,
+                     int r,
+                     int g,
+                     int b);
+void DrawBoundingBoxCam(SDL_Renderer *renderer,
+                        int camX,
+                        int camY,
+                        int objX,
+                        int objY,
+                        int objW,
+                        int objH,
+                        int r,
+                        int g,
+                        int b);
+
+void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex);
+
+void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray);
+
+void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 
 string GetAction(int *mouseXpos, int *mouseYpos);
 
-string TextureMouseCollision(vector<Texture> vTexture, int xPos, int yPos);
+string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos);
+/*
+
 
 SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation);
 
@@ -34,25 +60,9 @@ void CenterCamOnPlayer(int *camX,
                        int plaW,
                        int plaH);
 
-void DrawBoundingBoxCam(SDL_Renderer *renderer,
-                        int camX,
-                        int camY,
-                        int objX,
-                        int objY,
-                        int objW,
-                        int objH,
-                        int r,
-                        int g,
-                        int b);
 
-void DrawBoundingBox(SDL_Renderer *renderer,
-                     int objX,
-                     int objY,
-                     int objW,
-                     int objH,
-                     int r,
-                     int g,
-                     int b);
+
+
 
 void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int *camX, int *camY, int camW, int camH,
@@ -72,5 +82,6 @@ void CheckDebrisField(SDL_Renderer *renderer,
                       int *originX,int *originY,
                       int plaX, int plaY,
                       int plaW, int plaH);
+*/
 #endif // GAME_H
  

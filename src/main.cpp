@@ -23,34 +23,37 @@ int main(int argc, char* argv[])
   int camW = GAMEWIDTH;
   int camH = GAMEHEIGHT * 2 / 3;
 
-  //Create UI vector 
-  vector<Texture> vGameUI;
-  InitSpaceUI(renderer, vGameUI);
+  
+  //Create UI array
+  Texture uiArray[NUM_UI_ELEMENTS];
+  InitSpaceUI(renderer, uiArray);
 
   //Create ship char
-  Ship mainShip;
+  //Ship mainShip;
 
-  Texture shipTex(renderer, "res/ship/ship.png");
+  //Texture shipTex(renderer, "res/ship/ship.png");
 
-  mainShip.vShipTextures.push_back(shipTex);
+  //mainShip.vShipTextures.push_back(shipTex);
 
-  CenterCamOnPlayer(&camX, &camY, camW, camH,
-                    mainShip.mPosition.x,
-                    mainShip.mPosition.y,
-                    mainShip.mWidth,
-                    mainShip.mHeight);
+  //CenterCamOnPlayer(&camX, &camY, camW, camH,
+  //                  mainShip.mPosition.x,
+  //                  mainShip.mPosition.y,
+  //                  mainShip.mWidth,
+  //                  mainShip.mHeight);
   
   //Create texture handling
-  SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
-  Text textDisplay(renderer, mainFontText);
+  
+  //SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
+  //Text textDisplay(renderer, mainFontText);
 
-  textDisplay.addTextObj("You are Valued", 0 ,GAMEHEIGHT - 50, 0);
-  textDisplay.addTextObj("", 0, 0, 0);
-  textDisplay.addTextObj("", 0, 30, 0);
-  textDisplay.addTextObj("", 0, 60, 0);
+  //textDisplay.addTextObj("You are Valued", 0 ,GAMEHEIGHT - 50, 0);
+  //textDisplay.addTextObj("", 0, 0, 0);
+  //textDisplay.addTextObj("", 0, 30, 0);
+  //textDisplay.addTextObj("", 0, 60, 0);
 
   //Create debris Array
-  vector<Texture> vDebris;
+  //vector<Texture> vDebris;
+
 
   //Initialize random seed as game width
   srand(3234);
@@ -59,26 +62,26 @@ int main(int argc, char* argv[])
   //bounds it'll regen that part appearing to be infinite
 
   //Mid
-  GenerateDebris(renderer, &vDebris, camX, camY);
+  //GenerateDebris(renderer, &vDebris, camX, camY);
   
   //Top Left
-  GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY - GAMEHEIGHT);
+  //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY - GAMEHEIGHT);
   //Top
-  GenerateDebris(renderer, &vDebris, camX, camY - GAMEHEIGHT);
+  //GenerateDebris(renderer, &vDebris, camX, camY - GAMEHEIGHT);
   //Top Right
-  GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY - GAMEHEIGHT);  
+  //GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY - GAMEHEIGHT);  
   
   //Left
-  GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY);
+  //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY);
   //Right
-  GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY);
+  //GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY);
 
   //Bottom Left
-  GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY + GAMEHEIGHT);
+  //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY + GAMEHEIGHT);
   //Bottom
-  GenerateDebris(renderer, &vDebris, camX, camY + GAMEHEIGHT);
+  //GenerateDebris(renderer, &vDebris, camX, camY + GAMEHEIGHT);
   //Bottom Right
-  GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY + GAMEHEIGHT);
+  //GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY + GAMEHEIGHT);
   
 
   //Keep track of cur bound so that when player leaves regen and update coord
@@ -91,6 +94,8 @@ int main(int argc, char* argv[])
   int debrisIndex = -1;
   bool debrisUI = false;
 
+
+
   while (runGame)
   {    
     frameStart = SDL_GetTicks();
@@ -101,18 +106,19 @@ int main(int argc, char* argv[])
     SDL_RenderClear(renderer);
 
     frameTime = SDL_GetTicks() - frameStart;
+    
 
     ////////////////////////////////////////////////////////////////////////
     //Main Game Code
     ////////////////////////////////////////////////////////////////////////
 
-      
+ 
     //Get input
     int xMouse = 0;
     int yMouse = 0;
       
     string eventType = GetAction(&xMouse, &yMouse);
-
+    
     if(eventType == "EXIT")
     {
       runGame = false;
@@ -123,42 +129,41 @@ int main(int argc, char* argv[])
       cout << eventType << "\n";
       if(eventType == "MOUSE_DOWN")
       {
-        string texCol = TextureMouseCollision(vGameUI, xMouse, yMouse);
+        string texCol = TextureMouseCollision(uiArray, NUM_UI_ELEMENTS, xMouse, yMouse);
 
         if(texCol == BTN_LEFTCURSOR)
         {
-          mainShip.curState = Ship::ShipStates::ROTATELEFT;
+          //mainShip.curState = Ship::ShipStates::ROTATELEFT;
                   
         }
         else if(texCol == BTN_RIGHTCURSOR)
         {
-          mainShip.curState = Ship::ShipStates::ROTATERIGHT;
+          //mainShip.curState = Ship::ShipStates::ROTATERIGHT;
         }
         else if(texCol == BTN_STOPROT)
         {
-          mainShip.curState = Ship::ShipStates::IDLE;
+          //mainShip.curState = Ship::ShipStates::IDLE;
         }
         else if(texCol == BTN_INCREASESPEED)
         {
-          mainShip.changeSpeed(1);
+          //mainShip.changeSpeed(1);
         }
         else if(texCol == BTN_DECREASESPEED)
         {
-          mainShip.changeSpeed(-1);
+          //mainShip.changeSpeed(-1);
         }
         else if(texCol == BTN_HARVESTDEBRIS)
         {
           if(debrisIndex != -1)
           {
-            vDebris.at(debrisIndex).destroy();
-            vDebris.erase(vDebris.begin() + debrisIndex);
+            
           }
         }
 
         cout << texCol << "\n";
       }
     }
-
+    /*
     int worldMouseX = camX + xMouse;
     int worldMouseY = camY + yMouse;
       
@@ -200,13 +205,13 @@ int main(int argc, char* argv[])
     mainShip.updateBasedOnState();
 
     //Check if player has breached the debris bounds
-    /*
-      CheckDebrisField(renderer,
-                     &vDebris,
-                     &curBoundX, &curBoundY,
-                     mainShip.mPosition.x, mainShip.mPosition.y,
-                     mainShip.mWidth, mainShip.mHeight);
-    */
+    
+    // CheckDebrisField(renderer,
+    //                 &vDebris,
+    //                 &curBoundX, &curBoundY,
+    //                 mainShip.mPosition.x, mainShip.mPosition.y,
+    //                 mainShip.mWidth, mainShip.mHeight);
+    
 
     //Update camera position
     MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
@@ -226,7 +231,9 @@ int main(int argc, char* argv[])
     mainShip.renderShip(camX, camY);
 
     //Render UI
-    RenderUI(vGameUI);
+    */
+    RenderUI(renderer, uiArray, NUM_UI_ELEMENTS);
+    /*
       
     //Render text
     textDisplay.drawText();
@@ -260,7 +267,7 @@ int main(int argc, char* argv[])
           
           
     }
-      
+      */
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
 

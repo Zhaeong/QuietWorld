@@ -1,5 +1,5 @@
 #include "obj_ship.h"
-
+/*
 Ship::Ship()
 {
 
@@ -107,4 +107,4 @@ void Ship::renderShip(int camX, int camY)
     vShipTextures.at(i).renderTextureByCam(camX, camY);
   }
 }
-
+*/
