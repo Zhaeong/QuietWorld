@@ -1,8 +1,9 @@
 #include "obj_ship.h"
-/*
-Ship::Ship()
+
+Ship::Ship(SDL_Texture *shipTexture)
 {
 
+  mShipTexture = shipTexture;
   mOrigDirection.x = 0;
   mOrigDirection.y = -1;
   
@@ -11,14 +12,17 @@ Ship::Ship()
   
   mPosition.x = 0;
   mPosition.y = 0;
+
+  SDL_QueryTexture(shipTexture, NULL, NULL, &mWidth, &mHeight);
 }
 
-void Ship::rotateByDegree(int degrees)
+void Ship::rotateByDegree(double degrees)
 {
-  mRotation = (mRotation + degrees) % 360;
+  //mRotation = (mRotation + degrees) % 360.0;
+  mRotation = std::fmod((mRotation + degrees), 360.0);
 
   //Convert degrees to radians
-  float rad = mRotation * PI / 180.0;
+  double rad = mRotation * PI / (double)180.0;
 
   //Normalize the vector
   float vecLength = sqrt(
@@ -40,19 +44,13 @@ void Ship::rotateByDegree(int degrees)
 
 void Ship::changeRotation(bool left)
 {
-  int rotationVal = mRotationValue;
+  double rotationVal = mRotationValue;
 
   if(!left)
   {
     rotationVal = -mRotationValue;
   }
-
-  //Rotation sprites
-  for (unsigned i = 0; i < vShipTextures.size(); ++i)
-  {
-    vShipTextures.at(i).rotateByDegree(rotationVal);
-      
-  }
+  
   rotateByDegree(rotationVal);
 
 }
@@ -81,13 +79,7 @@ void Ship::updateBasedOnState()
 void Ship::changePosition()
 {  
   mPosition.x += mDirection.x * mSpeed;
-  mPosition.y += mDirection.y * mSpeed;
-  
-  for (unsigned i = 0; i < vShipTextures.size(); ++i)
-  {
-    vShipTextures.at(i).mX = (int)mPosition.x;
-    vShipTextures.at(i).mY = (int)mPosition.y;
-  }
+  mPosition.y += mDirection.y * mSpeed; 
 }
 
 void Ship::changeSpeed(int speed)
@@ -99,12 +91,3 @@ void Ship::changeSpeed(int speed)
   }
   mSpeed = newSpeed;
 }
-
-void Ship::renderShip(int camX, int camY)
-{
-  for (unsigned i = 0; i < vShipTextures.size(); ++i)
-  {
-    vShipTextures.at(i).renderTextureByCam(camX, camY);
-  }
-}
-*/

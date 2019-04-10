@@ -1,22 +1,21 @@
 #ifndef OBJ_SHIP_H
 #define OBJ_SHIP_H
 
-#include <vector>
 #include <cmath>
 
-#include "obj_texture.h"
 #include "game_defs.h"
 
 class Ship
 {
 
 public:
-  /*
-  int mRotation = 0;
-  int mRotationValue = 1;
+  
+  double mRotation = 0;
+  
+  double mRotationValue = 0.5;
   int mSpeed = 0;
   
-  vector<Texture> vShipTextures;
+  SDL_Texture *mShipTexture;
 
   vect2 mPosition;
   vect2 mOrigDirection;
@@ -24,6 +23,9 @@ public:
 
   int mWidth = 20;
   int mHeight = 20;
+
+  SDL_Point *mCenter = NULL;
+  SDL_RendererFlip mFlip = SDL_FLIP_NONE;
 
   enum ShipStates
     {
@@ -34,20 +36,18 @@ public:
 
   ShipStates curState = ShipStates::IDLE;
 
-  Ship();
+  Ship(SDL_Texture *shipTexture);
 
-  void rotateByDegree(int degrees);
+  void rotateByDegree(double degrees);
 
   void changePosition();
 
   void changeSpeed(int speed);
-  
-  void renderShip(int camX, int camY);
 
   void updateBasedOnState();
 
   void changeRotation(bool left);
-  */
+  
 
 
 };

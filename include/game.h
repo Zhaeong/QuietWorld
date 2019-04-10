@@ -4,15 +4,18 @@
 #include <SDL.h>
 #include <string>
 #include <iostream>
-#include <vector>
 
 #include "game_defs.h"
 #include "obj_texture.h"
+#include "obj_ship.h"
 
 using namespace std;
 
 //Forward declaration due to obj_texture including this file
 class Texture;
+
+//Foward declaration due to obj_ship including this file
+class Ship;
 
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer);
 
@@ -39,6 +42,8 @@ void DrawBoundingBoxCam(SDL_Renderer *renderer,
 
 void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex);
 
+void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship);
+
 void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray);
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
@@ -46,10 +51,6 @@ void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 string GetAction(int *mouseXpos, int *mouseYpos);
 
 string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos);
-/*
-
-
-SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation);
 
 void CenterCamOnPlayer(int *camX,
                        int *camY,
@@ -61,13 +62,25 @@ void CenterCamOnPlayer(int *camX,
                        int plaH);
 
 
-
-
-
 void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int *camX, int *camY, int camW, int camH,
                           int objX, int objY, int objH, int objW,
                           int speed);
+
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int xCord, int yCord);
+
+void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY);
+/*
+
+
+SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation);
+
+
+
+
+
+
+
 
 void RenderDebris(vector<Texture> vDebris, int camX, int camY);
 

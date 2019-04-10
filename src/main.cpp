@@ -29,17 +29,18 @@ int main(int argc, char* argv[])
   InitSpaceUI(renderer, uiArray);
 
   //Create ship char
-  //Ship mainShip;
+  SDL_Texture *shipTex = GetSDLTexture(renderer,  "res/ship/ship.png");
+  Ship mainShip(shipTex);
 
   //Texture shipTex(renderer, "res/ship/ship.png");
 
   //mainShip.vShipTextures.push_back(shipTex);
 
-  //CenterCamOnPlayer(&camX, &camY, camW, camH,
-  //                  mainShip.mPosition.x,
-  //                  mainShip.mPosition.y,
-  //                  mainShip.mWidth,
-  //                  mainShip.mHeight);
+  CenterCamOnPlayer(&camX, &camY, camW, camH,
+                    mainShip.mPosition.x,
+                    mainShip.mPosition.y,
+                    mainShip.mWidth,
+                    mainShip.mHeight);
   
   //Create texture handling
   
@@ -53,7 +54,9 @@ int main(int argc, char* argv[])
 
   //Create debris Array
   //vector<Texture> vDebris;
+  Texture debrisArray[NUM_DEBRIS];
 
+  SDL_Texture *debrisTex = GetSDLTexture(renderer, DEBRIS_IMG);
 
   //Initialize random seed as game width
   srand(3234);
@@ -62,7 +65,7 @@ int main(int argc, char* argv[])
   //bounds it'll regen that part appearing to be infinite
 
   //Mid
-  //GenerateDebris(renderer, &vDebris, camX, camY);
+  GenerateDebris(debrisTex, debrisArray, camX, camY);
   
   //Top Left
   //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY - GAMEHEIGHT);
@@ -110,8 +113,7 @@ int main(int argc, char* argv[])
 
     ////////////////////////////////////////////////////////////////////////
     //Main Game Code
-    ////////////////////////////////////////////////////////////////////////
-
+    ////////////////////////////////////////////////////////////////////////    
  
     //Get input
     int xMouse = 0;
@@ -133,24 +135,24 @@ int main(int argc, char* argv[])
 
         if(texCol == BTN_LEFTCURSOR)
         {
-          //mainShip.curState = Ship::ShipStates::ROTATELEFT;
+          mainShip.curState = Ship::ShipStates::ROTATELEFT;
                   
         }
         else if(texCol == BTN_RIGHTCURSOR)
         {
-          //mainShip.curState = Ship::ShipStates::ROTATERIGHT;
+          mainShip.curState = Ship::ShipStates::ROTATERIGHT;
         }
         else if(texCol == BTN_STOPROT)
         {
-          //mainShip.curState = Ship::ShipStates::IDLE;
+          mainShip.curState = Ship::ShipStates::IDLE;
         }
         else if(texCol == BTN_INCREASESPEED)
         {
-          //mainShip.changeSpeed(1);
+          mainShip.changeSpeed(1);
         }
         else if(texCol == BTN_DECREASESPEED)
         {
-          //mainShip.changeSpeed(-1);
+          mainShip.changeSpeed(-1);
         }
         else if(texCol == BTN_HARVESTDEBRIS)
         {
@@ -200,9 +202,16 @@ int main(int argc, char* argv[])
       debrisIndex = -1;
           
     }
-      
+    */
     //Update game state
     mainShip.updateBasedOnState();
+
+    //Update camera position
+    MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
+                         mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
+                         mainShip.mSpeed);
+
+    /*
 
     //Check if player has breached the debris bounds
     
@@ -213,10 +222,7 @@ int main(int argc, char* argv[])
     //                 mainShip.mWidth, mainShip.mHeight);
     
 
-    //Update camera position
-    MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
-                         mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
-                         mainShip.mSpeed);
+    
 
 
 
@@ -225,13 +231,19 @@ int main(int argc, char* argv[])
     ////////////////////
 
     //Render space debris
-    RenderDebris(vDebris, camX, camY);
-      
-    //Render Ship
-    mainShip.renderShip(camX, camY);
-
-    //Render UI
+    RenderDebris(vDebris, camX, camY);    
+    
+   
+    
     */
+
+    //Render Debris
+    RenderDebris(renderer, debrisArray, camX, camY);
+    
+    //Render Ship
+    RenderShip(renderer, camX, camY, mainShip);
+    
+    //Render UI
     RenderUI(renderer, uiArray, NUM_UI_ELEMENTS);
     /*
       

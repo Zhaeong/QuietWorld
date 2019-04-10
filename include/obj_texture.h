@@ -31,6 +31,8 @@ public:
   SDL_Point *mCenter = NULL;
   SDL_RendererFlip mFlip = SDL_FLIP_NONE;
 
+  bool mRender = true;
+
   void* mPixels = 0;
   int mPitch = 0;
 
@@ -38,10 +40,6 @@ public:
   Texture(SDL_Texture *sTex, string imgLocation);
 
   void rotateByDegree(int degrees);
-
-  
-  //void renderTexture();
-  //void renderTextureByCam(int camX, int camY);
   
 };
 

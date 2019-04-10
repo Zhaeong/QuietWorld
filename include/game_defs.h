@@ -16,9 +16,14 @@ using namespace std;
 
 #define DEBUG 1
 
+struct vect2
+{
+  float x;
+  float y;
+};
 
 //SPACE UI
-const int NUM_UI_ELEMENTS = 6;
+const int NUM_UI_ELEMENTS = 7;
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
 
 const string BTN_LEFTCURSOR     = "res/spaceUI/leftCursor.png";
@@ -30,12 +35,10 @@ const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
 
 const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebris.png";
 
-struct vect2
-{
-  float x;
-  float y;
-};
 
+//DEBRIS
+const int NUM_DEBRIS = 10;
+const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 
 #endif // GAMEDEFS_H

@@ -163,50 +163,85 @@ void DrawBoundingBoxCam(SDL_Renderer *renderer,
 
 void RenderTexture(SDL_Renderer *renderer, Texture tex)
 {
-  SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
+  if(tex.mRender)
+  {
+    SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
 
-  SDL_Rect srcRect;
-  SDL_Rect dstRect;
+    SDL_Rect srcRect;
+    SDL_Rect dstRect;
 
-  srcRect.x = 0;
-  srcRect.y = 0;
-  srcRect.h = tex.mHeight;
-  srcRect.w = tex.mWidth;
+    srcRect.x = 0;
+    srcRect.y = 0;
+    srcRect.h = tex.mHeight;
+    srcRect.w = tex.mWidth;
 
-  dstRect.x = tex.mX;
-  dstRect.y = tex.mY;
-  dstRect.h = tex.mHeight;
-  dstRect.w = tex.mWidth;
+    dstRect.x = tex.mX;
+    dstRect.y = tex.mY;
+    dstRect.h = tex.mHeight;
+    dstRect.w = tex.mWidth;
 
-  SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+    SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+  }
 }
 
 void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
 {
-  //Convert character world coord to screen coord
-  int xPos = tex.mX - camX;
-  int yPos = tex.mY - camY;
+  if(tex.mRender)
+  {
+    //Convert character world coord to screen coord
+    int xPos = tex.mX - camX;
+    int yPos = tex.mY - camY;
  
-  SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
+
+    SDL_Rect srcRect;
+    SDL_Rect dstRect;
+
+    srcRect.x = 0;
+    srcRect.y = 0;
+    srcRect.h = tex.mHeight;
+    srcRect.w = tex.mWidth;
+
+    dstRect.x = xPos;
+    dstRect.y = yPos;
+    dstRect.h = tex.mHeight;
+    dstRect.w = tex.mWidth;
+
+    SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+
+    if(DEBUG == 1)
+    {
+      DrawBoundingBox(renderer, xPos, yPos, tex.mWidth, tex.mHeight, 255, 55, 0);
+    }
+  }
+}
+
+void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
+{
+    //Convert character world coord to screen coord
+  int xPos = ship.mPosition.x - camX;
+  int yPos = ship.mPosition.y - camY;
+ 
+  SDL_SetTextureBlendMode(ship.mShipTexture, SDL_BLENDMODE_BLEND);
 
   SDL_Rect srcRect;
   SDL_Rect dstRect;
 
   srcRect.x = 0;
   srcRect.y = 0;
-  srcRect.h = tex.mHeight;
-  srcRect.w = tex.mWidth;
+  srcRect.h = ship.mHeight;
+  srcRect.w = ship.mWidth;
 
   dstRect.x = xPos;
   dstRect.y = yPos;
-  dstRect.h = tex.mHeight;
-  dstRect.w = tex.mWidth;
+  dstRect.h = ship.mHeight;
+  dstRect.w = ship.mWidth;
 
-  SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+  SDL_RenderCopyEx(renderer, ship.mShipTexture, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
 
   if(DEBUG == 1)
   {
-    DrawBoundingBox(renderer, xPos, yPos, tex.mWidth, tex.mHeight, 255, 55, 0);
+    DrawBoundingBox(renderer, xPos, yPos, ship.mWidth, ship.mHeight, 255, 55, 0);
   }
 }
 
@@ -248,6 +283,13 @@ void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray)
   speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
   speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[5] = speeddecreaseButton;
+
+  SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, BTN_HARVESTDEBRIS);
+  Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
+  harvestButton.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
+  harvestButton.mY = GAMEHEIGHT * 2/3 + 50;
+  harvestButton.mRender = false;
+  uiArray[6] = harvestButton;
 
   
 }
@@ -344,6 +386,105 @@ string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos
   }
   return colTex;
 }
+
+void CenterCamOnPlayer(int *camX,
+                       int *camY,
+                       int camW,
+                       int camH,
+                       int plaX,
+                       int plaY,
+                       int plaW,
+                       int plaH)
+{
+  
+  *camX = plaX + (plaW/2) - (camW/2);
+  *camY = plaY + (plaH/2) - (camH/2);
+}
+
+void MoveCameraBaseOnShip(SDL_Renderer *renderer,
+                          int *camX, int *camY, int camW, int camH,
+                          int objX, int objY, int objH, int objW,
+                          int objSpeed)
+{
+  int boundD = 150;
+
+  int boundX = camW/2 - boundD/2;
+  int boundY = camH/2 - boundD/2;
+
+  //Convert obj from world coord to screen coord
+  int objXscreen = objX - *camX;
+  int objYscreen = objY - *camY;  
+
+  if(objXscreen < boundX)
+  {
+    *camX -= objSpeed;
+  }
+  else if(objXscreen + objW > boundX + boundD)
+  {
+    *camX += objSpeed;
+  }
+
+  if(objYscreen < boundY)
+  {
+    *camY -= objSpeed;
+  }
+  else if(objYscreen + objH > boundY + boundD)
+  {
+    *camY += objSpeed;
+  }
+  
+  if(DEBUG == 1)
+  {
+    DrawBoundingBox(renderer,
+                    boundX,
+                    boundY,
+                    boundD,
+                    boundD,
+                    0,
+                    255,
+                    0);
+  }
+}
+
+
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int xCord, int yCord)
+{
+  int genXmin = xCord;
+  int genXmax = xCord + GAMEWIDTH;
+
+  int genYmin = yCord;
+  int genYmax = yCord + GAMEHEIGHT;  
+
+ 
+  //cout << "xMin: " << genXmin << "\n";
+  //cout << "xMax: " << genXmax << "\n";
+  //cout << "yMin: " << genYmin << "\n";
+  //cout << "yMax: " << genYmax << "\n";
+  
+  
+  for(int i = 0; i < NUM_DEBRIS; ++i)
+  {
+    Texture dObj(debrisTex, DEBRIS_IMG);
+
+    //Generate a random number between min and max
+    dObj.mX = (rand() % (genXmax - genXmin)) + genXmin;
+    dObj.mY = (rand() % (genYmax - genYmin)) + genYmin;
+
+    debrisArray[i] = dObj;
+
+    //cout << "x: " << dObj.mX << " y: " << dObj.mY << "\n";
+  }
+}
+
+void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY)
+{
+  for (unsigned i = 0; i < NUM_DEBRIS; ++i)
+  {
+    RenderTextureByCam(camX, camY, renderer, debrisArray[i]);    
+  }
+}
+
+
 /*
 SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation)
 {
@@ -419,78 +560,13 @@ SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation)
   return mTexture;
 }
 
-void CenterCamOnPlayer(int *camX,
-                       int *camY,
-                       int camW,
-                       int camH,
-                       int plaX,
-                       int plaY,
-                       int plaW,
-                       int plaH)
-{
-  
-  *camX = plaX + (plaW/2) - (camW/2);
-  *camY = plaY + (plaH/2) - (camH/2);
-}
 
 
 
 
 
-void MoveCameraBaseOnShip(SDL_Renderer *renderer,
-                          int *camX, int *camY, int camW, int camH,
-                          int objX, int objY, int objH, int objW,
-                          int objSpeed)
-{
-  int boundD = 150;
-
-  int boundX = camW/2 - boundD/2;
-  int boundY = camH/2 - boundD/2;
-
-  //Convert obj from world coord to screen coord
-  int objXscreen = objX - *camX;
-  int objYscreen = objY - *camY;  
-
-  if(objXscreen < boundX)
-  {
-    *camX -= objSpeed;
-  }
-  else if(objXscreen + objW > boundX + boundD)
-  {
-    *camX += objSpeed;
-  }
-
-  if(objYscreen < boundY)
-  {
-    *camY -= objSpeed;
-  }
-  else if(objYscreen + objH > boundY + boundD)
-  {
-    *camY += objSpeed;
-  }
-  
-  if(DEBUG == 1)
-  {
-    DrawBoundingBox(renderer,
-                    boundX,
-                    boundY,
-                    boundD,
-                    boundD,
-                    0,
-                    255,
-                    0);
-  }
-}
 
 
-void RenderDebris(vector<Texture> vDebris, int camX, int camY)
-{
-  for (unsigned i = 0; i < vDebris.size(); ++i)
-  {
-    Texture dObj = vDebris.at(i);
-    dObj.renderTextureByCam(camX, camY);      
-  }
-}
 
 
 bool TextureCollide(int x, int y, int width, int height , Texture texB)
@@ -512,34 +588,7 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   return horizontalCol && verticalCol;
 }
 
-void GenerateDebris(SDL_Renderer *renderer,  vector<Texture> *vDebris, int xCord, int yCord)
-{
-  int genXmin = xCord;
-  int genXmax = xCord + GAMEWIDTH;
 
-  int genYmin = yCord;
-  int genYmax = yCord + GAMEHEIGHT;  
-
- 
-  //cout << "xMin: " << genXmin << "\n";
-  //cout << "xMax: " << genXmax << "\n";
-  //cout << "yMin: " << genYmin << "\n";
-  //cout << "yMax: " << genYmax << "\n";
-  
-  
-  for(unsigned i = 0; i < 20; ++i)
-  {
-    Texture dObj(renderer, "res/debris/debris1.png");
-
-    //Generate a random number between min and max
-    dObj.mX = (rand() % (genXmax - genXmin)) + genXmin;
-    dObj.mY = (rand() % (genYmax - genYmin)) + genYmin;
-
-    vDebris->push_back(dObj);
-
-    //cout << "x: " << dObj.mX << " y: " << dObj.mY << "\n";
-  }
-}
 
 void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord)
 {
