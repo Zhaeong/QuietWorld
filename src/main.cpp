@@ -32,9 +32,6 @@ int main(int argc, char* argv[])
   SDL_Texture *shipTex = GetSDLTexture(renderer,  "res/ship/ship.png");
   Ship mainShip(shipTex);
 
-  //Texture shipTex(renderer, "res/ship/ship.png");
-
-  //mainShip.vShipTextures.push_back(shipTex);
 
   CenterCamOnPlayer(&camX, &camY, camW, camH,
                     mainShip.mPosition.x,
@@ -43,6 +40,15 @@ int main(int argc, char* argv[])
                     mainShip.mHeight);
   
   //Create texture handling
+
+  SDL_Texture *fontTex = GetSDLTexture(renderer, "res/text/mainText.png");
+  TextObj textArray[NUM_TEXT];
+
+  TextObj debugText;
+  debugText.mString = "hey";
+
+  textArray[0] = debugText;
+  
   
   //SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
   //Text textDisplay(renderer, mainFontText);
@@ -165,14 +171,16 @@ int main(int argc, char* argv[])
         cout << texCol << "\n";
       }
     }
-    /*
+
     int worldMouseX = camX + xMouse;
     int worldMouseY = camY + yMouse;
+    /*
+
       
 
-    bool debrisCol = false;
-    for (unsigned i = 0; i < vDebris.size(); ++i)
-    {
+      bool debrisCol = false;
+      for (unsigned i = 0; i < vDebris.size(); ++i)
+      {
       Texture dObj = vDebris.at(i);
       if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
       {
@@ -228,12 +236,7 @@ int main(int argc, char* argv[])
 
     ////////////////////
     //Render to screen//
-    ////////////////////
-
-    //Render space debris
-    RenderDebris(vDebris, camX, camY);    
-    
-   
+    ////////////////////   
     
     */
 
@@ -245,18 +248,23 @@ int main(int argc, char* argv[])
     
     //Render UI
     RenderUI(renderer, uiArray, NUM_UI_ELEMENTS);
-    /*
+    
       
-    //Render text
-    textDisplay.drawText();
+    //Render text    
+    RenderText(renderer, fontTex, textArray);
 
-
+      
     //Render DEBUG items if turned on
     if(DEBUG == 1)
     {
-      textDisplay.mTextArray[1].textString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
-      textDisplay.mTextArray[2].textString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
-      textDisplay.mTextArray[3].textString = "Cam x:" + to_string(camX) + " y:" + to_string(camY);
+      textArray[1].mY = 30;
+      textArray[1].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+
+      textArray[2].mY = 60;
+      textArray[2].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+
+      textArray[3].mY = 90;
+      textArray[3].mString = "Cam x:" + to_string(camX) + " y:" + to_string(camY);
       
       SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
@@ -265,21 +273,11 @@ int main(int argc, char* argv[])
                          mainShip.mPosition.y,
                          mainShip.mPosition.x + mainShip.mDirection.x * 10,
                          mainShip.mPosition.y + mainShip.mDirection.y * 10 );
-
-      DrawBoundingBoxCam(renderer,
-                         camX,
-                         camY,
-                         mainShip.mPosition.x,
-                         mainShip.mPosition.y,
-                         mainShip.mWidth,
-                         mainShip.mHeight,
-                         255,
-                         0,
-                         0);          
+       
           
           
     }
-      */
+      
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
 

@@ -484,85 +484,91 @@ void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int ca
   }
 }
 
-
-/*
-SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation)
+void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray)
 {
-  cout << "Loading: " << textLocation << "\n";
+  SDL_SetTextureBlendMode(fontTexture, SDL_BLENDMODE_BLEND);
+
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = 20;
+  srcRect.w = 20;
+
+
+  dstRect.x = 0;
+  dstRect.y = 0;
+  dstRect.h = 20;
+  dstRect.w = 20;
+
+  for(int i = 0; i < NUM_TEXT; i++)
+  {
+    
+    TextObj tObj = textArray[i];
+
+    int curPos = tObj.mX;
   
-  //Make sure to initialize texture to null or else SDL_DestroyTexture will crash program
-  SDL_Texture *mTexture = NULL;
+    for(string::size_type j = 0; j < tObj.mString.size(); ++j) {
 
-  void* mPixels = 0;
-  int mPitch = 0;
+      char curChar = tObj.mString[j];
+      int xTextPos = 0;
+      int yTextPos = 0;
 
-  SDL_Surface* loadedSurface = IMG_Load( textLocation.c_str() );
-
-  if( loadedSurface == NULL )
-  {
-    printf( "Unable to load image %s! SDL_image Error: %s\n",
-            textLocation.c_str(),
-            IMG_GetError() );
-  }
-  else
-  {
-    //Convert surface to display format
-    SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
-                                                              SDL_PIXELFORMAT_ARGB8888,
-                                                              0 );
-    if( formattedSurface == NULL )
-    {
-      printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
-              SDL_GetError() );
-    }
-    else
-    {
-      //Create blank streamable texture
-      mTexture = SDL_CreateTexture( SRen,
-                                    SDL_PIXELFORMAT_ARGB8888,
-                                    SDL_TEXTUREACCESS_STREAMING,
-                                    formattedSurface->w,
-                                    formattedSurface->h );
-      if( mTexture == NULL )
+      //Capitals
+      if((int)curChar >= 65 && (int)curChar <= 90) 
       {
-        printf( "Unable to create blank texture! SDL Error: %s\n",
-                SDL_GetError() );
+        xTextPos = (int)curChar - 65;
       }
+      //lower case
+      else if((int)curChar >= 97 && (int)curChar <= 122)
+      {
+        xTextPos = (int)curChar - 97;
+        yTextPos = 20;
+      }
+      //numbers
+      else if((int)curChar >= 48 && (int)curChar <= 57)
+      {
+        xTextPos = (int)curChar - 48;
+        yTextPos = 40;
+      }
+      //minus sign
+      else if((int)curChar == 45)
+      {
+        xTextPos = 0;
+        yTextPos = 60;
+      }
+      //dot
+      else if((int)curChar == 46)
+      {
+        xTextPos = 1;
+        yTextPos = 60;
+      }        
+      //black space
       else
       {
-
-        //Lock texture for manipulation
-        SDL_LockTexture( mTexture, NULL, &mPixels, &mPitch );
-
-        //Copy loaded/formatted surface pixels
-        memcpy( mPixels, formattedSurface->pixels,
-                formattedSurface->pitch * formattedSurface->h );
-
-        //Unlock texture to update
-        SDL_UnlockTexture( mTexture );
-        mPixels = NULL;
-
-              
+        xTextPos = 200;
+        yTextPos = 40;
       }
+    
+      srcRect.x = 20 * xTextPos;
+      srcRect.y = yTextPos;
+    
+      dstRect.x = curPos;
+      dstRect.y = tObj.mY;
 
-      //Get rid of old formatted surface
-      SDL_FreeSurface( formattedSurface );
+      SDL_RenderCopyEx(renderer, fontTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
+
+      curPos += 20;
     }
-
-    //Get rid of old loaded surface
-    SDL_FreeSurface( loadedSurface );
-
-    cout << "Finish Loading: " << textLocation << "\n";
-
       
   }
   
-  return mTexture;
+  
+
 }
 
-
-
-
+/*
 
 
 

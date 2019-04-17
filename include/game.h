@@ -12,10 +12,11 @@
 using namespace std;
 
 //Forward declaration due to obj_texture including this file
-class Texture;
+//class Texture;
 
 //Foward declaration due to obj_ship including this file
-class Ship;
+//class Ship;
+
 
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer);
 
@@ -70,6 +71,8 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
 void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int xCord, int yCord);
 
 void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY);
+
+void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray);
 /*
 
 

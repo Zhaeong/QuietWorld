@@ -3,7 +3,6 @@
 
 #include <string>
 
-#include "obj_texture.h"
 
 using namespace std;
 
@@ -20,6 +19,14 @@ struct vect2
 {
   float x;
   float y;
+};
+
+struct TextObj
+{
+  string mString = "";
+  int mX = 0;
+  int mY = 0;
+  int mDelay = 0;
 };
 
 //SPACE UI
@@ -40,6 +47,9 @@ const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebris.png";
 const int NUM_DEBRIS = 10;
 const string DEBRIS_IMG  = "res/debris/debris1.png";
 
+
+//TEXT DISPLAY
+const int NUM_TEXT = 4;
 
 #endif // GAMEDEFS_H
  

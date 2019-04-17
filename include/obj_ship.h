@@ -2,8 +2,10 @@
 #define OBJ_SHIP_H
 
 #include <cmath>
-
+#include <iostream>
+#include <SDL.h>
 #include "game_defs.h"
+
 
 class Ship
 {

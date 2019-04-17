@@ -5,9 +5,7 @@
 #include <string>
 #include <iostream>
 
-
 #include "game.h"
-#include "obj_text.h"
 #include "obj_ship.h"
 
 using namespace std;
