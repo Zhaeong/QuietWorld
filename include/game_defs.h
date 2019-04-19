@@ -44,7 +44,7 @@ const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebris.png";
 
 
 //DEBRIS
-const int NUM_DEBRIS = 10;
+const int NUM_DEBRIS = 90;
 const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 

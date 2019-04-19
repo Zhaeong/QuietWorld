@@ -68,36 +68,21 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int objX, int objY, int objH, int objW,
                           int speed);
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int xCord, int yCord);
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xCord, int yCord);
 
 void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY);
 
 void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray);
-/*
-
-
-SDL_Texture* GetFontText(SDL_Renderer *SRen, string textLocation);
-
-
-
-
-
-
-
-
-void RenderDebris(vector<Texture> vDebris, int camX, int camY);
 
 bool TextureCollide(int x, int y, int width, int height , Texture texB);
 
-void GenerateDebris(SDL_Renderer *renderer, vector<Texture> *vDebris, int camX, int camY);
+void SwapArrayPointers(Texture *debrisArray, int startA, int endA, int startB, int endB);
 
-void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord);
-
-void CheckDebrisField(SDL_Renderer *renderer,
-                      vector<Texture> *vDebris,
+void CheckDebrisField(SDL_Texture *debrisTex,
+                      Texture *debrisArray,
                       int *originX,int *originY,
                       int plaX, int plaY,
                       int plaW, int plaH);
-*/
+
 #endif // GAME_H
  

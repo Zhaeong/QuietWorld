@@ -71,27 +71,26 @@ int main(int argc, char* argv[])
   //bounds it'll regen that part appearing to be infinite
 
   //Mid
-  GenerateDebris(debrisTex, debrisArray, camX, camY);
+  GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);
   
   //Top Left
-  //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY - GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 10, 20, camX - GAMEWIDTH, camY - GAMEHEIGHT);
   //Top
-  //GenerateDebris(renderer, &vDebris, camX, camY - GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 20, 30, camX, camY - GAMEHEIGHT);
   //Top Right
-  //GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY - GAMEHEIGHT);  
+  GenerateDebris(debrisTex, debrisArray, 30, 40, camX + GAMEWIDTH, camY - GAMEHEIGHT);  
   
   //Left
-  //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY);
+  GenerateDebris(debrisTex, debrisArray, 40, 50, camX - GAMEWIDTH, camY);
   //Right
-  //GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY);
+  GenerateDebris(debrisTex, debrisArray, 50, 60, camX + GAMEWIDTH, camY);
 
   //Bottom Left
-  //GenerateDebris(renderer, &vDebris, camX - GAMEWIDTH, camY + GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 60, 70, camX - GAMEWIDTH, camY + GAMEHEIGHT);
   //Bottom
-  //GenerateDebris(renderer, &vDebris, camX, camY + GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 70, 80, camX, camY + GAMEHEIGHT);
   //Bottom Right
-  //GenerateDebris(renderer, &vDebris, camX + GAMEWIDTH, camY + GAMEHEIGHT);
-  
+  GenerateDebris(debrisTex, debrisArray, 80, 90, camX + GAMEWIDTH, camY + GAMEHEIGHT);  
 
   //Keep track of cur bound so that when player leaves regen and update coord
   int curBoundX = camX;
@@ -219,26 +218,22 @@ int main(int argc, char* argv[])
                          mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
                          mainShip.mSpeed);
 
-    /*
+    
 
     //Check if player has breached the debris bounds
     
-    // CheckDebrisField(renderer,
-    //                 &vDebris,
-    //                 &curBoundX, &curBoundY,
-    //                 mainShip.mPosition.x, mainShip.mPosition.y,
-    //                 mainShip.mWidth, mainShip.mHeight);
+    CheckDebrisField(debrisTex,
+                     debrisArray,
+                     &curBoundX, &curBoundY,
+                     mainShip.mPosition.x, mainShip.mPosition.y,
+                     mainShip.mWidth, mainShip.mHeight);
     
-
-    
-
-
 
     ////////////////////
     //Render to screen//
     ////////////////////   
     
-    */
+    
 
     //Render Debris
     RenderDebris(renderer, debrisArray, camX, camY);

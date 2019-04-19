@@ -447,7 +447,7 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
 }
 
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int xCord, int yCord)
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xCord, int yCord)
 {
   int genXmin = xCord;
   int genXmax = xCord + GAMEWIDTH;
@@ -462,7 +462,7 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int xCord, int
   //cout << "yMax: " << genYmax << "\n";
   
   
-  for(int i = 0; i < NUM_DEBRIS; ++i)
+  for(int i = arrStart; i < arrEnd; ++i)
   {
     Texture dObj(debrisTex, DEBRIS_IMG);
 
@@ -561,17 +561,8 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
 
       curPos += 20;
     }
-      
   }
-  
-  
-
 }
-
-/*
-
-
-
 
 
 
@@ -594,132 +585,101 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   return horizontalCol && verticalCol;
 }
 
-
-
-void RemoveDebris(vector<Texture> *vDebris, int xCord, int yCord)
+void SwapArrayPointers(Texture *debrisArray, int startA, int endA, int startB, int endB)
 {
-  int xMin = xCord;
-  int xMax = xCord + GAMEWIDTH;
-
-  int yMin = yCord;
-  int yMax = yCord + GAMEHEIGHT;
-
-
-  //This method also works
-  for(unsigned i = 0; i < vDebris->size(); ++i)
-  {    
-
-    //Generate a random number between min and max
-    int debrisX = vDebris->at(i).mX;
-    int debrisY= vDebris->at(i).mY;
-
-    if(debrisX >= xMin &&
-       debrisX <= xMax &&
-       debrisY >= yMin &&
-       debrisY <= yMax)
-    {
-      vDebris->at(i).destroy();
-      vDebris->erase(vDebris->begin() + i);
-      //make i check for same index again since erase will reorder the 
-      i--;
+  if(endA - startA == endB - startB)
+  {
+    int range = endA - startA;
+    
+    for(int i = 0; i < range; ++i)
+    {      
+      debrisArray[startB + i] = debrisArray[startA + i];
     }
   }
-
-  vDebris->shrink_to_fit();
+  else
+  {
+    cout << "Error Swaparraypointers bound mismatch\n";
+  }
 }
 
-void CheckDebrisField(SDL_Renderer *renderer,
-                      vector<Texture> *vDebris,
+void CheckDebrisField(SDL_Texture *debrisTex,
+                      Texture *debrisArray,
                       int *originX,int *originY,
                       int plaX, int plaY,
                       int plaW, int plaH)
 {
+  cout << "plaX: " << plaX << "\n";
+  cout << "originX: " << *originX << "\n";
 
   //If player moves past left bound, delete the right column
   //and regen the left column
   if(plaX < *originX)
   {
-    //Top Right
-    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
-    //Right
-    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY);
-    //Bottom Right    
-    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+    //Swap Arrays
 
+    //Swap Top Left with Top Right
+    SwapArrayPointers(debrisArray, 10, 20, 30, 40);
+    //Swap Left with Right
+    SwapArrayPointers(debrisArray, 40, 50, 50, 60);
+    //Swap Bottom Left with Bottom Right    
+    SwapArrayPointers(debrisArray, 60, 70, 80, 90);
+    
     //Set new originX
     *originX = *originX - GAMEWIDTH;
     
     //Top Left
-    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 10, 20,  *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
     //Left
-    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY);
+    GenerateDebris(debrisTex, debrisArray, 40, 50, *originX - GAMEWIDTH, *originY);
     //Bottom Left
-    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 60, 70, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+
+    cout << "10 x: " << debrisArray[10].mX << "\n";
+    cout << "30 x: " << debrisArray[30].mX << "\n";
   }
   //If player moves past right bound, delete the left column
   //and regen the right column
   else if(plaX > *originX + GAMEWIDTH)
   {
-    //Top Left
-    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
-    //Left
-    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY);
-    //Bottom Left
-    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
-
+    cout << "RIGHT";
     //Set new originX
     *originX = *originX + GAMEWIDTH;
 
     //Top Right
-    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 30, 40, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
     //Right
-    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY);
+    GenerateDebris(debrisTex, debrisArray, 50, 60, *originX + GAMEWIDTH, *originY);
     //Bottom Right    
-    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 80, 90, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
   }
   //If player moves past top bound, delete the bottom row
   //and regen the top row
   else if(plaY < *originY)
   {
-    //Bottom Left
-    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
-    //Bottom
-    RemoveDebris(vDebris, *originX, *originY + GAMEHEIGHT);
-    //Bottom Right
-    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY + GAMEHEIGHT);
-
+    cout << "TOP";
     //Set new originX
     *originY = *originY - GAMEHEIGHT;
 
     //Top Left
-    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 10, 20, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
     //Top
-    GenerateDebris(renderer, vDebris, *originX, *originY - GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 20, 30, *originX, *originY - GAMEHEIGHT);
     //Top Right    
-    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 30, 40, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
   }
   //If player moves past bottom bound, delete the top row
   //and regen the bottom row
-  else if(plaY > *originY + GAMEHEIGHT)
+  else if(plaY + plaH > *originY + GAMEHEIGHT)
   {
-    //Top Left
-    RemoveDebris(vDebris, *originX - GAMEWIDTH, *originY - GAMEHEIGHT);
-    //Top
-    RemoveDebris(vDebris, *originX, *originY - GAMEHEIGHT);
-    //Top Right    
-    RemoveDebris(vDebris, *originX + GAMEWIDTH, *originY - GAMEHEIGHT);
-
+    cout << "BOTTOM";
     //Set new originX
     *originY = *originY + GAMEHEIGHT;
 
     //Bottom Left
-    GenerateDebris(renderer, vDebris, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 60, 70, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
     //Bottom
-    GenerateDebris(renderer, vDebris, *originX, *originY + GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 70, 80, *originX, *originY + GAMEHEIGHT);
     //Bottom Right
-    GenerateDebris(renderer, vDebris, *originX + GAMEWIDTH, *originY + GAMEHEIGHT);
+    GenerateDebris(debrisTex, debrisArray, 80, 90, *originX + GAMEWIDTH, *originY + GAMEHEIGHT);
   }
-
-  cout << "debris size: " << vDebris->size() << "\n";
 }
-*/
