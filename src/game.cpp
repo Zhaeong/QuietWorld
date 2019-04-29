@@ -585,6 +585,7 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   return horizontalCol && verticalCol;
 }
 
+//A becomes B, B is destoryed
 void SwapArrayPointers(Texture *debrisArray, int startA, int endA, int startB, int endB)
 {
   if(endA - startA == endB - startB)
@@ -616,13 +617,26 @@ void CheckDebrisField(SDL_Texture *debrisTex,
   if(plaX < *originX)
   {
     //Swap Arrays
+    //Order is important since we dont want to erase arrays we still use
+    //Start with the right column since that's all getting removed
 
-    //Swap Top Left with Top Right
-    SwapArrayPointers(debrisArray, 10, 20, 30, 40);
-    //Swap Left with Right
-    SwapArrayPointers(debrisArray, 40, 50, 50, 60);
-    //Swap Bottom Left with Bottom Right    
-    SwapArrayPointers(debrisArray, 60, 70, 80, 90);
+    //Top Right is now Top
+    SwapArrayPointers(debrisArray, 20, 30, 30, 40);
+
+    //Right now mid
+    SwapArrayPointers(debrisArray, 0, 10, 50, 60);
+
+    //Bottom right is now Bottom
+    SwapArrayPointers(debrisArray, 70, 80, 80, 90);   
+    
+    //Top is now top left
+    SwapArrayPointers(debrisArray, 10, 20, 20, 30);    
+    
+    //Mid is now Left
+    SwapArrayPointers(debrisArray, 40, 50, 0, 10);    
+
+    //Bottom is now Bottom Left   
+    SwapArrayPointers(debrisArray, 60, 70, 70, 80);    
     
     //Set new originX
     *originX = *originX - GAMEWIDTH;
@@ -634,8 +648,6 @@ void CheckDebrisField(SDL_Texture *debrisTex,
     //Bottom Left
     GenerateDebris(debrisTex, debrisArray, 60, 70, *originX - GAMEWIDTH, *originY + GAMEHEIGHT);
 
-    cout << "10 x: " << debrisArray[10].mX << "\n";
-    cout << "30 x: " << debrisArray[30].mX << "\n";
   }
   //If player moves past right bound, delete the left column
   //and regen the right column
