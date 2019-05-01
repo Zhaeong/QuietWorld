@@ -609,8 +609,6 @@ void CheckDebrisField(SDL_Texture *debrisTex,
                       int plaX, int plaY,
                       int plaW, int plaH)
 {
-  cout << "plaX: " << plaX << "\n";
-  cout << "originX: " << *originX << "\n";
 
   //If player moves past left bound, delete the right column
   //and regen the left column
@@ -620,22 +618,22 @@ void CheckDebrisField(SDL_Texture *debrisTex,
     //Order is important since we dont want to erase arrays we still use
     //Start with the right column since that's all getting removed
 
-    //Top Right is now Top
+    //Copy Top to Top Right
     SwapArrayPointers(debrisArray, 20, 30, 30, 40);
 
-    //Right now mid
+    //Copy Mid to Right
     SwapArrayPointers(debrisArray, 0, 10, 50, 60);
 
-    //Bottom right is now Bottom
+    //Copy Bottom to Bottom Right
     SwapArrayPointers(debrisArray, 70, 80, 80, 90);   
     
-    //Top is now top left
+    //Copy Top left to Top
     SwapArrayPointers(debrisArray, 10, 20, 20, 30);    
     
-    //Mid is now Left
+    //Copy Left to Mid
     SwapArrayPointers(debrisArray, 40, 50, 0, 10);    
 
-    //Bottom is now Bottom Left   
+    //Copy Bottom Left to Bottom
     SwapArrayPointers(debrisArray, 60, 70, 70, 80);    
     
     //Set new originX
@@ -653,7 +651,24 @@ void CheckDebrisField(SDL_Texture *debrisTex,
   //and regen the right column
   else if(plaX > *originX + GAMEWIDTH)
   {
-    cout << "RIGHT";
+    //Copy Top to Top Left
+    SwapArrayPointers(debrisArray, 20, 30, 10, 20);
+
+    //Copy Mid to Left
+    SwapArrayPointers(debrisArray, 0, 10, 40, 50);
+
+    //Copy Bottom to Bottom Left
+    SwapArrayPointers(debrisArray, 70, 80, 60, 70);   
+    
+    //Copy Top right to Top
+    SwapArrayPointers(debrisArray, 30, 40, 20, 30);    
+    
+    //Copy right to Mid
+    SwapArrayPointers(debrisArray, 50, 60, 0, 10);    
+
+    //Copy bottom right to Bottom   
+    SwapArrayPointers(debrisArray, 80, 90, 70, 80);
+    
     //Set new originX
     *originX = *originX + GAMEWIDTH;
 
