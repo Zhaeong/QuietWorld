@@ -683,7 +683,24 @@ void CheckDebrisField(SDL_Texture *debrisTex,
   //and regen the top row
   else if(plaY < *originY)
   {
-    cout << "TOP";
+    //Copy Left to Bottom Left
+    SwapArrayPointers(debrisArray, 40, 50, 60, 70);
+    
+    //Copy Mid to Bottom
+    SwapArrayPointers(debrisArray, 0, 10, 70, 80);
+
+    //Copy Right to Bottom Right
+    SwapArrayPointers(debrisArray, 50, 60, 80, 90);   
+    
+    //Copy Top Left to Left
+    SwapArrayPointers(debrisArray, 10, 20, 40, 50);    
+    
+    //Copy Top to Mid
+    SwapArrayPointers(debrisArray, 20, 30, 0, 10);    
+
+    //Copy Top right to right
+    SwapArrayPointers(debrisArray, 30, 40, 50, 60);
+    
     //Set new originX
     *originY = *originY - GAMEHEIGHT;
 
@@ -696,9 +713,27 @@ void CheckDebrisField(SDL_Texture *debrisTex,
   }
   //If player moves past bottom bound, delete the top row
   //and regen the bottom row
-  else if(plaY + plaH > *originY + GAMEHEIGHT)
+  else if(plaY  > *originY + GAMEHEIGHT)
   {
-    cout << "BOTTOM";
+    
+    //Copy Left to Top Left
+    SwapArrayPointers(debrisArray, 40, 50, 10, 20);
+    
+    //Copy Mid to Top
+    SwapArrayPointers(debrisArray, 0, 10, 20, 30);
+
+    //Copy Right to Top Right
+    SwapArrayPointers(debrisArray, 50, 60, 30, 40);   
+    
+    //Copy Bottom Left to Left
+    SwapArrayPointers(debrisArray, 60, 70, 40, 50);    
+    
+    //Copy Bottom to Mid
+    SwapArrayPointers(debrisArray, 70, 80, 0, 10);    
+
+    //Copy Bottom right to right
+    SwapArrayPointers(debrisArray, 80, 90, 50, 60);
+    
     //Set new originX
     *originY = *originY + GAMEHEIGHT;
 
