@@ -288,8 +288,14 @@ void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray)
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
   harvestButton.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
   harvestButton.mY = GAMEHEIGHT * 2/3 + 50;
-  harvestButton.mRender = false;
   uiArray[6] = harvestButton;
+
+  SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, BTN_HARVESTDEBRIS_ACTIVE);
+  Texture harvestButtonActive(harvestButtonActiveSDLTex, BTN_HARVESTDEBRIS_ACTIVE);
+  harvestButtonActive.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
+  harvestButtonActive.mY = GAMEHEIGHT * 2/3 + 50;
+  harvestButtonActive.mRender = false;
+  uiArray[7] = harvestButtonActive;
 
   
 }
@@ -379,7 +385,8 @@ string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos
     if(xPos >= texRef.mX
        && xPos <= (texRef.mX + texRef.mWidth)
        && yPos >= texRef.mY
-       && yPos <= (texRef.mY + texRef.mHeight))
+       && yPos <= (texRef.mY + texRef.mHeight)
+       && texRef.mRender)
     {
       colTex = texRef.mImgLocation;
     }
@@ -570,6 +577,12 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
 {
   //Check horizontal collision
   bool horizontalCol = false;
+
+  //If the item is not being rendered, it is not collidable
+  if(!texB.mRender)
+  {
+    return false;
+  }
   if(x + width >= texB.mX && x <= texB.mX + texB.mWidth)
   {
     horizontalCol = true;

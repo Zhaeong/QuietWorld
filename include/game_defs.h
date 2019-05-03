@@ -30,7 +30,7 @@ struct TextObj
 };
 
 //SPACE UI
-const int NUM_UI_ELEMENTS = 7;
+const int NUM_UI_ELEMENTS = 8;
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
 
 const string BTN_LEFTCURSOR     = "res/spaceUI/leftCursor.png";
@@ -40,8 +40,8 @@ const string BTN_STOPROT        = "res/spaceUI/stopRotate.png";
 const string BTN_INCREASESPEED  = "res/spaceUI/increaseSpeed.png";
 const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
 
-const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebris.png";
-
+const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebrisGray.png";
+const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
 
 //DEBRIS
 const int NUM_DEBRIS = 90;

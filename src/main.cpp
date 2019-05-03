@@ -49,17 +49,8 @@ int main(int argc, char* argv[])
 
   textArray[0] = debugText;
   
-  
-  //SDL_Texture *mainFontText = GetFontText(renderer, "res/text/mainText.png");
-  //Text textDisplay(renderer, mainFontText);
-
-  //textDisplay.addTextObj("You are Valued", 0 ,GAMEHEIGHT - 50, 0);
-  //textDisplay.addTextObj("", 0, 0, 0);
-  //textDisplay.addTextObj("", 0, 30, 0);
-  //textDisplay.addTextObj("", 0, 60, 0);
 
   //Create debris Array
-  //vector<Texture> vDebris;
   Texture debrisArray[NUM_DEBRIS];
 
   SDL_Texture *debrisTex = GetSDLTexture(renderer, DEBRIS_IMG);
@@ -159,11 +150,11 @@ int main(int argc, char* argv[])
         {
           mainShip.changeSpeed(-1);
         }
-        else if(texCol == BTN_HARVESTDEBRIS)
+        else if(texCol == BTN_HARVESTDEBRIS_ACTIVE)
         {
           if(debrisIndex != -1)
           {
-            
+            debrisArray[debrisIndex].mRender = false;
           }
         }
 
@@ -173,6 +164,33 @@ int main(int argc, char* argv[])
 
     int worldMouseX = camX + xMouse;
     int worldMouseY = camY + yMouse;
+
+    bool debrisCol = false;
+
+    for (int i = 0; i < NUM_DEBRIS; ++i)
+    {
+      Texture dObj = debrisArray[i];
+  
+      if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
+      {
+        debrisIndex = i;
+        debrisCol = true;
+      }
+      
+    }
+    if(debrisCol)
+    {
+      uiArray[6].mRender = false;
+      uiArray[7].mRender = true;
+    }
+    else
+    {
+      uiArray[6].mRender = true;
+      uiArray[7].mRender = false;
+      debrisIndex = -1;
+    }
+    
+    
     /*
 
       
@@ -198,17 +216,7 @@ int main(int argc, char* argv[])
     }
 
     //Check if current ship is over debris
-    if(!debrisCol)
-    {
-      //Remove harvest icon from UI
-      if(debrisUI)
-      {
-        vGameUI.pop_back();
-        debrisUI = false;
-      }
-      debrisIndex = -1;
-          
-    }
+    
     */
     //Update game state
     mainShip.updateBasedOnState();
