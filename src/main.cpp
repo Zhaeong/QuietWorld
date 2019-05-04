@@ -47,8 +47,7 @@ int main(int argc, char* argv[])
   TextObj debugText;
   debugText.mString = "hey";
 
-  textArray[0] = debugText;
-  
+  textArray[0] = debugText;  
 
   //Create debris Array
   Texture debrisArray[NUM_DEBRIS];
@@ -91,9 +90,8 @@ int main(int argc, char* argv[])
   bool runGame = true;
 
   int debrisIndex = -1;
-  bool debrisUI = false;
 
-
+  unsigned int gameTime = 0;
 
   while (runGame)
   {    
@@ -102,15 +100,15 @@ int main(int argc, char* argv[])
     //The color at which the screen will be if alpha = 0 on all textures
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
 
-    SDL_RenderClear(renderer);
-
-    frameTime = SDL_GetTicks() - frameStart;
-    
+    SDL_RenderClear(renderer);    
 
     ////////////////////////////////////////////////////////////////////////
     //Main Game Code
     ////////////////////////////////////////////////////////////////////////    
- 
+
+    //Update GameTime
+    gameTime = SDL_GetTicks();
+    
     //Get input
     int xMouse = 0;
     int yMouse = 0;
@@ -188,36 +186,8 @@ int main(int argc, char* argv[])
       uiArray[6].mRender = true;
       uiArray[7].mRender = false;
       debrisIndex = -1;
-    }
+    }    
     
-    
-    /*
-
-      
-
-      bool debrisCol = false;
-      for (unsigned i = 0; i < vDebris.size(); ++i)
-      {
-      Texture dObj = vDebris.at(i);
-      if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
-      {
-        debrisCol = true;
-        debrisIndex = i;
-        if(!debrisUI)
-        {
-          debrisUI = true;
-          Texture harvestDebrisButton(renderer, BTN_HARVESTDEBRIS);
-          harvestDebrisButton.mX = GAMEWIDTH - 60;
-          harvestDebrisButton.mY = GAMEHEIGHT * 2/3 + 50;
-          vGameUI.push_back(harvestDebrisButton);
-                  
-        }
-      }
-    }
-
-    //Check if current ship is over debris
-    
-    */
     //Update game state
     mainShip.updateBasedOnState();
 
@@ -233,16 +203,13 @@ int main(int argc, char* argv[])
     CheckDebrisField(debrisTex,
                      debrisArray,
                      &curBoundX, &curBoundY,
-                     mainShip.mPosition.x, mainShip.mPosition.y,
-                     mainShip.mWidth, mainShip.mHeight);
+                     mainShip.mPosition.x, mainShip.mPosition.y);
     
 
     ////////////////////
     //Render to screen//
-    ////////////////////   
+    ////////////////////
     
-    
-
     //Render Debris
     RenderDebris(renderer, debrisArray, camX, camY);
     
@@ -267,7 +234,7 @@ int main(int argc, char* argv[])
       textArray[2].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
 
       textArray[3].mY = 90;
-      textArray[3].mString = "Cam x:" + to_string(camX) + " y:" + to_string(camY);
+      textArray[3].mString = "GameTime:" + to_string(gameTime);
       
       SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
@@ -287,7 +254,9 @@ int main(int argc, char* argv[])
     ////////////////////////////////////////////////////////////////////////
     //End of main game code
     ////////////////////////////////////////////////////////////////////////
-      
+
+    frameTime = SDL_GetTicks() - frameStart;
+    
     if(frameDelay > frameTime)
     {
       SDL_Delay(frameDelay - frameTime);

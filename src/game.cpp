@@ -619,8 +619,7 @@ void SwapArrayPointers(Texture *debrisArray, int startA, int endA, int startB, i
 void CheckDebrisField(SDL_Texture *debrisTex,
                       Texture *debrisArray,
                       int *originX,int *originY,
-                      int plaX, int plaY,
-                      int plaW, int plaH)
+                      int plaX, int plaY)
 {
 
   //If player moves past left bound, delete the right column
