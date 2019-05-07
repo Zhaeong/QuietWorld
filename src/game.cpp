@@ -515,8 +515,33 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
     TextObj tObj = textArray[i];
 
     int curPos = tObj.mX;
-  
-    for(string::size_type j = 0; j < tObj.mString.size(); ++j) {
+
+    unsigned int numLetters = tObj.mLetters;
+
+   
+    if(tObj.mDelay == 0)
+    {
+      numLetters = tObj.mString.size();
+    }
+    else
+    {
+      unsigned int gameTime = SDL_GetTicks();
+
+      //Compares the last time the letter was incremented to cur time
+      //If enough time elpased > mDelay then increment num letters by one
+      if(gameTime - tObj.mLastTime > tObj.mDelay)
+      {
+        if(tObj.mLetters < tObj.mString.size())
+        {
+          tObj.mLetters += 1;
+          tObj.mLastTime = gameTime;
+          textArray[i] = tObj;
+        }
+        
+      }
+
+    }
+    for(unsigned int j = 0; j < numLetters; ++j) {
 
       char curChar = tObj.mString[j];
       int xTextPos = 0;

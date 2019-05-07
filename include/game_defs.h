@@ -26,7 +26,9 @@ struct TextObj
   string mString = "";
   int mX = 0;
   int mY = 0;
-  int mDelay = 0;
+  unsigned int mDelay = 0;
+  unsigned int mLastTime = 0;
+  unsigned int mLetters = 0;
 };
 
 //SPACE UI

@@ -45,7 +45,8 @@ int main(int argc, char* argv[])
   TextObj textArray[NUM_TEXT];
 
   TextObj debugText;
-  debugText.mString = "hey";
+  debugText.mString = "heyyy guys";
+  debugText.mDelay = 200;
 
   textArray[0] = debugText;  
 
