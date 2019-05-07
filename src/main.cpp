@@ -65,23 +65,23 @@ int main(int argc, char* argv[])
   GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);
   
   //Top Left
-  GenerateDebris(debrisTex, debrisArray, 10, 20, camX - GAMEWIDTH, camY - GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 10, 20, camX - DEBRISWIDTH, camY - DEBRISHEIGHT);
   //Top
-  GenerateDebris(debrisTex, debrisArray, 20, 30, camX, camY - GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 20, 30, camX, camY - DEBRISHEIGHT);
   //Top Right
-  GenerateDebris(debrisTex, debrisArray, 30, 40, camX + GAMEWIDTH, camY - GAMEHEIGHT);  
+  GenerateDebris(debrisTex, debrisArray, 30, 40, camX + DEBRISWIDTH, camY - DEBRISHEIGHT);  
   
   //Left
-  GenerateDebris(debrisTex, debrisArray, 40, 50, camX - GAMEWIDTH, camY);
+  GenerateDebris(debrisTex, debrisArray, 40, 50, camX - DEBRISWIDTH, camY);
   //Right
-  GenerateDebris(debrisTex, debrisArray, 50, 60, camX + GAMEWIDTH, camY);
+  GenerateDebris(debrisTex, debrisArray, 50, 60, camX + DEBRISWIDTH, camY);
 
   //Bottom Left
-  GenerateDebris(debrisTex, debrisArray, 60, 70, camX - GAMEWIDTH, camY + GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 60, 70, camX - DEBRISWIDTH, camY + DEBRISHEIGHT);
   //Bottom
-  GenerateDebris(debrisTex, debrisArray, 70, 80, camX, camY + GAMEHEIGHT);
+  GenerateDebris(debrisTex, debrisArray, 70, 80, camX, camY + DEBRISHEIGHT);
   //Bottom Right
-  GenerateDebris(debrisTex, debrisArray, 80, 90, camX + GAMEWIDTH, camY + GAMEHEIGHT);  
+  GenerateDebris(debrisTex, debrisArray, 80, 90, camX + DEBRISWIDTH, camY + DEBRISHEIGHT);  
 
   //Keep track of cur bound so that when player leaves regen and update coord
   int curBoundX = camX;

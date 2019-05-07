@@ -457,10 +457,10 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
 void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xCord, int yCord)
 {
   int genXmin = xCord;
-  int genXmax = xCord + GAMEWIDTH;
+  int genXmax = xCord + DEBRISWIDTH;
 
   int genYmin = yCord;
-  int genYmax = yCord + GAMEHEIGHT;  
+  int genYmax = yCord + DEBRISHEIGHT;  
 
  
   //cout << "xMin: " << genXmin << "\n";

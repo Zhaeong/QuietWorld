@@ -11,6 +11,10 @@ using namespace std;
 #define GAMEWIDTH  640
 #define GAMEHEIGHT 480
 
+
+#define DEBRISWIDTH 700
+#define DEBRISHEIGHT 540
+
 #define PI 3.14159265
 
 #define DEBUG 1
