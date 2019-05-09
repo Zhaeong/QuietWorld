@@ -94,6 +94,8 @@ int main(int argc, char* argv[])
 
   unsigned int gameTime = 0;
 
+  string gameState = STATE_INTRO;
+
   while (runGame)
   {    
     frameStart = SDL_GetTicks();
@@ -130,8 +132,7 @@ int main(int argc, char* argv[])
 
         if(texCol == BTN_LEFTCURSOR)
         {
-          mainShip.curState = Ship::ShipStates::ROTATELEFT;
-                  
+          mainShip.curState = Ship::ShipStates::ROTATELEFT;                  
         }
         else if(texCol == BTN_RIGHTCURSOR)
         {
@@ -157,97 +158,115 @@ int main(int argc, char* argv[])
           }
         }
 
+        if(gameState == STATE_INTRO)
+        {
+          gameState = STATE_GAME;
+        }
+
         cout << texCol << "\n";
       }
     }
 
-    int worldMouseX = camX + xMouse;
-    int worldMouseY = camY + yMouse;
-
-    bool debrisCol = false;
-
-    for (int i = 0; i < NUM_DEBRIS; ++i)
+    if(gameState == STATE_GAME)
     {
-      Texture dObj = debrisArray[i];
-  
-      if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
+      int worldMouseX = camX + xMouse;
+      int worldMouseY = camY + yMouse;
+
+      bool debrisCol = false;
+
+      for (int i = 0; i < NUM_DEBRIS; ++i)
       {
-        debrisIndex = i;
-        debrisCol = true;
+        Texture dObj = debrisArray[i];
+  
+        if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
+        {
+          debrisIndex = i;
+          debrisCol = true;
+        }
+      
       }
-      
-    }
-    if(debrisCol)
-    {
-      uiArray[6].mRender = false;
-      uiArray[7].mRender = true;
-    }
-    else
-    {
-      uiArray[6].mRender = true;
-      uiArray[7].mRender = false;
-      debrisIndex = -1;
-    }    
+      if(debrisCol)
+      {
+        uiArray[6].mRender = false;
+        uiArray[7].mRender = true;
+      }
+      else
+      {
+        uiArray[6].mRender = true;
+        uiArray[7].mRender = false;
+        debrisIndex = -1;
+      }    
     
-    //Update game state
-    mainShip.updateBasedOnState();
+      //Update game state
+      mainShip.updateBasedOnState();
 
-    //Update camera position
-    MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
-                         mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
-                         mainShip.mSpeed);
+      //Update camera position
+      MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
+                           mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
+                           mainShip.mSpeed);
 
     
 
-    //Check if player has breached the debris bounds
+      //Check if player has breached the debris bounds
     
-    CheckDebrisField(debrisTex,
-                     debrisArray,
-                     &curBoundX, &curBoundY,
-                     mainShip.mPosition.x, mainShip.mPosition.y);
+      CheckDebrisField(debrisTex,
+                       debrisArray,
+                       &curBoundX, &curBoundY,
+                       mainShip.mPosition.x, mainShip.mPosition.y);
     
 
-    ////////////////////
-    //Render to screen//
-    ////////////////////
+      ////////////////////
+      //Render to screen//
+      ////////////////////
     
-    //Render Debris
-    RenderDebris(renderer, debrisArray, camX, camY);
+      //Render Debris
+      RenderDebris(renderer, debrisArray, camX, camY);
     
-    //Render Ship
-    RenderShip(renderer, camX, camY, mainShip);
+      //Render Ship
+      RenderShip(renderer, camX, camY, mainShip);
     
-    //Render UI
-    RenderUI(renderer, uiArray, NUM_UI_ELEMENTS);
+      //Render UI
+      RenderUI(renderer, uiArray, NUM_UI_ELEMENTS);
     
       
-    //Render text    
-    RenderText(renderer, fontTex, textArray);
+      
 
       
-    //Render DEBUG items if turned on
-    if(DEBUG == 1)
-    {
-      textArray[1].mY = 30;
-      textArray[1].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+      //Render DEBUG items if turned on
+      if(DEBUG == 1)
+      {
+        textArray[1].mY = 30;
+        textArray[1].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
-      textArray[2].mY = 60;
-      textArray[2].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+        textArray[2].mY = 60;
+        textArray[2].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
 
-      textArray[3].mY = 90;
-      textArray[3].mString = "GameTime:" + to_string(gameTime);
+        textArray[3].mY = 90;
+        textArray[3].mString = "GameTime:" + to_string(gameTime);
       
-      SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
+        SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
-      SDL_RenderDrawLine(renderer,
-                         mainShip.mPosition.x,
-                         mainShip.mPosition.y,
-                         mainShip.mPosition.x + mainShip.mDirection.x * 10,
-                         mainShip.mPosition.y + mainShip.mDirection.y * 10 );
+        SDL_RenderDrawLine(renderer,
+                           mainShip.mPosition.x,
+                           mainShip.mPosition.y,
+                           mainShip.mPosition.x + mainShip.mDirection.x * 10,
+                           mainShip.mPosition.y + mainShip.mDirection.y * 10 );
        
           
           
+      }
+
     }
+    else if(gameState == STATE_INTRO)
+    {
+      textArray[0].mString = "Initiating Debris Cleanup Protocol";
+      textArray[0].mDelay = 200;
+      
+    }
+
+
+    //Render text    
+    RenderText(renderer, fontTex, textArray);
       
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);

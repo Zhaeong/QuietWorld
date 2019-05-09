@@ -35,6 +35,11 @@ struct TextObj
   unsigned int mLetters = 0;
 };
 
+//GAME STATES
+
+const string STATE_INTRO = "INTRO";
+const string STATE_GAME = "GAME";
+
 //SPACE UI
 const int NUM_UI_ELEMENTS = 8;
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
