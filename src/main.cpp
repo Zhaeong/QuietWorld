@@ -259,7 +259,7 @@ int main(int argc, char* argv[])
     }
     else if(gameState == STATE_INTRO)
     {
-      textArray[0].mString = "Initiating Debris Cleanup Protocol";
+      textArray[0].mString = "Initiating Debris Cleanup Protocol aabbbssc dfsfsd d";
       textArray[0].mDelay = 200;
       
     }

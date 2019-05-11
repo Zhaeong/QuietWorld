@@ -514,7 +514,8 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
     
     TextObj tObj = textArray[i];
 
-    int curPos = tObj.mX;
+    int curPosX = tObj.mX;
+    int curPosY = tObj.mY;
 
     unsigned int numLetters = tObj.mLetters;
 
@@ -586,12 +587,19 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
       srcRect.x = 20 * xTextPos;
       srcRect.y = yTextPos;
     
-      dstRect.x = curPos;
-      dstRect.y = tObj.mY;
+      dstRect.x = curPosX;
+      dstRect.y = curPosY;
 
       SDL_RenderCopyEx(renderer, fontTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
 
-      curPos += 20;
+      curPosX += 20;
+
+      //Wraps to next line if the text exceeds the width
+      if(curPosX > GAMEWIDTH)
+      {
+        curPosX = tObj.mX;
+        curPosY += 20;
+      }
     }
   }
 }
