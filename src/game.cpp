@@ -300,6 +300,16 @@ void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray)
   
 }
 
+void InitIntroUI(SDL_Renderer *renderer, Texture *uiArray)
+{ 
+  SDL_Texture *startGameTex = GetSDLTexture(renderer, BTN_STARTGAME);
+  Texture startGameButton(startGameTex, BTN_STARTGAME);
+  startGameButton.mX = GAMEWIDTH/2 - (startGameButton.mWidth/2);
+  startGameButton.mY = GAMEHEIGHT * 2/3;
+  uiArray[0] = startGameButton;
+}
+
+
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
 {
   for (int i = 0; i < size; ++i)

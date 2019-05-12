@@ -47,6 +47,8 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship);
 
 void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray);
 
+void InitIntroUI(SDL_Renderer *renderer, Texture *uiArray);
+
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 
 string GetAction(int *mouseXpos, int *mouseYpos);

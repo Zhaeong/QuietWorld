@@ -24,9 +24,12 @@ int main(int argc, char* argv[])
   int camH = GAMEHEIGHT * 2 / 3;
 
   
-  //Create UI array
-  Texture uiArray[NUM_UI_ELEMENTS];
-  InitSpaceUI(renderer, uiArray);
+  //Create UI arrays
+  Texture uiSpaceArray[NUM_SPACE_UI];
+  InitSpaceUI(renderer, uiSpaceArray);
+
+  Texture uiIntroArray[NUM_INTRO_UI];
+  InitIntroUI(renderer, uiIntroArray);
 
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer,  "res/ship/ship.png");
@@ -117,58 +120,55 @@ int main(int argc, char* argv[])
     int yMouse = 0;
       
     string eventType = GetAction(&xMouse, &yMouse);
-    
+
     if(eventType == "EXIT")
     {
       runGame = false;
     }
 
-    if(eventType != "NONE")
-    {
-      cout << eventType << "\n";
-      if(eventType == "MOUSE_DOWN")
-      {
-        string texCol = TextureMouseCollision(uiArray, NUM_UI_ELEMENTS, xMouse, yMouse);
-
-        if(texCol == BTN_LEFTCURSOR)
-        {
-          mainShip.curState = Ship::ShipStates::ROTATELEFT;                  
-        }
-        else if(texCol == BTN_RIGHTCURSOR)
-        {
-          mainShip.curState = Ship::ShipStates::ROTATERIGHT;
-        }
-        else if(texCol == BTN_STOPROT)
-        {
-          mainShip.curState = Ship::ShipStates::IDLE;
-        }
-        else if(texCol == BTN_INCREASESPEED)
-        {
-          mainShip.changeSpeed(1);
-        }
-        else if(texCol == BTN_DECREASESPEED)
-        {
-          mainShip.changeSpeed(-1);
-        }
-        else if(texCol == BTN_HARVESTDEBRIS_ACTIVE)
-        {
-          if(debrisIndex != -1)
-          {
-            debrisArray[debrisIndex].mRender = false;
-          }
-        }
-
-        if(gameState == STATE_INTRO)
-        {
-          gameState = STATE_GAME;
-        }
-
-        cout << texCol << "\n";
-      }
-    }
-
     if(gameState == STATE_GAME)
     {
+      
+      if(eventType != "NONE")
+      {
+        cout << eventType << "\n";
+        if(eventType == "MOUSE_DOWN")
+        {
+          string texCol = TextureMouseCollision(uiSpaceArray, NUM_SPACE_UI, xMouse, yMouse);
+
+          if(texCol == BTN_LEFTCURSOR)
+          {
+            mainShip.curState = Ship::ShipStates::ROTATELEFT;                  
+          }
+          else if(texCol == BTN_RIGHTCURSOR)
+          {
+            mainShip.curState = Ship::ShipStates::ROTATERIGHT;
+          }
+          else if(texCol == BTN_STOPROT)
+          {
+            mainShip.curState = Ship::ShipStates::IDLE;
+          }
+          else if(texCol == BTN_INCREASESPEED)
+          {
+            mainShip.changeSpeed(1);
+          }
+          else if(texCol == BTN_DECREASESPEED)
+          {
+            mainShip.changeSpeed(-1);
+          }
+          else if(texCol == BTN_HARVESTDEBRIS_ACTIVE)
+          {
+            if(debrisIndex != -1)
+            {
+              debrisArray[debrisIndex].mRender = false;
+            }
+          }         
+
+          cout << texCol << "\n";
+        }
+      }
+
+    
       int worldMouseX = camX + xMouse;
       int worldMouseY = camY + yMouse;
 
@@ -187,13 +187,13 @@ int main(int argc, char* argv[])
       }
       if(debrisCol)
       {
-        uiArray[6].mRender = false;
-        uiArray[7].mRender = true;
+        uiSpaceArray[6].mRender = false;
+        uiSpaceArray[7].mRender = true;
       }
       else
       {
-        uiArray[6].mRender = true;
-        uiArray[7].mRender = false;
+        uiSpaceArray[6].mRender = true;
+        uiSpaceArray[7].mRender = false;
         debrisIndex = -1;
       }    
     
@@ -226,11 +226,7 @@ int main(int argc, char* argv[])
       RenderShip(renderer, camX, camY, mainShip);
     
       //Render UI
-      RenderUI(renderer, uiArray, NUM_UI_ELEMENTS);
-    
-      
-      
-
+      RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
       
       //Render DEBUG items if turned on
       if(DEBUG == 1)
@@ -261,6 +257,20 @@ int main(int argc, char* argv[])
     {
       textArray[0].mString = "Initiating Debris Cleanup Protocol aabbbssc dfsfsd d";
       textArray[0].mDelay = 200;
+
+      if(eventType == "MOUSE_DOWN")
+      {
+        string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
+
+        if(texCol == BTN_STARTGAME)
+        {
+          gameState = STATE_GAME;           
+        }        
+      }
+    
+
+    //Render UI
+    RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
       
     }
 

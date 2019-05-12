@@ -41,7 +41,9 @@ const string STATE_INTRO = "INTRO";
 const string STATE_GAME = "GAME";
 
 //SPACE UI
-const int NUM_UI_ELEMENTS = 8;
+
+const int NUM_SPACE_UI = 8;
+
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
 
 const string BTN_LEFTCURSOR     = "res/spaceUI/leftCursor.png";
@@ -53,6 +55,12 @@ const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
 
 const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebrisGray.png";
 const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
+
+
+//INTRO UI
+
+const int NUM_INTRO_UI = 1;
+const string BTN_STARTGAME     = "res/dialogUI/startGame.png";
 
 //DEBRIS
 const int NUM_DEBRIS = 90;
