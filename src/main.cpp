@@ -97,7 +97,9 @@ int main(int argc, char* argv[])
 
   unsigned int gameTime = 0;
 
-  string gameState = STATE_INTRO;
+  unsigned int numDebris = 0;
+
+  string gameState = STATE_PAUSE;
 
   while (runGame)
   {    
@@ -128,7 +130,7 @@ int main(int argc, char* argv[])
 
     if(gameState == STATE_GAME)
     {
-      
+
       if(eventType != "NONE")
       {
         cout << eventType << "\n";
@@ -161,6 +163,12 @@ int main(int argc, char* argv[])
             if(debrisIndex != -1)
             {
               debrisArray[debrisIndex].mRender = false;
+              numDebris += 1;
+
+              if(numDebris == 10)
+              {
+                gameState = STATE_PAUSE;             
+              }
             }
           }         
 
@@ -207,13 +215,14 @@ int main(int argc, char* argv[])
 
     
 
-      //Check if player has breached the debris bounds
-    
+      //Check if player has breached the debris bounds    
       CheckDebrisField(debrisTex,
                        debrisArray,
                        &curBoundX, &curBoundY,
                        mainShip.mPosition.x, mainShip.mPosition.y);
-    
+
+      //Set num of debris gathered
+      textArray[0].mString = to_string(numDebris);
 
       ////////////////////
       //Render to screen//
@@ -230,7 +239,8 @@ int main(int argc, char* argv[])
       
       //Render DEBUG items if turned on
       if(DEBUG == 1)
-      {
+      {       
+        
         textArray[1].mY = 30;
         textArray[1].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
@@ -253,10 +263,19 @@ int main(int argc, char* argv[])
       }
 
     }
-    else if(gameState == STATE_INTRO)
+    else if(gameState == STATE_PAUSE)
     {
-      textArray[0].mString = "Initiating Debris Cleanup Protocol aabbbssc dfsfsd d";
-      textArray[0].mDelay = 200;
+
+      if(numDebris == 0)
+      {
+        textArray[0].mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
+        textArray[0].mDelay = 200;
+      }
+      else if(numDebris == 10)
+      {
+        textArray[0].mString = "You are doing a good job";
+        textArray[0].mDelay = 200;
+      }
 
       if(eventType == "MOUSE_DOWN")
       {
@@ -264,15 +283,17 @@ int main(int argc, char* argv[])
 
         if(texCol == BTN_STARTGAME)
         {
+          textArray[0].mString = "";
+          textArray[0].mLetters = 0;
           gameState = STATE_GAME;           
         }        
-      }
-    
+      }    
 
-    //Render UI
-    RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
+      //Render UI
+      RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
       
     }
+   
 
 
     //Render text    

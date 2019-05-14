@@ -37,8 +37,8 @@ struct TextObj
 
 //GAME STATES
 
-const string STATE_INTRO = "INTRO";
 const string STATE_GAME = "GAME";
+const string STATE_PAUSE = "PAUSE";
 
 //SPACE UI
 
