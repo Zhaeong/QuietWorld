@@ -16,7 +16,7 @@
  CC = g++
 
 #-ggdb compiles with debug symbols
-CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0
+CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0 -std=c++11
 LINKERS = -lSDL2main -lSDL2 -lSDL2_image
 
 SRCDIR = src
@@ -37,7 +37,8 @@ EXENAME = QuietWorld
 
 #Used brew install sdl2 and brew install sdl2_image
 INCLUDES = -Iinclude                                                     \
-           -I/usr/local/include
+           -I/usr/local/include											 \
+		   -I/usr/local/include/SDL2
 
 LIBS = -L/usr/local/lib       \
 
