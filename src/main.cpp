@@ -1,7 +1,9 @@
 #include "main.h"
 
-int main(int argc, char* argv[])
+int main(void)
 {
+
+  //Declarations for sdl window displaying
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;
   const int FPS = 60;
@@ -35,6 +37,15 @@ int main(int argc, char* argv[])
   SDL_Texture *shipTex = GetSDLTexture(renderer,  "res/ship/ship.png");
   Ship mainShip(shipTex);
 
+  //Create bounds for player 
+  SDL_Texture *backgroundTex = GetSDLTexture(renderer,  "res/background/level1.png");
+  Texture gameBackground = Texture(backgroundTex, "res/background/level1.png");
+  
+  int curLevelBoundX = gameBackground.mWidth;
+  int curLevelBoundY = gameBackground.mHeight;
+
+  mainShip.mPosition.x = curLevelBoundX/2;
+  mainShip.mPosition.y = curLevelBoundY/2;
 
   CenterCamOnPlayer(&camX, &camY, camW, camH,
                     mainShip.mPosition.x,
@@ -43,7 +54,6 @@ int main(int argc, char* argv[])
                     mainShip.mHeight);
   
   //Create texture handling
-
   SDL_Texture *fontTex = GetSDLTexture(renderer, "res/text/mainText.png");
   TextObj textArray[NUM_TEXT];
 
@@ -58,37 +68,11 @@ int main(int argc, char* argv[])
 
   SDL_Texture *debrisTex = GetSDLTexture(renderer, DEBRIS_IMG);
 
-  //Initialize random seed as game width
+  //Initialize random seed for generating debris
   srand(3234);
 
-  //Generate debris in 3x3 shape, so when player moves to one of the
-  //bounds it'll regen that part appearing to be infinite
-
-  //Mid
-  GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);
-  
-  //Top Left
-  GenerateDebris(debrisTex, debrisArray, 10, 20, camX - DEBRISWIDTH, camY - DEBRISHEIGHT);
-  //Top
-  GenerateDebris(debrisTex, debrisArray, 20, 30, camX, camY - DEBRISHEIGHT);
-  //Top Right
-  GenerateDebris(debrisTex, debrisArray, 30, 40, camX + DEBRISWIDTH, camY - DEBRISHEIGHT);  
-  
-  //Left
-  GenerateDebris(debrisTex, debrisArray, 40, 50, camX - DEBRISWIDTH, camY);
-  //Right
-  GenerateDebris(debrisTex, debrisArray, 50, 60, camX + DEBRISWIDTH, camY);
-
-  //Bottom Left
-  GenerateDebris(debrisTex, debrisArray, 60, 70, camX - DEBRISWIDTH, camY + DEBRISHEIGHT);
-  //Bottom
-  GenerateDebris(debrisTex, debrisArray, 70, 80, camX, camY + DEBRISHEIGHT);
-  //Bottom Right
-  GenerateDebris(debrisTex, debrisArray, 80, 90, camX + DEBRISWIDTH, camY + DEBRISHEIGHT);  
-
-  //Keep track of cur bound so that when player leaves regen and update coord
-  int curBoundX = camX;
-  int curBoundY = camY;
+  //Generate debris
+  GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);  
 
   //RemoveDebris(&vDebris, camX, camY);
   bool runGame = true;
@@ -215,19 +199,16 @@ int main(int argc, char* argv[])
 
     
 
-      //Check if player has breached the debris bounds    
-      CheckDebrisField(debrisTex,
-                       debrisArray,
-                       &curBoundX, &curBoundY,
-                       mainShip.mPosition.x, mainShip.mPosition.y);
-
       //Set num of debris gathered
       textArray[0].mString = to_string(numDebris);
 
       ////////////////////
       //Render to screen//
       ////////////////////
-    
+
+      //Render Background
+      RenderTextureByCam(camX, camY, renderer, gameBackground);
+
       //Render Debris
       RenderDebris(renderer, debrisArray, camX, camY);
     
@@ -256,9 +237,7 @@ int main(int argc, char* argv[])
                            mainShip.mPosition.x,
                            mainShip.mPosition.y,
                            mainShip.mPosition.x + mainShip.mDirection.x * 10,
-                           mainShip.mPosition.y + mainShip.mDirection.y * 10 );
-       
-          
+                           mainShip.mPosition.y + mainShip.mDirection.y * 10 );          
           
       }
 
