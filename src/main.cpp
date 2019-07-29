@@ -154,8 +154,7 @@ int main(void)
                 gameState = STATE_PAUSE;             
               }
             }
-          }         
-
+          }
           cout << texCol << "\n";
         }
       }
@@ -190,7 +189,7 @@ int main(void)
       }    
     
       //Update game state
-      mainShip.updateBasedOnState();
+      mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
 
       //Update camera position
       MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
@@ -220,8 +219,7 @@ int main(void)
       
       //Render DEBUG items if turned on
       if(DEBUG == 1)
-      {       
-        
+      {
         textArray[1].mY = 30;
         textArray[1].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
@@ -272,8 +270,6 @@ int main(void)
       RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
       
     }
-   
-
 
     //Render text    
     RenderText(renderer, fontTex, textArray);
