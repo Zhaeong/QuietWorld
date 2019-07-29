@@ -42,11 +42,11 @@ public:
 
   void rotateByDegree(double degrees);
 
-  void changePosition();
+  void changePosition(int curLevelBoundX, int curLevelBoundY);
 
   void changeSpeed(int speed);
 
-  void updateBasedOnState();
+  void updateBasedOnState(int curLevelBoundX, int curLevelBoundY);
 
   void changeRotation(bool left);
   
