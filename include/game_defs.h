@@ -25,6 +25,12 @@ struct vect2
   float y;
 };
 
+struct vect2int
+{
+  int x;
+  int y;
+};
+
 struct TextObj
 {
   string mString = "";
