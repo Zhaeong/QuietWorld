@@ -55,7 +55,7 @@ void Ship::changeRotation(bool left)
 
 }
 
-void Ship::updateBasedOnState()
+void Ship::updateBasedOnState(int curLevelBoundX, int curLevelBoundY)
 {
   switch(curState)
   {
@@ -73,13 +73,20 @@ void Ship::updateBasedOnState()
     break;
   }
 
-  changePosition();
+  changePosition(curLevelBoundX, curLevelBoundY);
 }
 
-void Ship::changePosition()
-{  
-  mPosition.x += mDirection.x * mSpeed;
-  mPosition.y += mDirection.y * mSpeed; 
+void Ship::changePosition(int curLevelBoundX, int curLevelBoundY)
+{ 
+  float newPosX = mPosition.x + mDirection.x * mSpeed;
+  float newPosY = mPosition.y + mDirection.y * mSpeed; 
+
+  if((newPosX >= 0 && (newPosX + mWidth) <= curLevelBoundX)
+    &&(newPosY >= 0 && (newPosY + mHeight) <= curLevelBoundY))
+  {
+    mPosition.x += mDirection.x * mSpeed;
+    mPosition.y += mDirection.y * mSpeed; 
+  }
 }
 
 void Ship::changeSpeed(int speed)
