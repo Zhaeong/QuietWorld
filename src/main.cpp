@@ -1,6 +1,10 @@
 #include "main.h"
 
-int main(void)
+//Need to use this main signature (int argv, char** args)
+//Because SDL alters default program entry point resolving
+//SDL calls your entry point expecting a specific signature,
+//which is no longer subject to compiler interpretation
+int main(int argv, char** args)
 {
   //Declarations for sdl window displaying
   SDL_Window *window = NULL;
