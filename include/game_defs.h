@@ -74,7 +74,7 @@ const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 
 //TEXT DISPLAY
-const int NUM_TEXT = 4;
+const int NUM_TEXT = 5;
 
 #endif // GAMEDEFS_H
  
