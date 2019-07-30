@@ -41,6 +41,8 @@ void DrawBoundingBoxCam(SDL_Renderer *renderer,
                         int g,
                         int b);
 
+void RenderTexture(SDL_Renderer *renderer, Texture tex);
+
 void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex);
 
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship);
@@ -78,12 +80,6 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
 
 bool TextureCollide(int x, int y, int width, int height , Texture texB);
 
-void SwapArrayPointers(Texture *debrisArray, int startA, int endA, int startB, int endB);
-
-void CheckDebrisField(SDL_Texture *debrisTex,
-                      Texture *debrisArray,
-                      int *originX,int *originY,
-                      int plaX, int plaY);
 
 #endif // GAME_H
  
