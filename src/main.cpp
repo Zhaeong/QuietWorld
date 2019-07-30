@@ -2,7 +2,6 @@
 
 int main(void)
 {
-
   //Declarations for sdl window displaying
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;
@@ -25,7 +24,6 @@ int main(void)
   int camW = GAMEWIDTH;
   int camH = GAMEHEIGHT * 2 / 3;
 
-  
   //Create UI arrays
   Texture uiSpaceArray[NUM_SPACE_UI];
   InitSpaceUI(renderer, uiSpaceArray);
@@ -36,6 +34,13 @@ int main(void)
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer,  "res/ship/ship.png");
   Ship mainShip(shipTex);
+
+  //Load textures for mining progress
+  SDL_Texture *miningBarEmpty = GetSDLTexture(renderer,  "res/dialogUI/mineBarEmpty.png");
+  Texture miningBarEmptyTex = Texture(miningBarEmpty, "res/dialogUI/mineBarEmpty.png");
+
+  SDL_Texture *miningBarColor = GetSDLTexture(renderer,  "res/dialogUI/mineBarColor.png");
+  Texture miningBarColorTex = Texture(miningBarColor, "res/dialogUI/mineBarColor.png");
 
   //Create bounds for player 
   SDL_Texture *backgroundTex = GetSDLTexture(renderer,  "res/background/level1.png");
@@ -83,6 +88,10 @@ int main(void)
 
   unsigned int numDebris = 0;
 
+  //Variables
+  bool isMining = false;
+  unsigned int holdDownTime = 0;
+
   string gameState = STATE_PAUSE;
 
   while (runGame)
@@ -114,7 +123,6 @@ int main(void)
 
     if(gameState == STATE_GAME)
     {
-
       if(eventType != "NONE")
       {
         cout << eventType << "\n";
@@ -146,10 +154,11 @@ int main(void)
           {
             if(debrisIndex != -1)
             {
-              debrisArray[debrisIndex].mRender = false;
-              numDebris += 1;
+              isMining = true;              
+              //debrisArray[debrisIndex].mRender = false;
+              //numDebris += 1;
 
-              if(numDebris == 10)
+              if(numDebris == 2)
               {
                 gameState = STATE_PAUSE;             
               }
@@ -157,9 +166,13 @@ int main(void)
           }
           cout << texCol << "\n";
         }
+        else if(eventType == "MOUSE_UP")
+        {
+          isMining = false;
+          holdDownTime = 0;
+        }
       }
 
-    
       int worldMouseX = camX + xMouse;
       int worldMouseY = camY + yMouse;
 
@@ -186,7 +199,15 @@ int main(void)
         uiSpaceArray[6].mRender = true;
         uiSpaceArray[7].mRender = false;
         debrisIndex = -1;
+        isMining = false;
+        holdDownTime = 0;
       }    
+
+      //Check if mining and increment 
+      if(isMining)
+      {
+        holdDownTime += 1;
+      }
     
       //Update game state
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
@@ -195,8 +216,6 @@ int main(void)
       MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,
                            mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight,
                            mainShip.mSpeed);
-
-    
 
       //Set num of debris gathered
       textArray[0].mString = to_string(numDebris);
@@ -213,6 +232,29 @@ int main(void)
     
       //Render Ship
       RenderShip(renderer, camX, camY, mainShip);
+
+      //Render Miningbar
+      if(isMining)
+      {
+        //Convert player world position to screen position
+        int playCamX = mainShip.mPosition.x - camX;
+        int playCamY = mainShip.mPosition.y - camY;
+        miningBarEmptyTex.mX = playCamX;
+        miningBarEmptyTex.mY = playCamY;
+
+        RenderTexture(renderer, miningBarEmptyTex);
+
+
+        //Now render the progress based on
+        miningBarColorTex.mX = playCamX;
+        miningBarColorTex.mY = playCamY;
+        miningBarColorTex.mWidth = holdDownTime;
+
+        RenderTexture(renderer, miningBarColorTex);
+
+
+
+      }
     
       //Render UI
       RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
@@ -228,6 +270,9 @@ int main(void)
 
         textArray[3].mY = 90;
         textArray[3].mString = "GameTime:" + to_string(gameTime);
+
+        textArray[4].mY = 120;
+        textArray[4].mString = "HoldDown:" + to_string(holdDownTime);
       
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
@@ -246,12 +291,12 @@ int main(void)
       if(numDebris == 0)
       {
         textArray[0].mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
-        textArray[0].mDelay = 200;
+        textArray[0].mDelay = 20;
       }
-      else if(numDebris == 10)
+      else if(numDebris == 2)
       {
         textArray[0].mString = "You are doing a good job";
-        textArray[0].mDelay = 200;
+        textArray[0].mDelay = 20;
       }
 
       if(eventType == "MOUSE_DOWN")
