@@ -25,7 +25,7 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
   return 0;
 }
 
-SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, string textureLocation)
+SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string textureLocation)
 {
   //Make sure to initialize texture to null or else SDL_DestroyTexture will crash program
   SDL_Texture *texture = NULL;
@@ -42,7 +42,7 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, string textureLocation)
   {
     //Convert surface to display format
     SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
-                                                              SDL_PIXELFORMAT_ARGB8888,
+                                                              SDL_GetWindowPixelFormat( window ),
                                                               0 );
     if( formattedSurface == NULL )
     {
@@ -52,20 +52,42 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, string textureLocation)
     else
     {
       //Create blank streamable texture
-      /*
+      
+      
       texture = SDL_CreateTexture( renderer,
-                                   SDL_PIXELFORMAT_ARGB8888,
+                                   SDL_GetWindowPixelFormat( window ),
                                    SDL_TEXTUREACCESS_STREAMING,
                                    formattedSurface->w,
                                    formattedSurface->h );
-      */
+                                   
+      
+      cout << "The window mode: " << SDL_PIXELFORMAT_ARGB8888 << "\n";
 
-      texture = SDL_CreateTextureFromSurface( renderer, formattedSurface );
+      //texture = SDL_CreateTextureFromSurface( renderer, formattedSurface );
       if( texture == NULL )
       {
         printf( "Unable to create blank texture! SDL Error: %s\n",
                 SDL_GetError() );
-      }      
+      }
+      else
+			{
+        void* mPixels;
+        int mPitch;
+
+				//Lock texture for manipulation
+				SDL_LockTexture( texture, NULL, &mPixels, &mPitch );
+
+				//Copy loaded/formatted surface pixels
+				memcpy( mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h );
+
+				//Unlock texture to update
+				SDL_UnlockTexture( texture );
+				mPixels = NULL;
+
+				//Get image dimensions
+				//mWidth = formattedSurface->w;
+				//mHeight = formattedSurface->h;
+			}
 
       //Get rid of old formatted surface
       SDL_FreeSurface( formattedSurface );
@@ -216,6 +238,11 @@ void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
   }
 }
 
+void RemoveTextureWhiteSpace(Texture tex)
+{
+
+}
+
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
 {
     //Convert character world coord to screen coord
@@ -245,52 +272,52 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
   }
 }
 
-void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray)
+void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 { 
-  SDL_Texture *backgroundSDLTex = GetSDLTexture(renderer, GRAYBACKGROUND);
+  SDL_Texture *backgroundSDLTex = GetSDLTexture(renderer, window, GRAYBACKGROUND);
   Texture background(backgroundSDLTex, GRAYBACKGROUND);
   background.mX = 0;
   background.mY = GAMEHEIGHT * 2/3;
   uiArray[0] = background;
 
   //Add rotation controls  
-  SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, BTN_LEFTCURSOR);
+  SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR);
   Texture leftButton(leftButtonSDLTex, BTN_LEFTCURSOR);
   leftButton.mX = 50;
   leftButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[1] = leftButton;
   
-  SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, BTN_STOPROT);
+  SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT);
   Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[2] = stopButton;
 
-  SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, BTN_RIGHTCURSOR);
+  SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR);
   Texture rightButton(rightButtonSDLTex, BTN_RIGHTCURSOR);
   rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
   rightButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[3] = rightButton;
 
-  SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, BTN_INCREASESPEED);
+  SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED);
   Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
   speedincreaseButton.mX = rightButton.mX + rightButton.mWidth + 20;
   speedincreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[4] = speedincreaseButton;
 
-  SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, BTN_DECREASESPEED);
+  SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED);
   Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
   speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
   speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[5] = speeddecreaseButton;
 
-  SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, BTN_HARVESTDEBRIS);
+  SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS);
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
   harvestButton.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
   harvestButton.mY = GAMEHEIGHT * 2/3 + 50;
   uiArray[6] = harvestButton;
 
-  SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, BTN_HARVESTDEBRIS_ACTIVE);
+  SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ACTIVE);
   Texture harvestButtonActive(harvestButtonActiveSDLTex, BTN_HARVESTDEBRIS_ACTIVE);
   harvestButtonActive.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
   harvestButtonActive.mY = GAMEHEIGHT * 2/3 + 50;
@@ -300,9 +327,9 @@ void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray)
   
 }
 
-void InitIntroUI(SDL_Renderer *renderer, Texture *uiArray)
+void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 { 
-  SDL_Texture *startGameTex = GetSDLTexture(renderer, BTN_STARTGAME);
+  SDL_Texture *startGameTex = GetSDLTexture(renderer, window, BTN_STARTGAME);
   Texture startGameButton(startGameTex, BTN_STARTGAME);
   startGameButton.mX = GAMEWIDTH/2 - (startGameButton.mWidth/2);
   startGameButton.mY = GAMEHEIGHT * 2/3;
