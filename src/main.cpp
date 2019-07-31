@@ -30,24 +30,24 @@ int main(int argv, char** args)
 
   //Create UI arrays
   Texture uiSpaceArray[NUM_SPACE_UI];
-  InitSpaceUI(renderer, uiSpaceArray);
+  InitSpaceUI(renderer, window, uiSpaceArray);
 
   Texture uiIntroArray[NUM_INTRO_UI];
-  InitIntroUI(renderer, uiIntroArray);
+  InitIntroUI(renderer, window, uiIntroArray);
 
   //Create ship char
-  SDL_Texture *shipTex = GetSDLTexture(renderer,  "res/ship/ship.png");
+  SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
   Ship mainShip(shipTex);
 
   //Load textures for mining progress
-  SDL_Texture *miningBarEmpty = GetSDLTexture(renderer,  "res/dialogUI/mineBarEmpty.png");
+  SDL_Texture *miningBarEmpty = GetSDLTexture(renderer, window, "res/dialogUI/mineBarEmpty.png");
   Texture miningBarEmptyTex = Texture(miningBarEmpty, "res/dialogUI/mineBarEmpty.png");
 
-  SDL_Texture *miningBarColor = GetSDLTexture(renderer,  "res/dialogUI/mineBarColor.png");
+  SDL_Texture *miningBarColor = GetSDLTexture(renderer, window, "res/dialogUI/mineBarColor.png");
   Texture miningBarColorTex = Texture(miningBarColor, "res/dialogUI/mineBarColor.png");
 
   //Create bounds for player 
-  SDL_Texture *backgroundTex = GetSDLTexture(renderer,  "res/background/level1.png");
+  SDL_Texture *backgroundTex = GetSDLTexture(renderer, window, "res/background/level1.png");
   Texture gameBackground = Texture(backgroundTex, "res/background/level1.png");
   
   int curLevelBoundX = gameBackground.mWidth;
@@ -63,7 +63,7 @@ int main(int argv, char** args)
                     mainShip.mHeight);
   
   //Create texture handling
-  SDL_Texture *fontTex = GetSDLTexture(renderer, "res/text/mainText.png");
+  SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   TextObj textArray[NUM_TEXT];
 
   TextObj debugText;
@@ -75,7 +75,7 @@ int main(int argv, char** args)
   //Create debris Array
   Texture debrisArray[NUM_DEBRIS];
 
-  SDL_Texture *debrisTex = GetSDLTexture(renderer, DEBRIS_IMG);
+  SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
 
   //Initialize random seed for generating debris
   srand(3234);
@@ -184,7 +184,7 @@ int main(int argv, char** args)
         holdDownTime += 1;
 
         //If player held down for entire width of bar, destroy debris
-        if(holdDownTime == miningBarEmptyTex.mWidth)
+        if(holdDownTime == (unsigned int)miningBarEmptyTex.mWidth)
         {
           debrisArray[debrisIndex].mRender = false;
           numDebris += 1;
