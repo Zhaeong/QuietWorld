@@ -125,6 +125,8 @@ int main(int argv, char** args)
       runGame = false;
     }
 
+    
+
     if(gameState == STATE_GAME)
     {
       if(eventType != "NONE")
@@ -159,8 +161,7 @@ int main(int argv, char** args)
             if(debrisIndex != -1)
             {
               isMining = true;              
-              //debrisArray[debrisIndex].mRender = false;
-              //numDebris += 1;
+              
 
               if(numDebris == 2)
               {
@@ -174,6 +175,19 @@ int main(int argv, char** args)
         {
           isMining = false;
           holdDownTime = 0;
+        }
+      }
+
+      //Check if mining and increment 
+      if(isMining)
+      {
+        holdDownTime += 1;
+
+        //If player held down for entire width of bar, destroy debris
+        if(holdDownTime == miningBarEmptyTex.mWidth)
+        {
+          debrisArray[debrisIndex].mRender = false;
+          numDebris += 1;
         }
       }
 
@@ -207,11 +221,7 @@ int main(int argv, char** args)
         holdDownTime = 0;
       }    
 
-      //Check if mining and increment 
-      if(isMining)
-      {
-        holdDownTime += 1;
-      }
+      
     
       //Update game state
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
