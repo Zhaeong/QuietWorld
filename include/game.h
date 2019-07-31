@@ -20,7 +20,7 @@ using namespace std;
 
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer);
 
-SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, string textureLocation);
+SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string textureLocation);
 
 void DrawBoundingBox(SDL_Renderer *renderer,
                      int objX,
@@ -47,9 +47,9 @@ void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
 
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship);
 
-void InitSpaceUI(SDL_Renderer *renderer, Texture *uiArray);
+void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
-void InitIntroUI(SDL_Renderer *renderer, Texture *uiArray);
+void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 
