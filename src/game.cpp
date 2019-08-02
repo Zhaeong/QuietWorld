@@ -60,9 +60,6 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
                                    formattedSurface->w,
                                    formattedSurface->h );
                                    
-      
-      cout << "The window mode: " << SDL_PIXELFORMAT_ARGB8888 << "\n";
-
       //texture = SDL_CreateTextureFromSurface( renderer, formattedSurface );
       if( texture == NULL )
       {
@@ -238,8 +235,47 @@ void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
   }
 }
 
-void RemoveTextureWhiteSpace(Texture tex)
+void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
 {
+  void* mPixels;
+  int mPitch;
+
+  if( SDL_LockTexture( texture, NULL, &mPixels, &mPitch ) != 0 )
+	{
+		printf( "Unable to lock texture! %s\n", SDL_GetError() );
+	}
+  else
+  {
+
+    //Allocate format from window
+    Uint32 format = SDL_GetWindowPixelFormat( window );
+    SDL_PixelFormat* mappingFormat = SDL_AllocFormat( format );
+
+    int texWidth = 0;
+    int texHeight = 0;
+    SDL_QueryTexture(texture, NULL, NULL, &texWidth, &texHeight);
+
+    //Get pixel data
+    Uint32* pixels = (Uint32*)mPixels;
+    int pixelCount = ( mPitch / 4 ) * texHeight;
+
+    //Map colors
+    Uint32 colorKey = SDL_MapRGB( mappingFormat, 0xFF, 0xFF, 0xFF );
+    Uint32 transparent = SDL_MapRGBA( mappingFormat, 0xFF, 0xFF, 0xFF, 0x00 );
+
+    //Color key pixels
+    for( int i = 0; i < pixelCount; ++i )
+    {
+      if( pixels[ i ] == colorKey )
+      {
+        pixels[ i ] = transparent;
+      }
+    }
+
+    SDL_UnlockTexture( texture );
+    //Free format
+			SDL_FreeFormat( mappingFormat );
+  }
 
 }
 
