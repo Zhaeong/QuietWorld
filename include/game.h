@@ -45,6 +45,8 @@ void RenderTexture(SDL_Renderer *renderer, Texture tex);
 
 void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex);
 
+void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture);
+
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship);
 
 void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
