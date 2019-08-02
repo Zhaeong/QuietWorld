@@ -37,6 +37,7 @@ int main(int argv, char** args)
 
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
+  RemoveTextureWhiteSpace(window, shipTex);
   Ship mainShip(shipTex);
 
   //Load textures for mining progress
@@ -76,6 +77,8 @@ int main(int argv, char** args)
   Texture debrisArray[NUM_DEBRIS];
 
   SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
+
+  RemoveTextureWhiteSpace(window, debrisTex);
 
   //Initialize random seed for generating debris
   srand(3234);
