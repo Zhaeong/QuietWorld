@@ -41,9 +41,18 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
   else
   {
     //Convert surface to display format
+
+    //Note have to use SDL_PIXELFORMAT_ARGB8888 due to window using SDL_PIXELFORMAT_RGB888
+    //Which doesn't have alpha channel
+    
+    //SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
+    //                                                          SDL_GetWindowPixelFormat( window ),
+    //                                                          0 );
+
     SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
-                                                              SDL_GetWindowPixelFormat( window ),
+                                                              SDL_PIXELFORMAT_ARGB8888,
                                                               0 );
+    
     if( formattedSurface == NULL )
     {
       printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
@@ -54,12 +63,19 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
       //Create blank streamable texture
       
       
+      //texture = SDL_CreateTexture( renderer,
+      //                             SDL_GetWindowPixelFormat( window ),
+      //                             SDL_TEXTUREACCESS_STREAMING,
+      //                             formattedSurface->w,
+      //                             formattedSurface->h );
+
       texture = SDL_CreateTexture( renderer,
-                                   SDL_GetWindowPixelFormat( window ),
+                                   SDL_PIXELFORMAT_ARGB8888,
                                    SDL_TEXTUREACCESS_STREAMING,
                                    formattedSurface->w,
                                    formattedSurface->h );
-                                   
+
+      
       //texture = SDL_CreateTextureFromSurface( renderer, formattedSurface );
       if( texture == NULL )
       {
@@ -67,24 +83,24 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
                 SDL_GetError() );
       }
       else
-			{
+      {
         void* mPixels;
         int mPitch;
 
-				//Lock texture for manipulation
-				SDL_LockTexture( texture, NULL, &mPixels, &mPitch );
+        //Lock texture for manipulation
+        SDL_LockTexture( texture, NULL, &mPixels, &mPitch );
 
-				//Copy loaded/formatted surface pixels
-				memcpy( mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h );
+        //Copy loaded/formatted surface pixels
+        memcpy( mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h );
 
-				//Unlock texture to update
-				SDL_UnlockTexture( texture );
-				mPixels = NULL;
+        //Unlock texture to update
+        SDL_UnlockTexture( texture );
+        mPixels = NULL;
 
-				//Get image dimensions
-				//mWidth = formattedSurface->w;
-				//mHeight = formattedSurface->h;
-			}
+        //Get image dimensions
+        //mWidth = formattedSurface->w;
+        //mHeight = formattedSurface->h;
+      }
 
       //Get rid of old formatted surface
       SDL_FreeSurface( formattedSurface );
@@ -241,14 +257,18 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
   int mPitch;
 
   if( SDL_LockTexture( texture, NULL, &mPixels, &mPitch ) != 0 )
-	{
-		printf( "Unable to lock texture! %s\n", SDL_GetError() );
-	}
+  {
+    printf( "Unable to lock texture! %s\n", SDL_GetError() );
+  }
   else
   {
 
     //Allocate format from window
-    Uint32 format = SDL_GetWindowPixelFormat( window );
+    //Uint32 format = SDL_GetWindowPixelFormat( window );
+
+    Uint32 format = SDL_PIXELFORMAT_ARGB8888;
+
+    cout << "format:" << format << "\n";
     SDL_PixelFormat* mappingFormat = SDL_AllocFormat( format );
 
     int texWidth = 0;
@@ -260,23 +280,25 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
     int pixelCount = ( mPitch / 4 ) * texHeight;
 
     //Map colors
-    Uint32 colorKey = SDL_MapRGB( mappingFormat, 0xFF, 0xFF, 0xFF );
-    Uint32 transparent = SDL_MapRGBA( mappingFormat, 0xFF, 0xFF, 0xFF, 0x00 );
+    Uint32 colorKey = SDL_MapRGBA( mappingFormat, 0xFF, 0xFF, 0xFF, 0xFF );
+    Uint32 transparent = SDL_MapRGBA( mappingFormat, 0xFF, 0xFF, 0xFF, 0 );
 
     //Color key pixels
     for( int i = 0; i < pixelCount; ++i )
     {
+      //cout << "col:" << pixels[i] << "\n";
+      //cout << "key:" << colorKey << "\n";
+      
       if( pixels[ i ] == colorKey )
       {
-        pixels[ i ] = transparent;
+        pixels[ i ] = transparent;       
       }
     }
 
     SDL_UnlockTexture( texture );
     //Free format
-			SDL_FreeFormat( mappingFormat );
+    SDL_FreeFormat( mappingFormat );
   }
-
 }
 
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
