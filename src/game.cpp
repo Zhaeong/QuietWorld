@@ -25,18 +25,18 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
   return 0;
 }
 
-SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string textureLocation)
+SDL_Texture *GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string textureLocation)
 {
   //Make sure to initialize texture to null or else SDL_DestroyTexture will crash program
   SDL_Texture *texture = NULL;
 
-  SDL_Surface* loadedSurface = IMG_Load( textureLocation.c_str() );
+  SDL_Surface *loadedSurface = IMG_Load(textureLocation.c_str());
 
-  if( loadedSurface == NULL )
+  if (loadedSurface == NULL)
   {
-    printf( "Unable to load image %s! SDL_image Error: %s\n",
-            textureLocation.c_str(),
-            IMG_GetError() );
+    printf("Unable to load image %s! SDL_image Error: %s\n",
+           textureLocation.c_str(),
+           IMG_GetError());
   }
   else
   {
@@ -44,57 +44,55 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
 
     //Note have to use SDL_PIXELFORMAT_ARGB8888 due to window using SDL_PIXELFORMAT_RGB888
     //Which doesn't have alpha channel
-    
+
     //SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
     //                                                          SDL_GetWindowPixelFormat( window ),
     //                                                          0 );
 
-    SDL_Surface* formattedSurface = SDL_ConvertSurfaceFormat( loadedSurface,
-                                                              SDL_PIXELFORMAT_ARGB8888,
-                                                              0 );
-    
-    if( formattedSurface == NULL )
+    SDL_Surface *formattedSurface = SDL_ConvertSurfaceFormat(loadedSurface,
+                                                             SDL_PIXELFORMAT_ARGB8888,
+                                                             0);
+
+    if (formattedSurface == NULL)
     {
-      printf( "Unable to convert loaded surface to display format! SDL Error: %s\n",
-              SDL_GetError() );
+      printf("Unable to convert loaded surface to display format! SDL Error: %s\n",
+             SDL_GetError());
     }
     else
     {
       //Create blank streamable texture
-      
-      
+
       //texture = SDL_CreateTexture( renderer,
       //                             SDL_GetWindowPixelFormat( window ),
       //                             SDL_TEXTUREACCESS_STREAMING,
       //                             formattedSurface->w,
       //                             formattedSurface->h );
 
-      texture = SDL_CreateTexture( renderer,
-                                   SDL_PIXELFORMAT_ARGB8888,
-                                   SDL_TEXTUREACCESS_STREAMING,
-                                   formattedSurface->w,
-                                   formattedSurface->h );
+      texture = SDL_CreateTexture(renderer,
+                                  SDL_PIXELFORMAT_ARGB8888,
+                                  SDL_TEXTUREACCESS_STREAMING,
+                                  formattedSurface->w,
+                                  formattedSurface->h);
 
-      
       //texture = SDL_CreateTextureFromSurface( renderer, formattedSurface );
-      if( texture == NULL )
+      if (texture == NULL)
       {
-        printf( "Unable to create blank texture! SDL Error: %s\n",
-                SDL_GetError() );
+        printf("Unable to create blank texture! SDL Error: %s\n",
+               SDL_GetError());
       }
       else
       {
-        void* mPixels;
+        void *mPixels;
         int mPitch;
 
         //Lock texture for manipulation
-        SDL_LockTexture( texture, NULL, &mPixels, &mPitch );
+        SDL_LockTexture(texture, NULL, &mPixels, &mPitch);
 
         //Copy loaded/formatted surface pixels
-        memcpy( mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h );
+        memcpy(mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h);
 
         //Unlock texture to update
-        SDL_UnlockTexture( texture );
+        SDL_UnlockTexture(texture);
         mPixels = NULL;
 
         //Get image dimensions
@@ -103,12 +101,11 @@ SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
       }
 
       //Get rid of old formatted surface
-      SDL_FreeSurface( formattedSurface );
+      SDL_FreeSurface(formattedSurface);
     }
 
     //Get rid of old loaded surface
-    SDL_FreeSurface( loadedSurface );
-
+    SDL_FreeSurface(loadedSurface);
   }
   return texture;
 }
@@ -146,10 +143,9 @@ void DrawBoundingBox(SDL_Renderer *renderer,
   //right
   SDL_RenderDrawLine(renderer,
                      objX,
-                     objY +objH,
+                     objY + objH,
                      objX + objW,
                      objY + objH);
-
 }
 
 void DrawBoundingBoxCam(SDL_Renderer *renderer,
@@ -190,15 +186,14 @@ void DrawBoundingBoxCam(SDL_Renderer *renderer,
   //right
   SDL_RenderDrawLine(renderer,
                      xPos,
-                     yPos +objH,
+                     yPos + objH,
                      xPos + objW,
                      yPos + objH);
-
 }
 
 void RenderTexture(SDL_Renderer *renderer, Texture tex)
 {
-  if(tex.mRender)
+  if (tex.mRender)
   {
     SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
 
@@ -221,12 +216,12 @@ void RenderTexture(SDL_Renderer *renderer, Texture tex)
 
 void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
 {
-  if(tex.mRender)
+  if (tex.mRender)
   {
     //Convert character world coord to screen coord
     int xPos = tex.mX - camX;
     int yPos = tex.mY - camY;
- 
+
     SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
 
     SDL_Rect srcRect;
@@ -242,9 +237,11 @@ void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
     dstRect.h = tex.mHeight;
     dstRect.w = tex.mWidth;
 
+    SetTextureColorMod(tex.mTexture);
+
     SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
 
-    if(DEBUG == 1)
+    if (DEBUG == 1)
     {
       DrawBoundingBox(renderer, xPos, yPos, tex.mWidth, tex.mHeight, 255, 55, 0);
     }
@@ -253,12 +250,12 @@ void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
 
 void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
 {
-  void* mPixels;
+  void *mPixels;
   int mPitch;
 
-  if( SDL_LockTexture( texture, NULL, &mPixels, &mPitch ) != 0 )
+  if (SDL_LockTexture(texture, NULL, &mPixels, &mPitch) != 0)
   {
-    printf( "Unable to lock texture! %s\n", SDL_GetError() );
+    printf("Unable to lock texture! %s\n", SDL_GetError());
   }
   else
   {
@@ -269,44 +266,44 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
     Uint32 format = SDL_PIXELFORMAT_ARGB8888;
 
     cout << "format:" << format << "\n";
-    SDL_PixelFormat* mappingFormat = SDL_AllocFormat( format );
+    SDL_PixelFormat *mappingFormat = SDL_AllocFormat(format);
 
     int texWidth = 0;
     int texHeight = 0;
     SDL_QueryTexture(texture, NULL, NULL, &texWidth, &texHeight);
 
     //Get pixel data
-    Uint32* pixels = (Uint32*)mPixels;
-    int pixelCount = ( mPitch / 4 ) * texHeight;
+    Uint32 *pixels = (Uint32 *)mPixels;
+    int pixelCount = (mPitch / 4) * texHeight;
 
     //Map colors
-    Uint32 colorKey = SDL_MapRGBA( mappingFormat, 0xFF, 0xFF, 0xFF, 0xFF );
-    Uint32 transparent = SDL_MapRGBA( mappingFormat, 0xFF, 0xFF, 0xFF, 0 );
+    Uint32 colorKey = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0xFF);
+    Uint32 transparent = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0);
 
     //Color key pixels
-    for( int i = 0; i < pixelCount; ++i )
+    for (int i = 0; i < pixelCount; ++i)
     {
       //cout << "col:" << pixels[i] << "\n";
       //cout << "key:" << colorKey << "\n";
-      
-      if( pixels[ i ] == colorKey )
+
+      if (pixels[i] == colorKey)
       {
-        pixels[ i ] = transparent;       
+        pixels[i] = transparent;
       }
     }
 
-    SDL_UnlockTexture( texture );
+    SDL_UnlockTexture(texture);
     //Free format
-    SDL_FreeFormat( mappingFormat );
+    SDL_FreeFormat(mappingFormat);
   }
 }
 
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
 {
-    //Convert character world coord to screen coord
+  //Convert character world coord to screen coord
   int xPos = ship.mPosition.x - camX;
   int yPos = ship.mPosition.y - camY;
- 
+
   SDL_SetTextureBlendMode(ship.mShipTexture, SDL_BLENDMODE_BLEND);
 
   SDL_Rect srcRect;
@@ -322,78 +319,77 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
   dstRect.h = ship.mHeight;
   dstRect.w = ship.mWidth;
 
+  SetTextureColorMod(ship.mShipTexture);
+
   SDL_RenderCopyEx(renderer, ship.mShipTexture, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
 
-  if(DEBUG == 1)
+  if (DEBUG == 1)
   {
     DrawBoundingBox(renderer, xPos, yPos, ship.mWidth, ship.mHeight, 255, 55, 0);
   }
 }
 
 void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
-{ 
+{
   SDL_Texture *backgroundSDLTex = GetSDLTexture(renderer, window, GRAYBACKGROUND);
   Texture background(backgroundSDLTex, GRAYBACKGROUND);
   background.mX = 0;
-  background.mY = GAMEHEIGHT * 2/3;
+  background.mY = GAMEHEIGHT * 2 / 3;
   uiArray[0] = background;
 
-  //Add rotation controls  
+  //Add rotation controls
   SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR);
   Texture leftButton(leftButtonSDLTex, BTN_LEFTCURSOR);
   leftButton.mX = 50;
-  leftButton.mY = GAMEHEIGHT * 2/3 + 50;
+  leftButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[1] = leftButton;
-  
+
   SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT);
   Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
-  stopButton.mY = GAMEHEIGHT * 2/3 + 50;
+  stopButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[2] = stopButton;
 
   SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR);
   Texture rightButton(rightButtonSDLTex, BTN_RIGHTCURSOR);
   rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
-  rightButton.mY = GAMEHEIGHT * 2/3 + 50;
+  rightButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[3] = rightButton;
 
   SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED);
   Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
   speedincreaseButton.mX = rightButton.mX + rightButton.mWidth + 20;
-  speedincreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
+  speedincreaseButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[4] = speedincreaseButton;
 
   SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED);
   Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
   speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
-  speeddecreaseButton.mY = GAMEHEIGHT * 2/3 + 50;
+  speeddecreaseButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[5] = speeddecreaseButton;
 
   SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS);
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
   harvestButton.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
-  harvestButton.mY = GAMEHEIGHT * 2/3 + 50;
+  harvestButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[6] = harvestButton;
 
   SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ACTIVE);
   Texture harvestButtonActive(harvestButtonActiveSDLTex, BTN_HARVESTDEBRIS_ACTIVE);
   harvestButtonActive.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
-  harvestButtonActive.mY = GAMEHEIGHT * 2/3 + 50;
+  harvestButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
   harvestButtonActive.mRender = false;
   uiArray[7] = harvestButtonActive;
-
-  
 }
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
-{ 
+{
   SDL_Texture *startGameTex = GetSDLTexture(renderer, window, BTN_STARTGAME);
   Texture startGameButton(startGameTex, BTN_STARTGAME);
-  startGameButton.mX = GAMEWIDTH/2 - (startGameButton.mWidth/2);
-  startGameButton.mY = GAMEHEIGHT * 2/3;
+  startGameButton.mX = GAMEWIDTH / 2 - (startGameButton.mWidth / 2);
+  startGameButton.mY = GAMEHEIGHT * 2 / 3;
   uiArray[0] = startGameButton;
 }
-
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
 {
@@ -403,25 +399,23 @@ void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
   }
 }
 
-
 string GetAction(int *mouseXpos, int *mouseYpos)
 {
   string eventName = "NONE";
-  // Poll for events. SDL_PollEvent() returns 0 when there are no  
-  // more events on the event queue, our while loop will exit when 
-  // that occurs.                
-  
+  // Poll for events. SDL_PollEvent() returns 0 when there are no
+  // more events on the event queue, our while loop will exit when
+  // that occurs.
 
   SDL_Event event;
-  
-  while( SDL_PollEvent( &event ) )
+
+  while (SDL_PollEvent(&event))
   {
-    switch( event.type )
+    switch (event.type)
     {
     case SDL_KEYDOWN:
 
       // Check the SDLKey values and move change the coords
-      switch( event.key.keysym.sym )
+      switch (event.key.keysym.sym)
       {
       case SDLK_ESCAPE:
         eventName = "EXIT";
@@ -448,7 +442,7 @@ string GetAction(int *mouseXpos, int *mouseYpos)
       break;
 
     case SDL_KEYUP:
-      eventName =  "KEY_UP";
+      eventName = "KEY_UP";
       break;
 
     case SDL_MOUSEBUTTONDOWN:
@@ -466,7 +460,7 @@ string GetAction(int *mouseXpos, int *mouseYpos)
       break;
     }
   }
-  SDL_GetMouseState( mouseXpos, mouseYpos );
+  SDL_GetMouseState(mouseXpos, mouseYpos);
   return eventName;
 }
 
@@ -476,12 +470,8 @@ string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos
   for (int i = 0; i < size; ++i)
   {
     Texture texRef = arrayTexture[i];
-  
-    if(xPos >= texRef.mX
-       && xPos <= (texRef.mX + texRef.mWidth)
-       && yPos >= texRef.mY
-       && yPos <= (texRef.mY + texRef.mHeight)
-       && texRef.mRender)
+
+    if (xPos >= texRef.mX && xPos <= (texRef.mX + texRef.mWidth) && yPos >= texRef.mY && yPos <= (texRef.mY + texRef.mHeight) && texRef.mRender)
     {
       colTex = texRef.mImgLocation;
     }
@@ -498,9 +488,9 @@ void CenterCamOnPlayer(int *camX,
                        int plaW,
                        int plaH)
 {
-  
-  *camX = plaX + (plaW/2) - (camW/2);
-  *camY = plaY + (plaH/2) - (camH/2);
+
+  *camX = plaX + (plaW / 2) - (camW / 2);
+  *camY = plaY + (plaH / 2) - (camH / 2);
 }
 
 void MoveCameraBaseOnShip(SDL_Renderer *renderer,
@@ -510,32 +500,32 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
 {
   int boundD = 150;
 
-  int boundX = camW/2 - boundD/2;
-  int boundY = camH/2 - boundD/2;
+  int boundX = camW / 2 - boundD / 2;
+  int boundY = camH / 2 - boundD / 2;
 
   //Convert obj from world coord to screen coord
   int objXscreen = objX - *camX;
-  int objYscreen = objY - *camY;  
+  int objYscreen = objY - *camY;
 
-  if(objXscreen < boundX)
+  if (objXscreen < boundX)
   {
     *camX -= objSpeed;
   }
-  else if(objXscreen + objW > boundX + boundD)
+  else if (objXscreen + objW > boundX + boundD)
   {
     *camX += objSpeed;
   }
 
-  if(objYscreen < boundY)
+  if (objYscreen < boundY)
   {
     *camY -= objSpeed;
   }
-  else if(objYscreen + objH > boundY + boundD)
+  else if (objYscreen + objH > boundY + boundD)
   {
     *camY += objSpeed;
   }
-  
-  if(DEBUG == 1)
+
+  if (DEBUG == 1)
   {
     DrawBoundingBox(renderer,
                     boundX,
@@ -554,16 +544,14 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, 
   int genXmax = xCord + DEBRISWIDTH;
 
   int genYmin = yCord;
-  int genYmax = yCord + DEBRISHEIGHT;  
+  int genYmax = yCord + DEBRISHEIGHT;
 
- 
   //cout << "xMin: " << genXmin << "\n";
   //cout << "xMax: " << genXmax << "\n";
   //cout << "yMin: " << genYmin << "\n";
   //cout << "yMax: " << genYmax << "\n";
-  
-  
-  for(int i = arrStart; i < arrEnd; ++i)
+
+  for (int i = arrStart; i < arrEnd; ++i)
   {
     Texture dObj(debrisTex, DEBRIS_IMG);
 
@@ -581,7 +569,7 @@ void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int ca
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
-    RenderTextureByCam(camX, camY, renderer, debrisArray[i]);    
+    RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
   }
 }
 
@@ -597,15 +585,14 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
   srcRect.h = 20;
   srcRect.w = 20;
 
-
   dstRect.x = 0;
   dstRect.y = 0;
   dstRect.h = 20;
   dstRect.w = 20;
 
-  for(int i = 0; i < NUM_TEXT; i++)
+  for (int i = 0; i < NUM_TEXT; i++)
   {
-    
+
     TextObj tObj = textArray[i];
 
     int curPosX = tObj.mX;
@@ -613,8 +600,7 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
 
     unsigned int numLetters = tObj.mLetters;
 
-   
-    if(tObj.mDelay == 0)
+    if (tObj.mDelay == 0)
     {
       numLetters = tObj.mString.size();
     }
@@ -624,63 +610,62 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
 
       //Compares the last time the letter was incremented to cur time
       //If enough time elpased > mDelay then increment num letters by one
-      if(gameTime - tObj.mLastTime > tObj.mDelay)
+      if (gameTime - tObj.mLastTime > tObj.mDelay)
       {
-        if(tObj.mLetters < tObj.mString.size())
+        if (tObj.mLetters < tObj.mString.size())
         {
           tObj.mLetters += 1;
           tObj.mLastTime = gameTime;
           textArray[i] = tObj;
         }
-        
       }
-
     }
-    for(unsigned int j = 0; j < numLetters; ++j) {
+    for (unsigned int j = 0; j < numLetters; ++j)
+    {
 
       char curChar = tObj.mString[j];
       int xTextPos = 0;
       int yTextPos = 0;
 
       //Capitals
-      if((int)curChar >= 65 && (int)curChar <= 90) 
+      if ((int)curChar >= 65 && (int)curChar <= 90)
       {
         xTextPos = (int)curChar - 65;
       }
       //lower case
-      else if((int)curChar >= 97 && (int)curChar <= 122)
+      else if ((int)curChar >= 97 && (int)curChar <= 122)
       {
         xTextPos = (int)curChar - 97;
         yTextPos = 20;
       }
       //numbers
-      else if((int)curChar >= 48 && (int)curChar <= 57)
+      else if ((int)curChar >= 48 && (int)curChar <= 57)
       {
         xTextPos = (int)curChar - 48;
         yTextPos = 40;
       }
       //minus sign
-      else if((int)curChar == 45)
+      else if ((int)curChar == 45)
       {
         xTextPos = 0;
         yTextPos = 60;
       }
       //dot
-      else if((int)curChar == 46)
+      else if ((int)curChar == 46)
       {
         xTextPos = 1;
         yTextPos = 60;
-      }        
+      }
       //black space
       else
       {
         xTextPos = 200;
         yTextPos = 40;
       }
-    
+
       srcRect.x = 20 * xTextPos;
       srcRect.y = yTextPos;
-    
+
       dstRect.x = curPosX;
       dstRect.y = curPosY;
 
@@ -689,7 +674,7 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
       curPosX += 20;
 
       //Wraps to next line if the text exceeds the width
-      if(curPosX > GAMEWIDTH)
+      if (curPosX > GAMEWIDTH)
       {
         curPosX = tObj.mX;
         curPosY += 20;
@@ -698,24 +683,24 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
   }
 }
 
-bool TextureCollide(int x, int y, int width, int height , Texture texB)
+bool TextureCollide(int x, int y, int width, int height, Texture texB)
 {
   //Check horizontal collision
   bool horizontalCol = false;
 
   //If the item is not being rendered, it is not collidable
-  if(!texB.mRender)
+  if (!texB.mRender)
   {
     return false;
   }
-  if(x + width >= texB.mX && x <= texB.mX + texB.mWidth)
+  if (x + width >= texB.mX && x <= texB.mX + texB.mWidth)
   {
     horizontalCol = true;
   }
 
   //Check vertical collision
   bool verticalCol = false;
-  if(y + height >= texB.mY && y <= texB.mY + texB.mHeight)
+  if (y + height >= texB.mY && y <= texB.mY + texB.mHeight)
   {
     verticalCol = true;
   }
@@ -723,5 +708,20 @@ bool TextureCollide(int x, int y, int width, int height , Texture texB)
   return horizontalCol && verticalCol;
 }
 
+void SetTextureColorMod(SDL_Texture *texture)
+{
+  Uint8 modColorR;
+  Uint8 modColorG;
+  Uint8 modColorB;
 
+  SDL_GetTextureColorMod(texture, &modColorR, &modColorG, &modColorB);
 
+  if (SHADE == 0)
+  {
+    SDL_SetTextureColorMod(texture, modColorR, modColorG, modColorB);
+  }
+  else if (SHADE == 1)
+  {
+    SDL_SetTextureColorMod(texture, MOD_R, MOD_G, MOD_B);
+  }
+}
