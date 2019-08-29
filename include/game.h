@@ -59,6 +59,8 @@ string GetAction(int *mouseXpos, int *mouseYpos);
 
 string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos);
 
+bool TextureMouseCollisionSingle(Texture mTexture, int xPos, int yPos);
+
 void CenterCamOnPlayer(int *camX,
                        int *camY,
                        int camW,
