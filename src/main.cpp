@@ -35,6 +35,13 @@ int main(int argv, char** args)
   Texture uiIntroArray[NUM_INTRO_UI];
   InitIntroUI(renderer, window, uiIntroArray);
 
+  //Init Dialog textures
+  SDL_Texture *tutorialDiag = GetSDLTexture(renderer, window, "res/dialogUI/tutorial.png");
+  Texture tutorialDiagTex = Texture(tutorialDiag, "res/dialogUI/tutorial.png");
+
+  SDL_Texture *dialogOK = GetSDLTexture(renderer, window, "res/dialogUI/dialogOK.png");
+  Texture dialogOKTex = Texture(dialogOK, "res/dialogUI/dialogOK.png");
+
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
   RemoveTextureWhiteSpace(window, shipTex);
@@ -98,6 +105,8 @@ int main(int argv, char** args)
   //Variables
   bool isMining = false;
   unsigned int holdDownTime = 0;
+
+  bool showDialog = true;
 
   string gameState = STATE_PAUSE;
 
@@ -178,6 +187,15 @@ int main(int argv, char** args)
         {
           isMining = false;
           holdDownTime = 0;
+
+          if(TextureMouseCollisionSingle(dialogOKTex, xMouse, yMouse))
+          {
+            if(showDialog)
+            {
+              showDialog = false;
+              SHADE = 0;
+            }
+          }
         }
       }
 
@@ -275,6 +293,17 @@ int main(int argv, char** args)
     
       //Render UI
       RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
+
+
+      //Popup dialogs rendering
+
+      if(showDialog)
+      {
+        RenderTexture(renderer, tutorialDiagTex);
+        RenderTexture(renderer, dialogOKTex);
+        
+      }
+      
       
       //Render DEBUG items if turned on
       if(DEBUG == 1)
