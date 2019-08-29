@@ -479,6 +479,17 @@ string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos
   return colTex;
 }
 
+bool TextureMouseCollisionSingle(Texture mTexture, int xPos, int yPos)
+{
+  
+  if (xPos >= mTexture.mX && xPos <= (mTexture.mX + mTexture.mWidth) && yPos >= mTexture.mY && yPos <= (mTexture.mY + mTexture.mHeight) && mTexture.mRender)
+  {
+    return true;
+  }
+  
+  return false;
+}
+
 void CenterCamOnPlayer(int *camX,
                        int *camY,
                        int camW,
