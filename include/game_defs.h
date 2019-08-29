@@ -20,7 +20,7 @@ using namespace std;
 #define DEBUG 1
 
 
-const int SHADE = 1;
+static int SHADE = 1;
 
 const Uint8 MOD_R = 100;
 const Uint8 MOD_G = 100;
