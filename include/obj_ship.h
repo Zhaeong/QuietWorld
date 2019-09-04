@@ -26,6 +26,11 @@ public:
   int mWidth = 20;
   int mHeight = 20;
 
+  //Original colors
+  Uint8 mColorR;
+  Uint8 mColorG;
+  Uint8 mColorB;
+
   SDL_Point *mCenter = NULL;
   SDL_RendererFlip mFlip = SDL_FLIP_NONE;
 
