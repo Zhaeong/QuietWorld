@@ -25,6 +25,11 @@ public:
   int mX = 0;
   int mY = 0;
 
+  //Original colors
+  Uint8 mColorR;
+  Uint8 mColorG;
+  Uint8 mColorB;
+
   int mRotation = 0;
   SDL_Point *mCenter = NULL;
   SDL_RendererFlip mFlip = SDL_FLIP_NONE;
