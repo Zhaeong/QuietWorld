@@ -8,6 +8,8 @@ Texture::Texture(SDL_Texture *sTex, string imgLocation)
   mX = 0;
   mY = 0;
   SDL_QueryTexture(sTex, NULL, NULL, &mWidth, &mHeight);
+  SDL_GetTextureColorMod(mTexture, &mColorR, &mColorG, &mColorB);
+
 
 }
 
