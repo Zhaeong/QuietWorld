@@ -1,5 +1,7 @@
 #include "main.h"
 
+int SHADE;
+
 //Need to use this main signature (int argv, char** args)
 //Because SDL alters default program entry point resolving
 //SDL calls your entry point expecting a specific signature,
@@ -11,6 +13,7 @@ int main(int argv, char** args)
   SDL_Renderer *renderer = NULL;
   const int FPS = 60;
 
+  SHADE = 1;
   //How many miliseconds per frame
   const int frameDelay = 1000/FPS;
 
@@ -37,7 +40,9 @@ int main(int argv, char** args)
 
   //Init Dialog textures
   SDL_Texture *tutorialDiag = GetSDLTexture(renderer, window, "res/dialogUI/tutorial.png");
+  RemoveTextureWhiteSpace(window, tutorialDiag);
   Texture tutorialDiagTex = Texture(tutorialDiag, "res/dialogUI/tutorial.png");
+  
 
   SDL_Texture *dialogOK = GetSDLTexture(renderer, window, "res/dialogUI/dialogOK.png");
   Texture dialogOKTex = Texture(dialogOK, "res/dialogUI/dialogOK.png");
@@ -84,7 +89,6 @@ int main(int argv, char** args)
   Texture debrisArray[NUM_DEBRIS];
 
   SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
-
   RemoveTextureWhiteSpace(window, debrisTex);
 
   //Initialize random seed for generating debris
@@ -137,8 +141,6 @@ int main(int argv, char** args)
       runGame = false;
     }
 
-    
-
     if(gameState == STATE_GAME)
     {
       if(eventType != "NONE")
@@ -174,7 +176,6 @@ int main(int argv, char** args)
             {
               isMining = true;              
               
-
               if(numDebris == 2)
               {
                 gameState = STATE_PAUSE;             
@@ -193,7 +194,10 @@ int main(int argv, char** args)
             if(showDialog)
             {
               showDialog = false;
+              
               SHADE = 0;
+
+              cout << "Shade val:" << SHADE <<'\n';
             }
           }
         }
