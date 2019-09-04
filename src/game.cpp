@@ -49,8 +49,10 @@ SDL_Texture *GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
     //                                                          SDL_GetWindowPixelFormat( window ),
     //                                                          0 );
 
+
+    cout << "Loading Texture: " << textureLocation << "\n";
     SDL_Surface *formattedSurface = SDL_ConvertSurfaceFormat(loadedSurface,
-                                                             SDL_PIXELFORMAT_ARGB8888,
+                                                             TEXTUREFORMAT,
                                                              0);
 
     if (formattedSurface == NULL)
@@ -69,7 +71,7 @@ SDL_Texture *GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
       //                             formattedSurface->h );
 
       texture = SDL_CreateTexture(renderer,
-                                  SDL_PIXELFORMAT_ARGB8888,
+                                  TEXTUREFORMAT,
                                   SDL_TEXTUREACCESS_STREAMING,
                                   formattedSurface->w,
                                   formattedSurface->h);
@@ -85,14 +87,20 @@ SDL_Texture *GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string te
         void *mPixels;
         int mPitch;
 
+        SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
         //Lock texture for manipulation
-        SDL_LockTexture(texture, NULL, &mPixels, &mPitch);
+        if (SDL_LockTexture(texture, NULL, &mPixels, &mPitch) != 0)
+        {
+          printf("Unable to lock texture! %s\n", SDL_GetError());
+        }
 
         //Copy loaded/formatted surface pixels
-        memcpy(mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h);
+        memcpy(mPixels, formattedSurface->pixels, formattedSurface->pitch * formattedSurface->h);       
 
         //Unlock texture to update
-        SDL_UnlockTexture(texture);
+        SDL_UnlockTexture(texture);        
+
         mPixels = NULL;
 
         //Get image dimensions
@@ -237,7 +245,7 @@ void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
     dstRect.h = tex.mHeight;
     dstRect.w = tex.mWidth;
 
-    SetTextureColorMod(tex.mTexture);
+    SetTextureColorMod(tex);
 
     SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
 
@@ -253,28 +261,38 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
   void *mPixels;
   int mPitch;
 
+  if (texture == NULL)
+  {
+    printf("Input Texture is null in RemoveTextureWhiteSpace! SDL Error: %s\n",
+            SDL_GetError());
+  }
+
   if (SDL_LockTexture(texture, NULL, &mPixels, &mPitch) != 0)
   {
     printf("Unable to lock texture! %s\n", SDL_GetError());
   }
   else
   {
-
     //Allocate format from window
     //Uint32 format = SDL_GetWindowPixelFormat( window );
 
-    Uint32 format = SDL_PIXELFORMAT_ARGB8888;
-
-    cout << "format:" << format << "\n";
-    SDL_PixelFormat *mappingFormat = SDL_AllocFormat(format);
+    SDL_PixelFormat *mappingFormat = SDL_AllocFormat(TEXTUREFORMAT);
 
     int texWidth = 0;
     int texHeight = 0;
-    SDL_QueryTexture(texture, NULL, NULL, &texWidth, &texHeight);
+
+    Uint32 texFormat;
+    SDL_QueryTexture(texture, &texFormat, NULL, &texWidth, &texHeight);
 
     //Get pixel data
     Uint32 *pixels = (Uint32 *)mPixels;
     int pixelCount = (mPitch / 4) * texHeight;
+
+    //cout << "texformat:" << texFormat << "\n";
+    //cout << "texWidth:" << texWidth << "\n";
+    //cout << "texHeight:" << texHeight << "\n";
+    //cout << "mPitch:" << mPitch << "\n";
+    //cout << "pixelCount:" << pixelCount << "\n";
 
     //Map colors
     Uint32 colorKey = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -293,6 +311,7 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
     }
 
     SDL_UnlockTexture(texture);
+    //mPixels = NULL;
     //Free format
     SDL_FreeFormat(mappingFormat);
   }
@@ -319,7 +338,7 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
   dstRect.h = ship.mHeight;
   dstRect.w = ship.mWidth;
 
-  SetTextureColorMod(ship.mShipTexture);
+  SetShipColorMod(ship);
 
   SDL_RenderCopyEx(renderer, ship.mShipTexture, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
 
@@ -719,20 +738,33 @@ bool TextureCollide(int x, int y, int width, int height, Texture texB)
   return horizontalCol && verticalCol;
 }
 
-void SetTextureColorMod(SDL_Texture *texture)
+void SetTextureColorMod(Texture tex)
+{
+  if (SHADE == 0)
+  {
+    
+    SDL_SetTextureColorMod(tex.mTexture, tex.mColorR, tex.mColorG, tex.mColorB);
+  }
+  else if (SHADE == 1)
+  {
+    SDL_SetTextureColorMod(tex.mTexture, MOD_R, MOD_G, MOD_B);
+  }
+}
+
+void SetShipColorMod(Ship ship)
 {
   Uint8 modColorR;
   Uint8 modColorG;
   Uint8 modColorB;
-
-  SDL_GetTextureColorMod(texture, &modColorR, &modColorG, &modColorB);
+  
 
   if (SHADE == 0)
   {
-    SDL_SetTextureColorMod(texture, modColorR, modColorG, modColorB);
+    
+    SDL_SetTextureColorMod(ship.mShipTexture, ship.mColorR, ship.mColorG, ship.mColorB);
   }
   else if (SHADE == 1)
   {
-    SDL_SetTextureColorMod(texture, MOD_R, MOD_G, MOD_B);
+    SDL_SetTextureColorMod(ship.mShipTexture, MOD_R, MOD_G, MOD_B);
   }
 }
