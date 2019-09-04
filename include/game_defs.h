@@ -19,12 +19,14 @@ using namespace std;
 
 #define DEBUG 1
 
-
-static int SHADE = 1;
+//Extern so that any other files that include this file will be able to use this variable
+extern int SHADE;
 
 const Uint8 MOD_R = 100;
 const Uint8 MOD_G = 100;
 const Uint8 MOD_B = 100;;
+
+const Uint32 TEXTUREFORMAT = SDL_PIXELFORMAT_RGBA8888;
 
 struct vect2
 {
