@@ -14,6 +14,7 @@ Ship::Ship(SDL_Texture *shipTexture)
   mPosition.y = 0;
 
   SDL_QueryTexture(shipTexture, NULL, NULL, &mWidth, &mHeight);
+  SDL_GetTextureColorMod(shipTexture, &mColorR, &mColorG, &mColorB);
 }
 
 void Ship::rotateByDegree(double degrees)
