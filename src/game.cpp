@@ -351,9 +351,10 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
 void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 {
   SDL_Texture *backgroundSDLTex = GetSDLTexture(renderer, window, GRAYBACKGROUND);
+  RemoveTextureWhiteSpace(window, backgroundSDLTex);
   Texture background(backgroundSDLTex, GRAYBACKGROUND);
   background.mX = 0;
-  background.mY = GAMEHEIGHT * 2 / 3;
+  background.mY = 0;
   uiArray[0] = background;
 
   //Add rotation controls
