@@ -79,11 +79,11 @@ int main(int argv, char** args)
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   TextObj textArray[NUM_TEXT];
 
-  TextObj debugText;
-  debugText.mString = "heyyy guys";
-  debugText.mDelay = 200;
+  TextObj startText;
+  startText.mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
+  startText.mDelay = 20;
 
-  textArray[0] = debugText;  
+  textArray[0] = startText;
 
   //Create debris Array
   Texture debrisArray[NUM_DEBRIS];
@@ -174,12 +174,8 @@ int main(int argv, char** args)
           {
             if(debrisIndex != -1)
             {
-              isMining = true;              
+              isMining = true;
               
-              if(numDebris == 2)
-              {
-                gameState = STATE_PAUSE;             
-              }
             }
           }
           cout << texCol << "\n";
@@ -246,6 +242,14 @@ int main(int argv, char** args)
         holdDownTime = 0;
       }    
 
+      //Different num of debris which causes scene transitions
+      if(numDebris == 2)
+      {
+        gameState = STATE_PAUSE;         
+        textArray[0].mString = "You are doing a good job";
+        textArray[0].mDelay = 20;    
+      }
+
       
     
       //Update game state
@@ -257,7 +261,7 @@ int main(int argv, char** args)
                            mainShip.mSpeed);
 
       //Set num of debris gathered
-      textArray[0].mString = to_string(numDebris);
+      textArray[1].mString = to_string(numDebris);
 
       ////////////////////
       //Render to screen//
@@ -312,17 +316,17 @@ int main(int argv, char** args)
       //Render DEBUG items if turned on
       if(DEBUG == 1)
       {
-        textArray[1].mY = 30;
-        textArray[1].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+        textArray[2].mY = 30;
+        textArray[2].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
-        textArray[2].mY = 60;
-        textArray[2].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+        textArray[3].mY = 60;
+        textArray[3].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
 
-        textArray[3].mY = 90;
-        textArray[3].mString = "GameTime:" + to_string(gameTime);
+        textArray[4].mY = 90;
+        textArray[4].mString = "GameTime:" + to_string(gameTime);
 
-        textArray[4].mY = 120;
-        textArray[4].mString = "HoldDown:" + to_string(holdDownTime);
+        textArray[5].mY = 120;
+        textArray[5].mString = "HoldDown:" + to_string(holdDownTime);
       
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
@@ -338,17 +342,6 @@ int main(int argv, char** args)
     else if(gameState == STATE_PAUSE)
     {
 
-      if(numDebris == 0)
-      {
-        textArray[0].mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
-        textArray[0].mDelay = 20;
-      }
-      else if(numDebris == 2)
-      {
-        textArray[0].mString = "You are doing a good job";
-        textArray[0].mDelay = 20;
-      }
-
       if(eventType == "MOUSE_DOWN")
       {
         string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
@@ -358,6 +351,7 @@ int main(int argv, char** args)
           textArray[0].mString = "";
           textArray[0].mLetters = 0;
           gameState = STATE_GAME;           
+          numDebris = 0;
         }        
       }    
 
