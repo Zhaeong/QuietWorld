@@ -283,20 +283,30 @@ int main(int argv, char** args)
         int playCamX = mainShip.mPosition.x - camX;
         int playCamY = mainShip.mPosition.y - camY;
         miningBarEmptyTex.mX = playCamX;
-        miningBarEmptyTex.mY = playCamY;
+        miningBarEmptyTex.mY = playCamY + mainShip.mHeight;
 
         RenderTexture(renderer, miningBarEmptyTex);
 
 
         //Now render the progress based on
         miningBarColorTex.mX = playCamX;
-        miningBarColorTex.mY = playCamY;
+        miningBarColorTex.mY = playCamY + mainShip.mHeight;
         miningBarColorTex.mWidth = holdDownTime;
 
         RenderTexture(renderer, miningBarColorTex);
 
 
+        //Draws the debis render trail
+        int debrisCamX = debrisArray[debrisIndex].mX - camX;
+        int debrisCamY = debrisArray[debrisIndex].mY - camY;
 
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+      
+        SDL_RenderDrawLine(renderer,
+                           playCamX + mainShip.mWidth/2,
+                           playCamY + mainShip.mHeight/2,
+                           debrisCamX + debrisArray[debrisIndex].mWidth/2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight/2);
       }
     
       //Render UI
