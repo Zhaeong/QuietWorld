@@ -38,6 +38,9 @@ int main(int argv, char** args)
   Texture uiIntroArray[NUM_INTRO_UI];
   InitIntroUI(renderer, window, uiIntroArray);
 
+  Texture uiInterLevelArray[NUM_INTERUI];
+  InitInterLevelUI(renderer, window, uiInterLevelArray);
+
   //Init Dialog textures
   SDL_Texture *tutorialDiag = GetSDLTexture(renderer, window, "res/dialogUI/tutorial.png");
   RemoveTextureWhiteSpace(window, tutorialDiag);
@@ -82,8 +85,17 @@ int main(int argv, char** args)
   TextObj startText;
   startText.mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
   startText.mDelay = 20;
-
   textArray[0] = startText;
+
+  TextObj choiceA;
+  choiceA.mString = "Yes";
+  choiceA.mDelay = 20;
+  textArray[1] = choiceA;
+
+  TextObj choiceB;
+  choiceB.mString = "No";
+  choiceB.mDelay = 20;
+  textArray[1] = choiceB;
 
   //Create debris Array
   Texture debrisArray[NUM_DEBRIS];
@@ -112,7 +124,7 @@ int main(int argv, char** args)
 
   bool showDialog = true;
 
-  string gameState = STATE_PAUSE;
+  string gameState = STATE_INTRO;
 
   while (runGame)
   {    
@@ -246,8 +258,18 @@ int main(int argv, char** args)
       if(numDebris == 2)
       {
         gameState = STATE_PAUSE;         
-        textArray[0].mString = "You are doing a good job";
+        textArray[0].mString = "Are you acquainted with your ship";
         textArray[0].mDelay = 20;    
+
+
+        textArray[1].mString = "Yes";
+        textArray[1].mDelay = 20;
+        textArray[1].mY = 50;
+
+        textArray[2].mString = "No";
+        textArray[2].mDelay = 20;    
+        textArray[2].mY = 70;
+
       }
 
       
@@ -261,7 +283,7 @@ int main(int argv, char** args)
                            mainShip.mSpeed);
 
       //Set num of debris gathered
-      textArray[1].mString = to_string(numDebris);
+      textArray[3].mString = to_string(numDebris);
 
       ////////////////////
       //Render to screen//
@@ -326,17 +348,17 @@ int main(int argv, char** args)
       //Render DEBUG items if turned on
       if(DEBUG == 1)
       {
-        textArray[2].mY = 30;
-        textArray[2].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+        textArray[4].mY = 30;
+        textArray[4].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
-        textArray[3].mY = 60;
-        textArray[3].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+        textArray[5].mY = 60;
+        textArray[5].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
 
-        textArray[4].mY = 90;
-        textArray[4].mString = "GameTime:" + to_string(gameTime);
+        textArray[6].mY = 90;
+        textArray[6].mString = "GameTime:" + to_string(gameTime);
 
-        textArray[5].mY = 120;
-        textArray[5].mString = "HoldDown:" + to_string(holdDownTime);
+        textArray[8].mY = 120;
+        textArray[8].mString = "HoldDown:" + to_string(holdDownTime);
       
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
@@ -349,9 +371,28 @@ int main(int argv, char** args)
       }
 
     }
-    else if(gameState == STATE_PAUSE)
+    else if(gameState == STATE_PAUSE) //Interlevel UI
     {
 
+      if(eventType == "MOUSE_DOWN")
+      {
+        string texCol = TextureMouseCollision(uiInterLevelArray, NUM_INTERUI, xMouse, yMouse);
+
+        if(texCol == BTN_STARTGAME)
+        {
+          textArray[0].mString = "";
+          textArray[0].mLetters = 0;
+          gameState = STATE_GAME;           
+          numDebris = 0;
+        }        
+      }    
+
+      //Render UI
+      RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
+      
+    }
+    else if(gameState == STATE_INTRO)
+    {
       if(eventType == "MOUSE_DOWN")
       {
         string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
@@ -367,7 +408,6 @@ int main(int argv, char** args)
 
       //Render UI
       RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
-      
     }
 
     //Render text    
