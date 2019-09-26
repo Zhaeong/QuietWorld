@@ -52,6 +52,8 @@ struct TextObj
 
 //GAME STATES
 
+
+const string STATE_INTRO = "INTRO";
 const string STATE_GAME = "GAME";
 const string STATE_PAUSE = "PAUSE";
 
@@ -77,13 +79,17 @@ const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
 const int NUM_INTRO_UI = 1;
 const string BTN_STARTGAME     = "res/dialogUI/startGame.png";
 
+
+//INTER LEVEL UI
+const int NUM_INTERUI = 2;
+
 //DEBRIS
 const int NUM_DEBRIS = 90;
 const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 
 //TEXT DISPLAY
-const int NUM_TEXT = 6;
+const int NUM_TEXT = 9;
 
 #endif // GAMEDEFS_H
  
