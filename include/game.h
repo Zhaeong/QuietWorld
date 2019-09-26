@@ -53,6 +53,8 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
+void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
+
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 
 string GetAction(int *mouseXpos, int *mouseYpos);
