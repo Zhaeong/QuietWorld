@@ -87,7 +87,10 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
 bool TextureCollide(int x, int y, int width, int height , Texture texB);
 
 void SetTextureColorMod(Texture tex);
+
 void SetShipColorMod(Ship ship);
+
+void SetTextString(TextObj *text, string textContent);
 
 #endif // GAME_H
  

@@ -17,7 +17,7 @@ using namespace std;
 
 #define PI 3.14159265
 
-#define DEBUG 1
+#define DEBUG 0
 
 //Extern so that any other files that include this file will be able to use this variable
 extern int SHADE;
@@ -45,6 +45,7 @@ struct TextObj
   string mString = "";
   int mX = 0;
   int mY = 0;
+  int mWidth = 0;
   unsigned int mDelay = 0;
   unsigned int mLastTime = 0;
   unsigned int mLetters = 0;
