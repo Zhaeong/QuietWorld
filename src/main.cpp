@@ -45,10 +45,15 @@ int main(int argv, char** args)
   SDL_Texture *tutorialDiag = GetSDLTexture(renderer, window, "res/dialogUI/tutorial.png");
   RemoveTextureWhiteSpace(window, tutorialDiag);
   Texture tutorialDiagTex = Texture(tutorialDiag, "res/dialogUI/tutorial.png");
-  
 
   SDL_Texture *dialogOK = GetSDLTexture(renderer, window, "res/dialogUI/dialogOK.png");
   Texture dialogOKTex = Texture(dialogOK, "res/dialogUI/dialogOK.png");
+  dialogOKTex.mX = GAMEWIDTH / 2 - (dialogOKTex.mWidth / 2);
+  dialogOKTex.mY = 300;
+
+  SDL_Texture *choiceBackground = GetSDLTexture(renderer, window, "res/dialogUI/choiceBackground.png");
+  Texture choiceBackgroundTexA = Texture(choiceBackground, "res/dialogUI/choiceBackgroundA.png");
+  Texture choiceBackgroundTexB = Texture(choiceBackground, "res/dialogUI/choiceBackgroundB.png");
 
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
@@ -80,20 +85,22 @@ int main(int argv, char** args)
   
   //Create texture handling
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
+  RemoveTextureWhiteSpace(window, fontTex);
   TextObj textArray[NUM_TEXT];
 
   TextObj startText;
-  startText.mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
+  //startText.mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
+  SetTextString(&startText, "Designation DMAR114123, Function Debris Maintenance and Retrievals");
   startText.mDelay = 20;
   textArray[0] = startText;
 
   TextObj choiceA;
-  choiceA.mString = "Yes";
+  SetTextString(&choiceA, "");
   choiceA.mDelay = 20;
   textArray[1] = choiceA;
 
   TextObj choiceB;
-  choiceB.mString = "No";
+  SetTextString(&choiceB, "");
   choiceB.mDelay = 20;
   textArray[1] = choiceB;
 
@@ -255,20 +262,23 @@ int main(int argv, char** args)
       }    
 
       //Different num of debris which causes scene transitions
-      if(numDebris == 2)
+      if(numDebris == 1)
       {
         gameState = STATE_PAUSE;         
-        textArray[0].mString = "Are you acquainted with your ship";
+        textArray[0].mString = "Are you acquainted with your ship?";
+        textArray[0].mX = 20;
+        textArray[0].mY = 20;
         textArray[0].mDelay = 20;    
 
-
-        textArray[1].mString = "Yes";
+        SetTextString(&textArray[1], "Yes");
         textArray[1].mDelay = 20;
-        textArray[1].mY = 50;
-
-        textArray[2].mString = "No";
+        textArray[1].mX = GAMEWIDTH/2 - textArray[1].mWidth/2;
+        textArray[1].mY = 200;
+        
+        SetTextString(&textArray[2], "No");
         textArray[2].mDelay = 20;    
-        textArray[2].mY = 70;
+        textArray[2].mX = GAMEWIDTH/2 - textArray[2].mWidth/2;
+        textArray[2].mY = 300;
 
       }
 
@@ -380,8 +390,17 @@ int main(int argv, char** args)
 
         if(texCol == BTN_STARTGAME)
         {
+          //Reset text
           textArray[0].mString = "";
           textArray[0].mLetters = 0;
+
+          textArray[1].mString = "";
+          textArray[1].mLetters = 0;
+
+
+          textArray[2].mString = "";
+          textArray[2].mLetters = 0;
+
           gameState = STATE_GAME;           
           numDebris = 0;
         }        
@@ -389,6 +408,18 @@ int main(int argv, char** args)
 
       //Render UI
       RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
+
+      //Get position of text to render a background for it
+      choiceBackgroundTexA.mX = textArray[1].mX;
+      choiceBackgroundTexA.mY = textArray[1].mY - 15; 
+      choiceBackgroundTexA.mWidth = textArray[1].mWidth;
+
+      choiceBackgroundTexB.mX = textArray[2].mX;
+      choiceBackgroundTexB.mY = textArray[2].mY - 15;   
+      choiceBackgroundTexB.mWidth = textArray[2].mWidth;
+
+      RenderTexture(renderer, choiceBackgroundTexA);
+      RenderTexture(renderer, choiceBackgroundTexB);
       
     }
     else if(gameState == STATE_INTRO)

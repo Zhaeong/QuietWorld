@@ -295,7 +295,10 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
     //cout << "pixelCount:" << pixelCount << "\n";
 
     //Map colors
-    Uint32 colorKey = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0xFF);
+
+    Uint32 colorKeyWhite = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0xFF);
+    Uint32 colorKeyGray = SDL_MapRGBA(mappingFormat, 153, 153, 153, 0xFF);
+
     Uint32 transparent = SDL_MapRGBA(mappingFormat, 0xFF, 0xFF, 0xFF, 0);
 
     //Color key pixels
@@ -304,7 +307,7 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture)
       //cout << "col:" << pixels[i] << "\n";
       //cout << "key:" << colorKey << "\n";
 
-      if (pixels[i] == colorKey)
+      if (pixels[i] == colorKeyWhite || pixels[i] == colorKeyGray)
       {
         pixels[i] = transparent;
       }
@@ -702,6 +705,12 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
         xTextPos = 1;
         yTextPos = 60;
       }
+      //question mark
+      else if ((int)curChar == 63)
+      {
+        xTextPos = 2;
+        yTextPos = 60;
+      }
       //black space
       else
       {
@@ -715,16 +724,25 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
       dstRect.x = curPosX;
       dstRect.y = curPosY;
 
-      SDL_RenderCopyEx(renderer, fontTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
 
-      curPosX += 20;
+      //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
 
       //Wraps to next line if the text exceeds the width
-      if (curPosX > GAMEWIDTH)
+      if (curPosX >= GAMEWIDTH)
       {
         curPosX = tObj.mX;
         curPosY += 20;
+
+        //Need to reset render rect due to rendering on new line
+        dstRect.x = curPosX;
+        dstRect.y = curPosY;
       }
+
+      //cout << "Red X:" << dstRect.x  << " Y:" << dstRect.y  <<" Let:" << curChar << "\n";
+      SDL_RenderCopyEx(renderer, fontTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
+
+      curPosX += 20;
+      
     }
   }
 }
@@ -783,4 +801,11 @@ void SetShipColorMod(Ship ship)
   {
     SDL_SetTextureColorMod(ship.mShipTexture, MOD_R, MOD_G, MOD_B);
   }
+}
+
+void SetTextString(TextObj *text, string textContent)
+{
+  text->mString = textContent;
+  text->mWidth = textContent.length() * 20;
+
 }
