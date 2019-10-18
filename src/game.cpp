@@ -803,3 +803,39 @@ void SetTextString(TextObj *text, string textContent)
   text->mString = textContent;
   text->mWidth = textContent.length() * 20;
 }
+
+void SetInterLevelChoices(TextObj *textArray,
+                          string question,
+                          string choiceA,
+                          string choiceB,
+                          string responseA,
+                          string responseB)
+{
+  
+  SetTextString(&textArray[0], question);
+  textArray[0].mX = 20;
+  textArray[0].mY = 20;
+  textArray[0].mDelay = 20;
+
+  SetTextString(&textArray[1], choiceA);
+  textArray[1].mDelay = 20;
+  textArray[1].mX = GAMEWIDTH / 2 - textArray[1].mWidth / 2;
+  textArray[1].mY = 200;
+
+  SetTextString(&textArray[2], choiceB);
+  textArray[2].mDelay = 20;
+  textArray[2].mX = GAMEWIDTH / 2 - textArray[2].mWidth / 2;
+  textArray[2].mY = 300;
+
+  SetTextString(&textArray[3], responseA);
+  textArray[3].mDelay = 20;
+  textArray[3].mX = GAMEWIDTH / 2 - textArray[3].mWidth / 2;
+  textArray[3].mY = 200;
+  textArray[3].enabled = false;
+
+  SetTextString(&textArray[4], responseB);
+  textArray[4].mDelay = 20;
+  textArray[4].mX = GAMEWIDTH / 2 - textArray[4].mWidth / 2;
+  textArray[4].mY = 200;
+  textArray[4].enabled = false;
+}

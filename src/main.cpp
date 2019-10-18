@@ -271,37 +271,28 @@ int main(int argv, char** args)
       if(numDebris == 1)
       {
         gameState = STATE_PAUSE;         
-        textArray[0].mString = "Are you acquainted with your ship?";
-        textArray[0].mX = 20;
-        textArray[0].mY = 20;
-        textArray[0].mDelay = 20;    
 
-        SetTextString(&textArray[1], "Yes");
-        textArray[1].mDelay = 20;
-        textArray[1].mX = GAMEWIDTH/2 - textArray[1].mWidth/2;
-        textArray[1].mY = 200;
-        
-        SetTextString(&textArray[2], "No");
-        textArray[2].mDelay = 20;    
-        textArray[2].mX = GAMEWIDTH/2 - textArray[2].mWidth/2;
-        textArray[2].mY = 300;
+        SetInterLevelChoices(textArray,
+          "Are you acquainted with your ship?",
+          "Yes",
+          "No",
+          "That's good",
+          "Too Bad");        
 
-        SetTextString(&textArray[3], "That's good");
-        textArray[3].mDelay = 20;    
-        textArray[3].mX = GAMEWIDTH/2 - textArray[3].mWidth/2;
-        textArray[3].mY = 200;
-        textArray[3].enabled = false;
+      }
+      else if(numDebris == 3)
+      {
+        gameState = STATE_PAUSE;         
 
-        SetTextString(&textArray[4], "Too Bad");
-        textArray[4].mDelay = 20;    
-        textArray[4].mX = GAMEWIDTH/2 - textArray[4].mWidth/2;
-        textArray[4].mY = 200;
-        textArray[4].enabled = false;
+        SetInterLevelChoices(textArray,
+          "How are you doing so far?",
+          "This is really boring",
+          "I really like this",
+          "I appreciate your honesty",
+          "I'm glad");        
 
       }
 
-      
-    
       //Update game state
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
 
@@ -461,7 +452,7 @@ int main(int argv, char** args)
           textArray[3].enabled = false;
 
           gameState = STATE_GAME;           
-          //numDebris = 0;
+          numDebris += 1;
         }
 
         if(TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))

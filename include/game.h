@@ -92,5 +92,12 @@ void SetShipColorMod(Ship ship);
 
 void SetTextString(TextObj *text, string textContent);
 
+void SetInterLevelChoices(TextObj *textArray,
+                          string question,
+                          string choiceA,
+                          string choiceB,
+                          string responseA,
+                          string responseB);
+
 #endif // GAME_H
  
