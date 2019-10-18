@@ -641,6 +641,22 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
   for (int i = 0; i < NUM_TEXT; i++)
   {
 
+    TextObj prevtObj;
+
+    bool isPrevFinished = false;
+    if (i == 0)
+    {
+      isPrevFinished = true;
+    }
+    else
+    {
+      prevtObj = textArray[i - 1];
+      if (textArray[i - 1].finished == 1)
+      {
+        isPrevFinished = true;
+      }
+    }
+
     TextObj tObj = textArray[i];
 
     int curPosX = tObj.mX;
@@ -658,15 +674,27 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
       {
         unsigned int gameTime = SDL_GetTicks();
 
+        //cout << "cur:" << tObj.mString << " prev:" << prevtObj.mString << " fi:" << isPrevFinished << "\n";
         //Compares the last time the letter was incremented to cur time
         //If enough time elpased > mDelay then increment num letters by one
-        if (gameTime - tObj.mLastTime > tObj.mDelay)
+        //isPrevFinished is used so that text obj is rendered one by one
+        if ((gameTime - tObj.mLastTime > tObj.mDelay) && isPrevFinished)
         {
           if (tObj.mLetters < tObj.mString.size())
           {
             tObj.mLetters += 1;
             tObj.mLastTime = gameTime;
             textArray[i] = tObj;
+          }
+
+          //cout << j << " numL:" << numLetters << "\n";
+          if (tObj.mLetters == tObj.mString.size())
+          {
+            textArray[i].finished = 1;
+          }
+          else
+          {
+            textArray[i].finished = 0;
           }
         }
       }
@@ -811,21 +839,23 @@ void SetInterLevelChoices(TextObj *textArray,
                           string responseA,
                           string responseB)
 {
-  
   SetTextString(&textArray[0], question);
   textArray[0].mX = 20;
   textArray[0].mY = 20;
   textArray[0].mDelay = 20;
+  textArray[0].finished = 0;
 
   SetTextString(&textArray[1], choiceA);
   textArray[1].mDelay = 20;
   textArray[1].mX = GAMEWIDTH / 2 - textArray[1].mWidth / 2;
   textArray[1].mY = 200;
+  textArray[1].finished = 0;
 
   SetTextString(&textArray[2], choiceB);
   textArray[2].mDelay = 20;
   textArray[2].mX = GAMEWIDTH / 2 - textArray[2].mWidth / 2;
   textArray[2].mY = 300;
+  textArray[2].finished = 0;
 
   SetTextString(&textArray[3], responseA);
   textArray[3].mDelay = 20;

@@ -50,6 +50,7 @@ struct TextObj
   unsigned int mLastTime = 0;
   unsigned int mLetters = 0;
   bool enabled = true;
+  bool finished = 0;
 };
 
 //GAME STATES
