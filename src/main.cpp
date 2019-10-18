@@ -55,6 +55,12 @@ int main(int argv, char** args)
   Texture choiceBackgroundTexA = Texture(choiceBackground, "res/dialogUI/choiceBackgroundA.png");
   Texture choiceBackgroundTexB = Texture(choiceBackground, "res/dialogUI/choiceBackgroundB.png");
 
+  Texture responseBackgroundTexA = Texture(choiceBackground, "responseBackgroundTexA");
+  responseBackgroundTexA.mRender = false;
+  Texture responseBackgroundTexB = Texture(choiceBackground, "responseBackgroundTexB");
+  responseBackgroundTexB.mRender = false;
+  
+
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
   RemoveTextureWhiteSpace(window, shipTex);
@@ -280,6 +286,18 @@ int main(int argv, char** args)
         textArray[2].mX = GAMEWIDTH/2 - textArray[2].mWidth/2;
         textArray[2].mY = 300;
 
+        SetTextString(&textArray[3], "That's good");
+        textArray[3].mDelay = 20;    
+        textArray[3].mX = GAMEWIDTH/2 - textArray[3].mWidth/2;
+        textArray[3].mY = 200;
+        textArray[3].enabled = false;
+
+        SetTextString(&textArray[4], "Too Bad");
+        textArray[4].mDelay = 20;    
+        textArray[4].mX = GAMEWIDTH/2 - textArray[4].mWidth/2;
+        textArray[4].mY = 200;
+        textArray[4].enabled = false;
+
       }
 
       
@@ -293,7 +311,7 @@ int main(int argv, char** args)
                            mainShip.mSpeed);
 
       //Set num of debris gathered
-      textArray[3].mString = to_string(numDebris);
+      textArray[5].mString = to_string(numDebris);
 
       ////////////////////
       //Render to screen//
@@ -354,21 +372,20 @@ int main(int argv, char** args)
         
       }
       
-      
       //Render DEBUG items if turned on
       if(DEBUG == 1)
       {
-        textArray[4].mY = 30;
-        textArray[4].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+        textArray[6].mY = 30;
+        textArray[6].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
-        textArray[5].mY = 60;
-        textArray[5].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+        textArray[7].mY = 60;
+        textArray[7].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
 
-        textArray[6].mY = 90;
-        textArray[6].mString = "GameTime:" + to_string(gameTime);
+        textArray[8].mY = 90;
+        textArray[8].mString = "GameTime:" + to_string(gameTime);
 
-        textArray[8].mY = 120;
-        textArray[8].mString = "HoldDown:" + to_string(holdDownTime);
+        textArray[9].mY = 120;
+        textArray[9].mString = "HoldDown:" + to_string(holdDownTime);
       
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
       
@@ -395,8 +412,20 @@ int main(int argv, char** args)
       choiceBackgroundTexB.mY = textArray[2].mY - 15;   
       choiceBackgroundTexB.mWidth = textArray[2].mWidth;
 
+      responseBackgroundTexA.mX = textArray[3].mX;
+      responseBackgroundTexA.mY = textArray[3].mY - 15; 
+      responseBackgroundTexA.mWidth = textArray[3].mWidth;
+      
+
+      responseBackgroundTexB.mX = textArray[4].mX;
+      responseBackgroundTexB.mY = textArray[4].mY - 15;   
+      responseBackgroundTexB.mWidth = textArray[4].mWidth;
+      
+
       RenderTexture(renderer, choiceBackgroundTexA);
       RenderTexture(renderer, choiceBackgroundTexB);
+      RenderTexture(renderer, responseBackgroundTexA);
+      RenderTexture(renderer, responseBackgroundTexB);
 
       if(eventType == "MOUSE_UP")
       {
@@ -415,18 +444,50 @@ int main(int argv, char** args)
           textArray[2].mString = "";
           textArray[2].mLetters = 0;
 
+          textArray[3].mString = "";
+          textArray[3].mLetters = 0;
+
+          textArray[4].mString = "";
+          textArray[4].mLetters = 0;
+
+          //Reset renders
+          choiceBackgroundTexA.mRender = true;
+          choiceBackgroundTexB.mRender = true;
+          responseBackgroundTexA.mRender = false;
+          responseBackgroundTexB.mRender = false;
+
+          textArray[1].enabled = true;
+          textArray[2].enabled = true;
+          textArray[3].enabled = false;
+
           gameState = STATE_GAME;           
-          numDebris = 0;
+          //numDebris = 0;
         }
 
         if(TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))
         {
           cout << "selected A";
+          choiceBackgroundTexA.mRender = false;
+          choiceBackgroundTexB.mRender = false;
+
+          textArray[1].enabled = false;
+          textArray[2].enabled = false;
+
+          responseBackgroundTexA.mRender = true;
+          textArray[3].enabled = true;
+          
         }
 
         if(TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
         {
           cout << "selected B";
+          choiceBackgroundTexA.mRender = false;
+          choiceBackgroundTexB.mRender = false;
+          textArray[1].enabled = false;
+          textArray[2].enabled = false;
+
+          responseBackgroundTexB.mRender = true;
+          textArray[4].enabled = true;
         }
       }    
       
