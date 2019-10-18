@@ -479,6 +479,8 @@ int main(int argv, char** args)
 
           responseBackgroundTexB.mRender = true;
           textArray[4].enabled = true;
+
+          cout << textArray[4].mString << "\n";
         }
       }    
       

@@ -651,10 +651,11 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
     else
     {
       prevtObj = textArray[i - 1];
-      if (textArray[i - 1].finished == 1)
+      if (textArray[i - 1].finished == 1 || textArray[i].finished == 1)
       {
         isPrevFinished = true;
       }
+      
     }
 
     TextObj tObj = textArray[i];
@@ -862,10 +863,12 @@ void SetInterLevelChoices(TextObj *textArray,
   textArray[3].mX = GAMEWIDTH / 2 - textArray[3].mWidth / 2;
   textArray[3].mY = 200;
   textArray[3].enabled = false;
+  textArray[3].finished = 1;
 
   SetTextString(&textArray[4], responseB);
   textArray[4].mDelay = 20;
   textArray[4].mX = GAMEWIDTH / 2 - textArray[4].mWidth / 2;
   textArray[4].mY = 200;
   textArray[4].enabled = false;
+  textArray[4].finished = 1;
 }
