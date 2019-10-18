@@ -427,6 +427,7 @@ void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArr
   startGameButton.mX = GAMEWIDTH / 2 - (startGameButton.mWidth / 2);
   startGameButton.mY = GAMEHEIGHT * 2 / 3;
   uiArray[1] = startGameButton;
+
 }
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
@@ -787,11 +788,6 @@ void SetTextureColorMod(Texture tex)
 
 void SetShipColorMod(Ship ship)
 {
-  Uint8 modColorR;
-  Uint8 modColorG;
-  Uint8 modColorB;
-  
-
   if (SHADE == 0)
   {
     

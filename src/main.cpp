@@ -382,9 +382,23 @@ int main(int argv, char** args)
 
     }
     else if(gameState == STATE_PAUSE) //Interlevel UI
-    {
+    {     
+      //Render UI
+      RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
 
-      if(eventType == "MOUSE_DOWN")
+      //Get position of text to render a background for it
+      choiceBackgroundTexA.mX = textArray[1].mX;
+      choiceBackgroundTexA.mY = textArray[1].mY - 15; 
+      choiceBackgroundTexA.mWidth = textArray[1].mWidth;
+
+      choiceBackgroundTexB.mX = textArray[2].mX;
+      choiceBackgroundTexB.mY = textArray[2].mY - 15;   
+      choiceBackgroundTexB.mWidth = textArray[2].mWidth;
+
+      RenderTexture(renderer, choiceBackgroundTexA);
+      RenderTexture(renderer, choiceBackgroundTexB);
+
+      if(eventType == "MOUSE_UP")
       {
         string texCol = TextureMouseCollision(uiInterLevelArray, NUM_INTERUI, xMouse, yMouse);
 
@@ -403,23 +417,18 @@ int main(int argv, char** args)
 
           gameState = STATE_GAME;           
           numDebris = 0;
-        }        
+        }
+
+        if(TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))
+        {
+          cout << "selected A";
+        }
+
+        if(TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
+        {
+          cout << "selected B";
+        }
       }    
-
-      //Render UI
-      RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
-
-      //Get position of text to render a background for it
-      choiceBackgroundTexA.mX = textArray[1].mX;
-      choiceBackgroundTexA.mY = textArray[1].mY - 15; 
-      choiceBackgroundTexA.mWidth = textArray[1].mWidth;
-
-      choiceBackgroundTexB.mX = textArray[2].mX;
-      choiceBackgroundTexB.mY = textArray[2].mY - 15;   
-      choiceBackgroundTexB.mWidth = textArray[2].mWidth;
-
-      RenderTexture(renderer, choiceBackgroundTexA);
-      RenderTexture(renderer, choiceBackgroundTexB);
       
     }
     else if(gameState == STATE_INTRO)
@@ -434,7 +443,7 @@ int main(int argv, char** args)
           textArray[0].mLetters = 0;
           gameState = STATE_GAME;           
           numDebris = 0;
-        }        
+        }
       }    
 
       //Render UI
