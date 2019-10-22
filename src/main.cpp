@@ -6,7 +6,7 @@ int SHADE;
 //Because SDL alters default program entry point resolving
 //SDL calls your entry point expecting a specific signature,
 //which is no longer subject to compiler interpretation
-int main(int argv, char** args)
+int main(int argv, char **args)
 {
   //Declarations for sdl window displaying
   SDL_Window *window = NULL;
@@ -15,7 +15,7 @@ int main(int argv, char** args)
 
   SHADE = 1;
   //How many miliseconds per frame
-  const int frameDelay = 1000/FPS;
+  const int frameDelay = 1000 / FPS;
 
   Uint32 frameStart;
   float frameTime;
@@ -24,6 +24,19 @@ int main(int argv, char** args)
 
   //Initiate SDL
   StartSDL(&window, &renderer);
+
+  // load WAV file
+
+  SDL_AudioSpec wavSpec;
+  Uint32 wavLength;
+  Uint8 *wavBuffer;
+
+  SDL_LoadWAV("res/wavs/arrow.wav", &wavSpec, &wavBuffer, &wavLength);
+
+  SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+
+  int success = SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+  SDL_PauseAudioDevice(deviceId, 0);
 
   //Initiate Camera coords
   int camX = 0;
@@ -59,7 +72,6 @@ int main(int argv, char** args)
   responseBackgroundTexA.mRender = false;
   Texture responseBackgroundTexB = Texture(choiceBackground, "responseBackgroundTexB");
   responseBackgroundTexB.mRender = false;
-  
 
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
@@ -73,22 +85,22 @@ int main(int argv, char** args)
   SDL_Texture *miningBarColor = GetSDLTexture(renderer, window, "res/dialogUI/mineBarColor.png");
   Texture miningBarColorTex = Texture(miningBarColor, "res/dialogUI/mineBarColor.png");
 
-  //Create bounds for player 
+  //Create bounds for player
   SDL_Texture *backgroundTex = GetSDLTexture(renderer, window, "res/background/level1.png");
   Texture gameBackground = Texture(backgroundTex, "res/background/level1.png");
-  
+
   int curLevelBoundX = gameBackground.mWidth;
   int curLevelBoundY = gameBackground.mHeight;
 
-  mainShip.mPosition.x = curLevelBoundX/2;
-  mainShip.mPosition.y = curLevelBoundY/2;
+  mainShip.mPosition.x = curLevelBoundX / 2;
+  mainShip.mPosition.y = curLevelBoundY / 2;
 
   CenterCamOnPlayer(&camX, &camY, camW, camH,
                     mainShip.mPosition.x,
                     mainShip.mPosition.y,
                     mainShip.mWidth,
                     mainShip.mHeight);
-  
+
   //Create texture handling
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   RemoveTextureWhiteSpace(window, fontTex);
@@ -120,7 +132,7 @@ int main(int argv, char** args)
   srand(3234);
 
   //Generate debris
-  GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);  
+  GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);
 
   //RemoveDebris(&vDebris, camX, camY);
   bool runGame = true;
@@ -140,97 +152,101 @@ int main(int argv, char** args)
   string gameState = STATE_INTRO;
 
   while (runGame)
-  {    
+  {
     frameStart = SDL_GetTicks();
 
     //The color at which the screen will be if alpha = 0 on all textures
     SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
 
-    SDL_RenderClear(renderer);    
+    SDL_RenderClear(renderer);
 
     ////////////////////////////////////////////////////////////////////////
     //Main Game Code
-    ////////////////////////////////////////////////////////////////////////    
+    ////////////////////////////////////////////////////////////////////////
 
     //Update GameTime
     gameTime = SDL_GetTicks();
-    
+
     //Get input
     int xMouse = 0;
     int yMouse = 0;
-      
+
     string eventType = GetAction(&xMouse, &yMouse);
 
-    if(eventType == "EXIT")
+    if (eventType == "EXIT")
     {
       runGame = false;
     }
 
-    if(gameState == STATE_GAME)
+    if (gameState == STATE_GAME)
     {
-      if(eventType != "NONE")
+      if (eventType != "NONE")
       {
         cout << eventType << "\n";
-        if(eventType == "MOUSE_DOWN")
+        if (eventType == "MOUSE_DOWN")
         {
           string texCol = TextureMouseCollision(uiSpaceArray, NUM_SPACE_UI, xMouse, yMouse);
 
-          if(texCol == BTN_LEFTCURSOR)
+          if (texCol == BTN_LEFTCURSOR)
           {
-            mainShip.curState = Ship::ShipStates::ROTATELEFT;                  
+            mainShip.curState = Ship::ShipStates::ROTATELEFT;
           }
-          else if(texCol == BTN_RIGHTCURSOR)
+          else if (texCol == BTN_RIGHTCURSOR)
           {
             mainShip.curState = Ship::ShipStates::ROTATERIGHT;
           }
-          else if(texCol == BTN_STOPROT)
+          else if (texCol == BTN_STOPROT)
           {
             mainShip.curState = Ship::ShipStates::IDLE;
           }
-          else if(texCol == BTN_INCREASESPEED)
+          else if (texCol == BTN_INCREASESPEED)
           {
             mainShip.changeSpeed(1);
           }
-          else if(texCol == BTN_DECREASESPEED)
+          else if (texCol == BTN_DECREASESPEED)
           {
             mainShip.changeSpeed(-1);
           }
-          else if(texCol == BTN_HARVESTDEBRIS_ACTIVE)
+          else if (texCol == BTN_HARVESTDEBRIS_ACTIVE)
           {
-            if(debrisIndex != -1)
+            if (debrisIndex != -1)
             {
               isMining = true;
-              
             }
           }
           cout << texCol << "\n";
         }
-        else if(eventType == "MOUSE_UP")
+        else if (eventType == "MOUSE_UP")
         {
           isMining = false;
           holdDownTime = 0;
 
-          if(TextureMouseCollisionSingle(dialogOKTex, xMouse, yMouse))
+          SDL_QueueAudio(deviceId, wavBuffer, wavLength);
+          SDL_PauseAudioDevice(deviceId, 0);
+
+          cout << "going upo";
+
+          if (TextureMouseCollisionSingle(dialogOKTex, xMouse, yMouse))
           {
-            if(showDialog)
+            if (showDialog)
             {
               showDialog = false;
-              
+
               SHADE = 0;
 
-              cout << "Shade val:" << SHADE <<'\n';
+              cout << "Shade val:" << SHADE << '\n';
             }
           }
         }
       }
 
-      //Check if mining and increment 
-      if(isMining)
+      //Check if mining and increment
+      if (isMining)
       {
         holdDownTime += 1;
 
         //If player held down for entire width of bar, destroy debris
-        if(holdDownTime == (unsigned int)miningBarEmptyTex.mWidth)
+        if (holdDownTime == (unsigned int)miningBarEmptyTex.mWidth)
         {
           debrisArray[debrisIndex].mRender = false;
           numDebris += 1;
@@ -245,15 +261,14 @@ int main(int argv, char** args)
       for (int i = 0; i < NUM_DEBRIS; ++i)
       {
         Texture dObj = debrisArray[i];
-  
-        if(TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
+
+        if (TextureCollide(mainShip.mPosition.x, mainShip.mPosition.y, mainShip.mWidth, mainShip.mHeight, dObj))
         {
           debrisIndex = i;
           debrisCol = true;
         }
-      
       }
-      if(debrisCol)
+      if (debrisCol)
       {
         uiSpaceArray[6].mRender = false;
         uiSpaceArray[7].mRender = true;
@@ -265,32 +280,30 @@ int main(int argv, char** args)
         debrisIndex = -1;
         isMining = false;
         holdDownTime = 0;
-      }    
+      }
 
       //Different num of debris which causes scene transitions
-      if(numDebris == 1)
+      if (numDebris == 1)
       {
-        gameState = STATE_PAUSE;         
+        gameState = STATE_PAUSE;
 
         SetInterLevelChoices(textArray,
-          "Are you acquainted with your ship?",
-          "Yes",
-          "No",
-          "That's good",
-          "Too Bad");        
-
+                             "Are you acquainted with your ship?",
+                             "Yes",
+                             "No",
+                             "That's good",
+                             "Too Bad");
       }
-      else if(numDebris == 3)
+      else if (numDebris == 3)
       {
-        gameState = STATE_PAUSE;         
+        gameState = STATE_PAUSE;
 
         SetInterLevelChoices(textArray,
-          "How are you doing so far?",
-          "This is really boring",
-          "I really like this",
-          "I appreciate your honesty",
-          "I'm glad");        
-
+                             "How are you doing so far?",
+                             "This is really boring",
+                             "I really like this",
+                             "I appreciate your honesty",
+                             "I'm glad");
       }
 
       //Update game state
@@ -313,12 +326,12 @@ int main(int argv, char** args)
 
       //Render Debris
       RenderDebris(renderer, debrisArray, camX, camY);
-    
+
       //Render Ship
       RenderShip(renderer, camX, camY, mainShip);
 
       //Render Miningbar
-      if(isMining)
+      if (isMining)
       {
         //Convert player world position to screen position
         int playCamX = mainShip.mPosition.x - camX;
@@ -328,7 +341,6 @@ int main(int argv, char** args)
 
         RenderTexture(renderer, miningBarEmptyTex);
 
-
         //Now render the progress based on
         miningBarColorTex.mX = playCamX;
         miningBarColorTex.mY = playCamY + mainShip.mHeight;
@@ -336,35 +348,32 @@ int main(int argv, char** args)
 
         RenderTexture(renderer, miningBarColorTex);
 
-
         //Draws the debis render trail
         int debrisCamX = debrisArray[debrisIndex].mX - camX;
         int debrisCamY = debrisArray[debrisIndex].mY - camY;
 
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-      
+
         SDL_RenderDrawLine(renderer,
-                           playCamX + mainShip.mWidth/2,
-                           playCamY + mainShip.mHeight/2,
-                           debrisCamX + debrisArray[debrisIndex].mWidth/2,
-                           debrisCamY + debrisArray[debrisIndex].mHeight/2);
+                           playCamX + mainShip.mWidth / 2,
+                           playCamY + mainShip.mHeight / 2,
+                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
       }
-    
+
       //Render UI
       RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
 
-
       //Popup dialogs rendering
 
-      if(showDialog)
+      if (showDialog)
       {
         RenderTexture(renderer, tutorialDiagTex);
         RenderTexture(renderer, dialogOKTex);
-        
       }
-      
+
       //Render DEBUG items if turned on
-      if(DEBUG == 1)
+      if (DEBUG == 1)
       {
         textArray[6].mY = 30;
         textArray[6].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
@@ -377,52 +386,48 @@ int main(int argv, char** args)
 
         textArray[9].mY = 120;
         textArray[9].mString = "HoldDown:" + to_string(holdDownTime);
-      
+
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
-      
+
         SDL_RenderDrawLine(renderer,
                            mainShip.mPosition.x,
                            mainShip.mPosition.y,
                            mainShip.mPosition.x + mainShip.mDirection.x * 10,
-                           mainShip.mPosition.y + mainShip.mDirection.y * 10 );          
-          
+                           mainShip.mPosition.y + mainShip.mDirection.y * 10);
       }
-
     }
-    else if(gameState == STATE_PAUSE) //Interlevel UI
-    {     
+    else if (gameState == STATE_PAUSE) //Interlevel UI
+    {
       //Render UI
       RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
 
       //Get position of text to render a background for it
       choiceBackgroundTexA.mX = textArray[1].mX;
-      choiceBackgroundTexA.mY = textArray[1].mY - 15; 
+      choiceBackgroundTexA.mY = textArray[1].mY - 15;
       choiceBackgroundTexA.mWidth = textArray[1].mWidth;
 
       choiceBackgroundTexB.mX = textArray[2].mX;
-      choiceBackgroundTexB.mY = textArray[2].mY - 15;   
+      choiceBackgroundTexB.mY = textArray[2].mY - 15;
       choiceBackgroundTexB.mWidth = textArray[2].mWidth;
 
       responseBackgroundTexA.mX = textArray[3].mX;
-      responseBackgroundTexA.mY = textArray[3].mY - 15; 
+      responseBackgroundTexA.mY = textArray[3].mY - 15;
       responseBackgroundTexA.mWidth = textArray[3].mWidth;
-      
 
       responseBackgroundTexB.mX = textArray[4].mX;
-      responseBackgroundTexB.mY = textArray[4].mY - 15;   
+      responseBackgroundTexB.mY = textArray[4].mY - 15;
       responseBackgroundTexB.mWidth = textArray[4].mWidth;
-      
 
       RenderTexture(renderer, choiceBackgroundTexA);
       RenderTexture(renderer, choiceBackgroundTexB);
       RenderTexture(renderer, responseBackgroundTexA);
       RenderTexture(renderer, responseBackgroundTexB);
 
-      if(eventType == "MOUSE_UP")
+      if (eventType == "MOUSE_UP")
       {
         string texCol = TextureMouseCollision(uiInterLevelArray, NUM_INTERUI, xMouse, yMouse);
 
-        if(texCol == BTN_STARTGAME)
+        if (texCol == BTN_STARTGAME)
         {
           //Reset text
           textArray[0].mString = "";
@@ -430,7 +435,6 @@ int main(int argv, char** args)
 
           textArray[1].mString = "";
           textArray[1].mLetters = 0;
-
 
           textArray[2].mString = "";
           textArray[2].mLetters = 0;
@@ -451,11 +455,11 @@ int main(int argv, char** args)
           textArray[2].enabled = true;
           textArray[3].enabled = false;
 
-          gameState = STATE_GAME;           
+          gameState = STATE_GAME;
           numDebris += 1;
         }
 
-        if(TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))
+        if (TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))
         {
           cout << "selected A";
           choiceBackgroundTexA.mRender = false;
@@ -466,10 +470,9 @@ int main(int argv, char** args)
 
           responseBackgroundTexA.mRender = true;
           textArray[3].enabled = true;
-          
         }
 
-        if(TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
+        if (TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
         {
           cout << "selected B";
           choiceBackgroundTexA.mRender = false;
@@ -482,31 +485,30 @@ int main(int argv, char** args)
 
           cout << textArray[4].mString << "\n";
         }
-      }    
-      
+      }
     }
-    else if(gameState == STATE_INTRO)
+    else if (gameState == STATE_INTRO)
     {
-      if(eventType == "MOUSE_DOWN")
+      if (eventType == "MOUSE_DOWN")
       {
         string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
 
-        if(texCol == BTN_STARTGAME)
+        if (texCol == BTN_STARTGAME)
         {
           textArray[0].mString = "";
           textArray[0].mLetters = 0;
-          gameState = STATE_GAME;           
+          gameState = STATE_GAME;
           numDebris = 0;
         }
-      }    
+      }
 
       //Render UI
       RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
     }
 
-    //Render text    
+    //Render text
     RenderText(renderer, fontTex, textArray);
-      
+
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
 
@@ -515,8 +517,8 @@ int main(int argv, char** args)
     ////////////////////////////////////////////////////////////////////////
 
     frameTime = SDL_GetTicks() - frameStart;
-    
-    if(frameDelay > frameTime)
+
+    if (frameDelay > frameTime)
     {
       SDL_Delay(frameDelay - frameTime);
     }

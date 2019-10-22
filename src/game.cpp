@@ -2,7 +2,16 @@
 
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
 {
+
   if (SDL_Init(SDL_INIT_VIDEO) < 0)
+  {
+    SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
+                 "Couldn't initialize SDL: %s",
+                 SDL_GetError());
+  }
+
+  //Init Audio
+  if (SDL_Init(SDL_INIT_AUDIO) < 0)
   {
     SDL_LogError(SDL_LOG_CATEGORY_APPLICATION,
                  "Couldn't initialize SDL: %s",
@@ -655,7 +664,6 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
       {
         isPrevFinished = true;
       }
-      
     }
 
     TextObj tObj = textArray[i];
