@@ -524,5 +524,12 @@ int main(int argv, char **args)
     }
   }
 
+  //Cleanup code
+
+  SDL_CloseAudioDevice(deviceId);
+  SDL_FreeWAV(wavBuffer);
+  SDL_Quit();
+ 
+
   return 0;
 }
