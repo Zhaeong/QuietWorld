@@ -17,7 +17,7 @@
 
 #-ggdb compiles with debug symbols
 CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0
-LINKERS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LINKERS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
 
 SRCDIR = src
 OBJDIR = obj
@@ -37,10 +37,12 @@ EXENAME = QuietWorld
 
 INCLUDES = -Iinclude                                                     \
            -ID:/MinGWLibs/SDL2-2.0.8/i686-w64-mingw32/include/SDL2       \
-	   -ID:/MinGWLibs/SDL2_image-2.0.3/i686-w64-mingw32/include/SDL2 \
+	   	   -ID:/MinGWLibs/SDL2_image-2.0.3/i686-w64-mingw32/include/SDL2 \
+		   -ID:/MinGWLibs/SDL2_mixer-2.0.4/i686-w64-mingw32/include/SDL2 \
 
 LIBS = -LD:/MinGWLibs/SDL2-2.0.8/i686-w64-mingw32/lib        \
        -LD:/MinGWLibs/SDL2_image-2.0.3/i686-w64-mingw32/lib  \
+	   -LD:/MinGWLibs/SDL2_mixer-2.0.4/i686-w64-mingw32/lib  \
 
 #Need to put the linkers at the end of the call
 $(BINDIR)/$(EXENAME): $(OBJFILES)

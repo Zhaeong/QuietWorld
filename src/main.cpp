@@ -25,18 +25,30 @@ int main(int argv, char **args)
   //Initiate SDL
   StartSDL(&window, &renderer);
 
-  // load WAV file
+  // load WAV files
 
-  SDL_AudioSpec wavSpec;
-  Uint32 wavLength;
-  Uint8 *wavBuffer;
+  //Background sounds
+  //Music
+  Mix_Music *gMusic = NULL;
+  //Load music
+  gMusic = Mix_LoadMUS("res/wavs/luisibach.wav");
+  if (gMusic == NULL)
+  {
+    printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+  }
 
-  SDL_LoadWAV("res/wavs/arrow.wav", &wavSpec, &wavBuffer, &wavLength);
+  //Play music
+  Mix_PlayMusic( gMusic, -1 );
 
-  SDL_AudioDeviceID deviceId = SDL_OpenAudioDevice(NULL, 0, &wavSpec, NULL, 0);
+  //Sounds
+  Mix_Chunk *gScratch = NULL;
 
-  int success = SDL_QueueAudio(deviceId, wavBuffer, wavLength);
-  SDL_PauseAudioDevice(deviceId, 0);
+  //Load sound effects
+  gScratch = Mix_LoadWAV("res/wavs/arrow.wav");
+  if (gScratch == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
 
   //Initiate Camera coords
   int camX = 0;
@@ -221,8 +233,7 @@ int main(int argv, char **args)
           isMining = false;
           holdDownTime = 0;
 
-          SDL_QueueAudio(deviceId, wavBuffer, wavLength);
-          SDL_PauseAudioDevice(deviceId, 0);
+          Mix_PlayChannel( -1, gScratch, 0 );
 
           cout << "going upo";
 
@@ -526,10 +537,13 @@ int main(int argv, char **args)
 
   //Cleanup code
 
-  SDL_CloseAudioDevice(deviceId);
-  SDL_FreeWAV(wavBuffer);
+  //Free the sound effects
+  Mix_FreeChunk( gScratch );
+  Mix_FreeMusic( gMusic );
+
+  Mix_Quit();
+
   SDL_Quit();
- 
 
   return 0;
 }

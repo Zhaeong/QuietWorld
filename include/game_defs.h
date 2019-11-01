@@ -2,7 +2,7 @@
 #define GAMEDEFS_H
 
 #include <string>
-
+#include <SDL_mixer.h>
 
 using namespace std;
 
