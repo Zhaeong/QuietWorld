@@ -31,7 +31,7 @@ int main(int argv, char **args)
   //Music
   Mix_Music *gMusic = NULL;
   //Load music
-  gMusic = Mix_LoadMUS("res/wavs/luisibach.wav");
+  gMusic = Mix_LoadMUS("res/wavs/intro.wav");
   if (gMusic == NULL)
   {
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -44,7 +44,7 @@ int main(int argv, char **args)
   Mix_Chunk *gScratch = NULL;
 
   //Load sound effects
-  gScratch = Mix_LoadWAV("res/wavs/arrow.wav");
+  gScratch = Mix_LoadWAV("res/wavs/fNote.wav");
   if (gScratch == NULL)
   {
     printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
