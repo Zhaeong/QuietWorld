@@ -27,18 +27,28 @@ int main(int argv, char **args)
 
   // load WAV files
 
-  //Background sounds
-  //Music
-  Mix_Music *gMusic = NULL;
   //Load music
-  gMusic = Mix_LoadMUS("res/wavs/laurapalmer.wav");
-  if (gMusic == NULL)
+  Mix_Music *introMus = Mix_LoadMUS("res/wavs/intro.wav");
+  if (introMus == NULL)
+  {
+    printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  Mix_Music *levelOneMus = Mix_LoadMUS("res/wavs/laurapalmer.wav");
+  if (levelOneMus == NULL)
+  {
+    printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  Mix_Music *interLevelMus = Mix_LoadMUS("res/wavs/engagementparty.wav");
+  if (interLevelMus == NULL)
   {
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
   //Play music
-  Mix_PlayMusic( gMusic, -1 );
+  //Second param is number of lopps -1 for infinite
+  Mix_PlayMusic( introMus, 1 );
 
   //Sounds
   Mix_Chunk *gScratch = NULL;
@@ -113,20 +123,22 @@ int main(int argv, char **args)
                     mainShip.mWidth,
                     mainShip.mHeight);
 
+  //Initialize random seed for generating debris and name
+  srand (time(NULL));
+  
   //Create texture handling
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   RemoveTextureWhiteSpace(window, fontTex);
   TextObj textArray[NUM_TEXT];
 
-  TextObj startText;
-  //startText.mString = "Designation DMAR114123, Function Debris Maintenance and Retrieval";
-  SetTextString(&startText, "Designation DMAR114123, Function Debris Maintenance and Retrievals");
-  startText.mDelay = 20;
-  textArray[0] = startText;
+  TextObj textArrayIntro[NUM_TEXT_INTRO];
+
+  SetIntroText(textArrayIntro);
 
   TextObj choiceA;
   SetTextString(&choiceA, "");
   choiceA.mDelay = 20;
+  textArray[0] = choiceA;
   textArray[1] = choiceA;
 
   TextObj choiceB;
@@ -140,8 +152,7 @@ int main(int argv, char **args)
   SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
   RemoveTextureWhiteSpace(window, debrisTex);
 
-  //Initialize random seed for generating debris
-  srand(3234);
+
 
   //Generate debris
   GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);
@@ -191,7 +202,7 @@ int main(int argv, char **args)
     }
 
     if (gameState == STATE_GAME)
-    {
+    {      
       if (eventType != "NONE")
       {
         cout << eventType << "\n";
@@ -297,6 +308,12 @@ int main(int argv, char **args)
       if (numDebris == 1)
       {
         gameState = STATE_PAUSE;
+
+
+        Mix_FadeOutMusic(1000);
+        //SDL_Delay(1);
+
+        Mix_PlayMusic( interLevelMus, 1 );
 
         SetInterLevelChoices(textArray,
                              "Are you acquainted with your ship?",
@@ -504,6 +521,11 @@ int main(int argv, char **args)
       {
         string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
 
+        Mix_FadeOutMusic(1000);
+        //SDL_Delay(1);
+
+        Mix_PlayMusic( levelOneMus, 1 );
+
         if (texCol == BTN_STARTGAME)
         {
           textArray[0].mString = "";
@@ -515,10 +537,14 @@ int main(int argv, char **args)
 
       //Render UI
       RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
+
+      RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
     }
 
     //Render text
     RenderText(renderer, fontTex, textArray);
+
+    
 
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
@@ -539,7 +565,7 @@ int main(int argv, char **args)
 
   //Free the sound effects
   Mix_FreeChunk( gScratch );
-  Mix_FreeMusic( gMusic );
+  Mix_FreeMusic( introMus );
 
   Mix_Quit();
 

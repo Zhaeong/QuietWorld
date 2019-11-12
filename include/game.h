@@ -84,6 +84,9 @@ void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int ca
 
 void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray);
 
+void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts);
+
+
 bool TextureCollide(int x, int y, int width, int height , Texture texB);
 
 void SetTextureColorMod(Texture tex);
@@ -91,6 +94,8 @@ void SetTextureColorMod(Texture tex);
 void SetShipColorMod(Ship ship);
 
 void SetTextString(TextObj *text, string textContent);
+
+void SetIntroText(TextObj *textArray);
 
 void SetInterLevelChoices(TextObj *textArray,
                           string question,

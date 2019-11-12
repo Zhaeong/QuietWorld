@@ -691,7 +691,7 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
 
         //cout << "cur:" << tObj.mString << " prev:" << prevtObj.mString << " fi:" << isPrevFinished << "\n";
         //Compares the last time the letter was incremented to cur time
-        //If enough time elpased > mDelay then increment num letters by one
+        //If enough time elapsed > mDelay then increment num letters by one
         //isPrevFinished is used so that text obj is rendered one by one
         if ((gameTime - tObj.mLastTime > tObj.mDelay) && isPrevFinished)
         {
@@ -790,6 +790,128 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
   }
 }
 
+void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts)
+{
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = 20;
+  srcRect.w = 20;
+
+  dstRect.x = 0;
+  dstRect.y = 0;
+  dstRect.h = 20;
+  dstRect.w = 20;
+
+  for (int i = 0; i < numTexts; i++)
+  {
+    TextObj tObj = textArray[i];
+
+    int curPosX = tObj.mX;
+    int curPosY = tObj.mY;
+
+    unsigned int gameTime = SDL_GetTicks();
+
+    tObj.mTimeElapsed += gameTime - tObj.mLastTime;    
+
+    cout << "text: " << tObj.mTimeElapsed << "\n";
+
+    bool renderText = false;
+    if (tObj.mTimeElapsed > tObj.mDelay)
+    {
+      renderText = true;
+    }
+    else
+    {
+      tObj.mLastTime = gameTime;
+    }
+    
+
+    unsigned int numLetters = tObj.mString.size();
+
+    if(renderText)
+    {
+      for (unsigned int j = 0; j < numLetters; ++j)
+      {
+        char curChar = tObj.mString[j];
+        int xTextPos = 0;
+        int yTextPos = 0;
+
+        
+
+        //Capitals
+        if ((int)curChar >= 65 && (int)curChar <= 90)
+        {
+          xTextPos = (int)curChar - 65;
+        }
+        //lower case
+        else if ((int)curChar >= 97 && (int)curChar <= 122)
+        {
+          xTextPos = (int)curChar - 97;
+          yTextPos = 20;
+        }
+        //numbers
+        else if ((int)curChar >= 48 && (int)curChar <= 57)
+        {
+          xTextPos = (int)curChar - 48;
+          yTextPos = 40;
+        }
+        //minus sign
+        else if ((int)curChar == 45)
+        {
+          xTextPos = 0;
+          yTextPos = 60;
+        }
+        //dot
+        else if ((int)curChar == 46)
+        {
+          xTextPos = 1;
+          yTextPos = 60;
+        }
+        //question mark
+        else if ((int)curChar == 63)
+        {
+          xTextPos = 2;
+          yTextPos = 60;
+        }
+        //black space
+        else
+        {
+          xTextPos = 200;
+          yTextPos = 40;
+        }
+
+        srcRect.x = 20 * xTextPos;
+        srcRect.y = yTextPos;
+
+        dstRect.x = curPosX;
+        dstRect.y = curPosY;
+
+        //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
+
+        //Wraps to next line if the text exceeds the width
+        if (curPosX >= GAMEWIDTH)
+        {
+          curPosX = tObj.mX;
+          curPosY += 20;
+
+          //Need to reset render rect due to rendering on new line
+          dstRect.x = curPosX;
+          dstRect.y = curPosY;
+        }
+
+        //cout << "Red X:" << dstRect.x  << " Y:" << dstRect.y  <<" Let:" << curChar << "\n";
+        SDL_RenderCopyEx(renderer, fontTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
+
+        curPosX += 20;
+      }
+    }
+  }
+
+}
+
 bool TextureCollide(int x, int y, int width, int height, Texture texB)
 {
   //Check horizontal collision
@@ -847,6 +969,55 @@ void SetTextString(TextObj *text, string textContent)
   text->mWidth = textContent.length() * 20;
 }
 
+void SetIntroText(TextObj *textArray)
+{
+
+  
+  int Name = (rand() % (5000000 - 2000000)) + 2000000;
+  TextObj startText0;
+  SetTextString(&startText0, "Designation - DMAR" + to_string(Name));
+  startText0.mDelay = 0;
+  startText0.mX = 0;
+  startText0.mY = 0;
+  textArray[0] = startText0;
+
+  TextObj startText1;
+  SetTextString(&startText1, "Function - Debris Maintenance");
+  startText1.mDelay = 3000;
+  startText1.mX = 0;
+  startText1.mY = 30;
+  textArray[1] = startText1;
+
+  TextObj startText2;
+  SetTextString(&startText2, "Purpose - Debris Maintenance");
+  startText2.mDelay = 6000;
+  startText2.mX = 0;
+  startText2.mY = 50;
+  textArray[2] = startText2;
+
+  TextObj startText3;
+  SetTextString(&startText3, "Goal - Debris Maintenance");
+  startText3.mDelay = 9000;
+  startText3.mX = 0;
+  startText3.mY = 70;
+  textArray[3] = startText3;
+
+  TextObj startText4;
+  SetTextString(&startText4, "Dream - Debris Maintenance");
+  startText4.mDelay = 12000;
+  startText4.mX = 0;
+  startText4.mY = 90;
+  textArray[4] = startText4;
+
+  TextObj startText5;
+  SetTextString(&startText5, "Dream - Debris Maintenance");
+  startText5.mDelay = 15000;
+  startText5.mX = 0;
+  startText5.mY = 110;
+  textArray[5] = startText5;
+
+
+}
 void SetInterLevelChoices(TextObj *textArray,
                           string question,
                           string choiceA,

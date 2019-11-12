@@ -49,6 +49,7 @@ struct TextObj
   unsigned int mDelay = 0;
   unsigned int mLastTime = 0;
   unsigned int mLetters = 0;
+  unsigned int mTimeElapsed = 0;
   bool enabled = true;
   bool finished = 0;
 };
@@ -93,6 +94,8 @@ const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 //TEXT DISPLAY
 const int NUM_TEXT = 10;
+
+const int NUM_TEXT_INTRO = 6;
 
 /*
 0 - Main Text
