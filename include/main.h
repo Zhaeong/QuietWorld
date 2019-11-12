@@ -4,6 +4,7 @@
 #include <SDL.h>
 #include <string>
 #include <iostream>
+#include <time.h>
 
 #include "game.h"
 #include "obj_ship.h"
