@@ -95,7 +95,7 @@ const string DEBRIS_IMG  = "res/debris/debris1.png";
 //TEXT DISPLAY
 const int NUM_TEXT = 10;
 
-const int NUM_TEXT_INTRO = 6;
+const int NUM_TEXT_INTRO = 12;
 
 /*
 0 - Main Text
