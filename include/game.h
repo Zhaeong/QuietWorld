@@ -17,7 +17,6 @@ using namespace std;
 //Foward declaration due to obj_ship including this file
 //class Ship;
 
-
 int StartSDL(SDL_Window **window, SDL_Renderer **renderer);
 
 SDL_Texture* GetSDLTexture(SDL_Renderer *renderer, SDL_Window *window, string textureLocation);
@@ -72,7 +71,6 @@ void CenterCamOnPlayer(int *camX,
                        int plaW,
                        int plaH);
 
-
 void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int *camX, int *camY, int camW, int camH,
                           int objX, int objY, int objH, int objW,
@@ -84,8 +82,9 @@ void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int ca
 
 void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray);
 
-void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts);
+bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts);
 
+void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts);
 
 bool TextureCollide(int x, int y, int width, int height , Texture texB);
 

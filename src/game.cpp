@@ -790,6 +790,171 @@ void RenderText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textA
   }
 }
 
+bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts)
+{
+  SDL_SetTextureBlendMode(fontTexture, SDL_BLENDMODE_BLEND);
+
+  bool finishedAllTexts = false;
+
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = 20;
+  srcRect.w = 20;
+
+  dstRect.x = 0;
+  dstRect.y = 0;
+  dstRect.h = 20;
+  dstRect.w = 20;
+
+  for (int i = 0; i < numTexts; i++)
+  {
+    TextObj prevtObj;
+
+    bool isPrevFinished = false;
+    if (i == 0)
+    {
+      isPrevFinished = true;
+    }
+    else
+    {
+      prevtObj = textArray[i - 1];
+      if (textArray[i - 1].finished == 1 || textArray[i].finished == 1)
+      {
+        isPrevFinished = true;
+      }
+    }
+
+    TextObj tObj = textArray[i];
+
+    int curPosX = tObj.mX;
+    int curPosY = tObj.mY;
+
+    unsigned int numLetters = tObj.mLetters;
+
+    if (tObj.enabled)
+    {
+      if (tObj.mDelay == 0)
+      {
+        numLetters = tObj.mString.size();
+      }
+      else
+      {
+        unsigned int gameTime = SDL_GetTicks();
+
+        //cout << "cur:" << tObj.mString << " prev:" << prevtObj.mString << " fi:" << isPrevFinished << "\n";
+        //Compares the last time the letter was incremented to cur time
+        //If enough time elapsed > mDelay then increment num letters by one
+        //isPrevFinished is used so that text obj is rendered one by one
+        if ((gameTime - tObj.mLastTime > tObj.mDelay) && isPrevFinished)
+        {
+          if (tObj.mLetters < tObj.mString.size())
+          {
+            tObj.mLetters += 1;
+            tObj.mLastTime = gameTime;
+            textArray[i] = tObj;
+          }
+
+          //cout << j << " numL:" << numLetters << "\n";
+          if (tObj.mLetters == tObj.mString.size())
+          {
+            textArray[i].finished = 1;
+          }
+          else
+          {
+            textArray[i].finished = 0;
+          }
+        }
+      }
+      for (unsigned int j = 0; j < numLetters; ++j)
+      {
+
+        char curChar = tObj.mString[j];
+        int xTextPos = 0;
+        int yTextPos = 0;
+
+        //Capitals
+        if ((int)curChar >= 65 && (int)curChar <= 90)
+        {
+          xTextPos = (int)curChar - 65;
+        }
+        //lower case
+        else if ((int)curChar >= 97 && (int)curChar <= 122)
+        {
+          xTextPos = (int)curChar - 97;
+          yTextPos = 20;
+        }
+        //numbers
+        else if ((int)curChar >= 48 && (int)curChar <= 57)
+        {
+          xTextPos = (int)curChar - 48;
+          yTextPos = 40;
+        }
+        //minus sign
+        else if ((int)curChar == 45)
+        {
+          xTextPos = 0;
+          yTextPos = 60;
+        }
+        //dot
+        else if ((int)curChar == 46)
+        {
+          xTextPos = 1;
+          yTextPos = 60;
+        }
+        //question mark
+        else if ((int)curChar == 63)
+        {
+          xTextPos = 2;
+          yTextPos = 60;
+        }
+        //black space
+        else
+        {
+          xTextPos = 200;
+          yTextPos = 40;
+        }
+
+        srcRect.x = 20 * xTextPos;
+        srcRect.y = yTextPos;
+
+        dstRect.x = curPosX;
+        dstRect.y = curPosY;
+
+        //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
+
+        //Wraps to next line if the text exceeds the width
+        if (curPosX >= GAMEWIDTH)
+        {
+          curPosX = tObj.mX;
+          curPosY += 20;
+
+          //Need to reset render rect due to rendering on new line
+          dstRect.x = curPosX;
+          dstRect.y = curPosY;
+        }
+
+        //cout << "Red X:" << dstRect.x  << " Y:" << dstRect.y  <<" Let:" << curChar << "\n";
+        SDL_RenderCopyEx(renderer, fontTexture, &srcRect, &dstRect, 0, NULL, SDL_FLIP_NONE);
+
+        curPosX += 20;
+      }
+    }
+
+    //If either of the response texts have finished rendering this render segment if complete
+    if(
+      ((i == numTexts - 1) && tObj.mLetters == tObj.mString.size()) || 
+      ((i == numTexts - 2) && tObj.mLetters == tObj.mString.size())
+      )
+    {
+      finishedAllTexts = true;
+    }
+  }
+  return finishedAllTexts;
+}
+
 void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj *textArray, int numTexts)
 {
   SDL_Rect srcRect;
@@ -814,9 +979,7 @@ void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, Text
 
     unsigned int gameTime = SDL_GetTicks();
 
-    tObj.mTimeElapsed += gameTime - tObj.mLastTime;    
-
-    cout << "text: " << tObj.mTimeElapsed << "\n";
+    tObj.mTimeElapsed += gameTime - tObj.mLastTime;
 
     bool renderText = false;
     if (tObj.mTimeElapsed > tObj.mDelay)
@@ -909,7 +1072,6 @@ void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, Text
       }
     }
   }
-
 }
 
 bool TextureCollide(int x, int y, int width, int height, Texture texB)

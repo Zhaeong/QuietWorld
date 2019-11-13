@@ -93,9 +93,16 @@ const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 
 //TEXT DISPLAY
-const int NUM_TEXT = 10;
 
-const int NUM_TEXT_INTRO = 12;
+/*
+0 - Main Text
+1 - NUM Debris
+2 - DEBUG x,y screen mouse coords
+3 - DEBUG x,y world mouse coords
+4 - DEBUG GameTime
+5 - DEBUG HOLDDOWNTIME
+*/
+const int NUM_TEXT = 6;
 
 /*
 0 - Main Text
@@ -103,12 +110,18 @@ const int NUM_TEXT_INTRO = 12;
 2 - Choice B Text
 3 = Response A Text
 4 = Response B Text
-5 - NUM Debris
-6 - DEBUG x,y screen mouse coords
-7 - DEBUG x,y world mouse coords
-8 - DEBUG GameTime
-9 - DEBUG HOLDDOWNTIME
+*/
+const int NUM_TEXT_SURVEY = 5;
 
+const int NUM_TEXT_INTRO = 11;
+
+/*
+0 - Main Text
+1 - NUM Debris
+2 - DEBUG x,y screen mouse coords
+3 - DEBUG x,y world mouse coords
+4 - DEBUG GameTime
+5 - DEBUG HOLDDOWNTIME
 */
 
 

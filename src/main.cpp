@@ -129,30 +129,30 @@ int main(int argv, char **args)
   //Create texture handling
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   RemoveTextureWhiteSpace(window, fontTex);
+
   TextObj textArray[NUM_TEXT];
 
   TextObj textArrayIntro[NUM_TEXT_INTRO];
+
+  TextObj textArraySurvey[NUM_TEXT_SURVEY];
 
   SetIntroText(textArrayIntro);
 
   TextObj choiceA;
   SetTextString(&choiceA, "");
   choiceA.mDelay = 20;
-  textArray[0] = choiceA;
-  textArray[1] = choiceA;
+  textArraySurvey[0] = choiceA;
 
   TextObj choiceB;
   SetTextString(&choiceB, "");
   choiceB.mDelay = 20;
-  textArray[1] = choiceB;
+  textArraySurvey[1] = choiceB;
 
   //Create debris Array
   Texture debrisArray[NUM_DEBRIS];
 
   SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
   RemoveTextureWhiteSpace(window, debrisTex);
-
-
 
   //Generate debris
   GenerateDebris(debrisTex, debrisArray, 0, 10, camX, camY);
@@ -315,7 +315,7 @@ int main(int argv, char **args)
 
         Mix_PlayMusic( interLevelMus, 1 );
 
-        SetInterLevelChoices(textArray,
+        SetInterLevelChoices(textArraySurvey,
                              "Are you acquainted with your ship?",
                              "Yes",
                              "No",
@@ -326,7 +326,7 @@ int main(int argv, char **args)
       {
         gameState = STATE_PAUSE;
 
-        SetInterLevelChoices(textArray,
+        SetInterLevelChoices(textArraySurvey,
                              "How are you doing so far?",
                              "This is really boring",
                              "I really like this",
@@ -343,7 +343,7 @@ int main(int argv, char **args)
                            mainShip.mSpeed);
 
       //Set num of debris gathered
-      textArray[5].mString = to_string(numDebris);
+      textArray[1].mString = to_string(numDebris);
 
       ////////////////////
       //Render to screen//
@@ -403,17 +403,17 @@ int main(int argv, char **args)
       //Render DEBUG items if turned on
       if (DEBUG == 1)
       {
-        textArray[6].mY = 30;
-        textArray[6].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+        textArray[2].mY = 30;
+        textArray[2].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
 
-        textArray[7].mY = 60;
-        textArray[7].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+        textArray[3].mY = 60;
+        textArray[3].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
 
-        textArray[8].mY = 90;
-        textArray[8].mString = "GameTime:" + to_string(gameTime);
+        textArray[4].mY = 90;
+        textArray[4].mString = "GameTime:" + to_string(gameTime);
 
-        textArray[9].mY = 120;
-        textArray[9].mString = "HoldDown:" + to_string(holdDownTime);
+        textArray[5].mY = 120;
+        textArray[5].mString = "HoldDown:" + to_string(holdDownTime);
 
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
 
@@ -430,21 +430,21 @@ int main(int argv, char **args)
       RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
 
       //Get position of text to render a background for it
-      choiceBackgroundTexA.mX = textArray[1].mX;
-      choiceBackgroundTexA.mY = textArray[1].mY - 15;
-      choiceBackgroundTexA.mWidth = textArray[1].mWidth;
+      choiceBackgroundTexA.mX = textArraySurvey[1].mX;
+      choiceBackgroundTexA.mY = textArraySurvey[1].mY - 15;
+      choiceBackgroundTexA.mWidth = textArraySurvey[1].mWidth;
 
-      choiceBackgroundTexB.mX = textArray[2].mX;
-      choiceBackgroundTexB.mY = textArray[2].mY - 15;
-      choiceBackgroundTexB.mWidth = textArray[2].mWidth;
+      choiceBackgroundTexB.mX = textArraySurvey[2].mX;
+      choiceBackgroundTexB.mY = textArraySurvey[2].mY - 15;
+      choiceBackgroundTexB.mWidth = textArraySurvey[2].mWidth;
 
-      responseBackgroundTexA.mX = textArray[3].mX;
-      responseBackgroundTexA.mY = textArray[3].mY - 15;
-      responseBackgroundTexA.mWidth = textArray[3].mWidth;
+      responseBackgroundTexA.mX = textArraySurvey[3].mX;
+      responseBackgroundTexA.mY = textArraySurvey[3].mY - 15;
+      responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth;
 
-      responseBackgroundTexB.mX = textArray[4].mX;
-      responseBackgroundTexB.mY = textArray[4].mY - 15;
-      responseBackgroundTexB.mWidth = textArray[4].mWidth;
+      responseBackgroundTexB.mX = textArraySurvey[4].mX;
+      responseBackgroundTexB.mY = textArraySurvey[4].mY - 15;
+      responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth;
 
       RenderTexture(renderer, choiceBackgroundTexA);
       RenderTexture(renderer, choiceBackgroundTexB);
@@ -458,20 +458,20 @@ int main(int argv, char **args)
         if (texCol == BTN_STARTGAME)
         {
           //Reset text
-          textArray[0].mString = "";
-          textArray[0].mLetters = 0;
+          textArraySurvey[0].mString = "";
+          textArraySurvey[0].mLetters = 0;
 
-          textArray[1].mString = "";
-          textArray[1].mLetters = 0;
+          textArraySurvey[1].mString = "";
+          textArraySurvey[1].mLetters = 0;
 
-          textArray[2].mString = "";
-          textArray[2].mLetters = 0;
+          textArraySurvey[2].mString = "";
+          textArraySurvey[2].mLetters = 0;
 
-          textArray[3].mString = "";
-          textArray[3].mLetters = 0;
+          textArraySurvey[3].mString = "";
+          textArraySurvey[3].mLetters = 0;
 
-          textArray[4].mString = "";
-          textArray[4].mLetters = 0;
+          textArraySurvey[4].mString = "";
+          textArraySurvey[4].mLetters = 0;
 
           //Reset renders
           choiceBackgroundTexA.mRender = true;
@@ -479,9 +479,9 @@ int main(int argv, char **args)
           responseBackgroundTexA.mRender = false;
           responseBackgroundTexB.mRender = false;
 
-          textArray[1].enabled = true;
-          textArray[2].enabled = true;
-          textArray[3].enabled = false;
+          textArraySurvey[1].enabled = true;
+          textArraySurvey[2].enabled = true;
+          textArraySurvey[3].enabled = false;
 
           gameState = STATE_GAME;
           numDebris += 1;
@@ -493,11 +493,11 @@ int main(int argv, char **args)
           choiceBackgroundTexA.mRender = false;
           choiceBackgroundTexB.mRender = false;
 
-          textArray[1].enabled = false;
-          textArray[2].enabled = false;
+          textArraySurvey[1].enabled = false;
+          textArraySurvey[2].enabled = false;
 
           responseBackgroundTexA.mRender = true;
-          textArray[3].enabled = true;
+          textArraySurvey[3].enabled = true;
         }
 
         if (TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
@@ -505,14 +505,19 @@ int main(int argv, char **args)
           cout << "selected B";
           choiceBackgroundTexA.mRender = false;
           choiceBackgroundTexB.mRender = false;
-          textArray[1].enabled = false;
-          textArray[2].enabled = false;
+          textArraySurvey[1].enabled = false;
+          textArraySurvey[2].enabled = false;
 
           responseBackgroundTexB.mRender = true;
-          textArray[4].enabled = true;
+          textArraySurvey[4].enabled = true;
 
-          cout << textArray[4].mString << "\n";
+          cout << textArraySurvey[4].mString << "\n";
         }
+      }
+
+      if(RenderSurveyText(renderer, fontTex, textArraySurvey, NUM_TEXT_SURVEY))
+      {
+        cout << "worrrrddddd";
       }
     }
     else if (gameState == STATE_INTRO)
@@ -539,12 +544,11 @@ int main(int argv, char **args)
       RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
 
       RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
+      
     }
 
     //Render text
     RenderText(renderer, fontTex, textArray);
-
-    
 
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
