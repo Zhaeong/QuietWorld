@@ -1133,8 +1133,6 @@ void SetTextString(TextObj *text, string textContent)
 
 void SetIntroText(TextObj *textArray)
 {
-
-  
   int Name = (rand() % (5000000 - 2000000)) + 2000000;
   TextObj startText0;
   SetTextString(&startText0, "Designation - DMAR" + to_string(Name));
