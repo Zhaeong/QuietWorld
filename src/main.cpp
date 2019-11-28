@@ -28,7 +28,7 @@ int main(int argv, char **args)
   // load WAV files
 
   //Load music
-  Mix_Music *introMus = Mix_LoadMUS("res/wavs/intro.wav");
+  Mix_Music *introMus = Mix_LoadMUS("res/wavs/intro2.wav");
   if (introMus == NULL)
   {
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
