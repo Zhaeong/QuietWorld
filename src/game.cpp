@@ -1134,89 +1134,57 @@ void SetTextString(TextObj *text, string textContent)
 void SetIntroText(TextObj *textArray)
 {
   int Name = (rand() % (5000000 - 2000000)) + 2000000;
+  int Name2 = (rand() % (5000000 - 2000000)) + 2000000;
   TextObj startText0;
-  SetTextString(&startText0, "Designation - DMAR" + to_string(Name));
+  SetTextString(&startText0, "Hello DMRu" + to_string(Name));
   startText0.mDelay = 0;
   startText0.mX = 0;
   startText0.mY = 0;
   textArray[0] = startText0;
 
   TextObj startText1;
-  SetTextString(&startText1, "Function - Debris Maintenance");
+  SetTextString(&startText1, "Debris Maintain Retrieve unit");
   startText1.mDelay = 3000;
   startText1.mX = 0;
   startText1.mY = 30;
   textArray[1] = startText1;
 
   TextObj startText2;
-  SetTextString(&startText2, "Purpose - Debris Maintenance");
+  SetTextString(&startText2, "Sector - " + to_string(Name));
   startText2.mDelay = 6000;
   startText2.mX = 0;
   startText2.mY = 50;
   textArray[2] = startText2;
 
   TextObj startText3;
-  SetTextString(&startText3, "Goal - Debris Maintenance");
+  SetTextString(&startText3, "I am DBRu" + to_string(Name2));
   startText3.mDelay = 9000;
   startText3.mX = 0;
   startText3.mY = 70;
   textArray[3] = startText3;
 
   TextObj startText4;
-  SetTextString(&startText4, "Dream - Debris Maintenance");
+  SetTextString(&startText4, "DMRu Behavior Retainment unit");
   startText4.mDelay = 12000;
   startText4.mX = 0;
   startText4.mY = 90;
   textArray[4] = startText4;
 
   TextObj startText5;
-  SetTextString(&startText5, "Dream - Debris Maintenance");
+  SetTextString(&startText5, "Your personal carer");
   startText5.mDelay = 15000;
   startText5.mX = 0;
   startText5.mY = 110;
   textArray[5] = startText5;
 
   TextObj startText6;
-  SetTextString(&startText6, "Dream - Debris Maintenance");
-  startText6.mDelay = 18000;
+  SetTextString(&startText6, "So you can be the best you can");
+  startText6.mDelay = 17000;
   startText6.mX = 0;
   startText6.mY = 130;
   textArray[6] = startText6;
 
-  TextObj startText7;
-  SetTextString(&startText7, "Dream - Debris Maintenance");
-  startText7.mDelay = 21000;
-  startText7.mX = 0;
-  startText7.mY = 150;
-  textArray[7] = startText7;
 
-  TextObj startText8;
-  SetTextString(&startText8, "Dream - Debris Maintenance");
-  startText8.mDelay = 24000;
-  startText8.mX = 0;
-  startText8.mY = 170;
-  textArray[8] = startText8;
-
-  TextObj startText9;
-  SetTextString(&startText9, "Dream - Debris Maintenance");
-  startText9.mDelay = 27000;
-  startText9.mX = 0;
-  startText9.mY = 190;
-  textArray[9] = startText9;
-
-  TextObj startText10;
-  SetTextString(&startText10, "Dream - Debris Maintenance");
-  startText10.mDelay = 30000;
-  startText10.mX = 0;
-  startText10.mY = 210;
-  textArray[10] = startText10;
-
-  TextObj startText11;
-  SetTextString(&startText11, "Dream - Debris Maintenance");
-  startText11.mDelay = 33000;
-  startText11.mX = 0;
-  startText11.mY = 230;
-  textArray[11] = startText11;
 
 }
 void SetInterLevelChoices(TextObj *textArray,
