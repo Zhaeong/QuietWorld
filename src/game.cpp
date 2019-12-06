@@ -424,7 +424,7 @@ void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   SDL_Texture *startGameTex = GetSDLTexture(renderer, window, BTN_STARTGAME);
   Texture startGameButton(startGameTex, BTN_STARTGAME);
   startGameButton.mX = GAMEWIDTH / 2 - (startGameButton.mWidth / 2);
-  startGameButton.mY = GAMEHEIGHT * 2 / 3;
+  startGameButton.mY = 250;
   uiArray[0] = startGameButton;
 }
 
@@ -436,18 +436,22 @@ void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArr
   surveyBackground.mY = 0;
   uiArray[0] = surveyBackground;
 
-  SDL_Texture *startGameTex = GetSDLTexture(renderer, window, BTN_STARTGAME);
-  Texture startGameButton(startGameTex, BTN_STARTGAME);
-  startGameButton.mX = GAMEWIDTH / 2 - (startGameButton.mWidth / 2);
-  startGameButton.mY = GAMEHEIGHT * 2 / 3;
-  uiArray[1] = startGameButton;
+  SDL_Texture *continueTex = GetSDLTexture(renderer, window, BTN_CONTINUE);
+  Texture continueButton(continueTex, BTN_CONTINUE);
+  continueButton.mX = GAMEWIDTH / 2 - (continueButton.mWidth / 2);
+  continueButton.mY = GAMEHEIGHT * 2 / 3;
+  continueButton.mRender = false;
+  uiArray[1] = continueButton;
 }
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
 {
   for (int i = 0; i < size; ++i)
   {
+
     RenderTexture(renderer, uiArray[i]);
+
+    
   }
 }
 
@@ -523,7 +527,9 @@ string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos
   {
     Texture texRef = arrayTexture[i];
 
-    if (xPos >= texRef.mX && xPos <= (texRef.mX + texRef.mWidth) && yPos >= texRef.mY && yPos <= (texRef.mY + texRef.mHeight) && texRef.mRender)
+    if (xPos >= texRef.mX && xPos <= (texRef.mX + texRef.mWidth) && 
+        yPos >= texRef.mY && yPos <= (texRef.mY + texRef.mHeight) && 
+        texRef.mRender)
     {
       colTex = texRef.mImgLocation;
     }

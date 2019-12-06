@@ -86,6 +86,7 @@ const string BTN_STARTGAME     = "res/dialogUI/startGame.png";
 
 //INTER LEVEL UI
 const int NUM_INTERUI = 2;
+const string BTN_CONTINUE     = "res/dialogUI/continue.png";
 
 //DEBRIS
 const int NUM_DEBRIS = 90;

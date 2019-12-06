@@ -48,7 +48,7 @@ int main(int argv, char **args)
 
   //Play music
   //Second param is number of lopps -1 for infinite
-  Mix_PlayMusic( introMus, 1 );
+  Mix_PlayMusic(introMus, 1);
 
   //Sounds
   Mix_Chunk *gScratch = NULL;
@@ -124,8 +124,8 @@ int main(int argv, char **args)
                     mainShip.mHeight);
 
   //Initialize random seed for generating debris and name
-  srand (time(NULL));
-  
+  srand(time(NULL));
+
   //Create texture handling
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   RemoveTextureWhiteSpace(window, fontTex);
@@ -202,7 +202,7 @@ int main(int argv, char **args)
     }
 
     if (gameState == STATE_GAME)
-    {      
+    {
       if (eventType != "NONE")
       {
         cout << eventType << "\n";
@@ -244,7 +244,7 @@ int main(int argv, char **args)
           isMining = false;
           holdDownTime = 0;
 
-          Mix_PlayChannel( -1, gScratch, 0 );
+          Mix_PlayChannel(-1, gScratch, 0);
 
           cout << "going upo";
 
@@ -309,11 +309,10 @@ int main(int argv, char **args)
       {
         gameState = STATE_PAUSE;
 
-
         Mix_FadeOutMusic(1000);
         //SDL_Delay(1);
 
-        Mix_PlayMusic( interLevelMus, 1 );
+        Mix_PlayMusic(interLevelMus, 1);
 
         SetInterLevelChoices(textArraySurvey,
                              "Are you acquainted with your ship?",
@@ -327,7 +326,7 @@ int main(int argv, char **args)
         gameState = STATE_PAUSE;
 
         SetInterLevelChoices(textArraySurvey,
-                             "How are you doing so far?",
+                             "You are doing a good job, how satisfied are you with your work?",
                              "This is really boring",
                              "I really like this",
                              "I appreciate your honesty",
@@ -451,41 +450,15 @@ int main(int argv, char **args)
       RenderTexture(renderer, responseBackgroundTexA);
       RenderTexture(renderer, responseBackgroundTexB);
 
+      //Render button when player made a choice
+      if (RenderSurveyText(renderer, fontTex, textArraySurvey, NUM_TEXT_SURVEY))
+      {
+        uiInterLevelArray[1].mRender = true;
+      }
+
       if (eventType == "MOUSE_UP")
       {
         string texCol = TextureMouseCollision(uiInterLevelArray, NUM_INTERUI, xMouse, yMouse);
-
-        if (texCol == BTN_STARTGAME)
-        {
-          //Reset text
-          textArraySurvey[0].mString = "";
-          textArraySurvey[0].mLetters = 0;
-
-          textArraySurvey[1].mString = "";
-          textArraySurvey[1].mLetters = 0;
-
-          textArraySurvey[2].mString = "";
-          textArraySurvey[2].mLetters = 0;
-
-          textArraySurvey[3].mString = "";
-          textArraySurvey[3].mLetters = 0;
-
-          textArraySurvey[4].mString = "";
-          textArraySurvey[4].mLetters = 0;
-
-          //Reset renders
-          choiceBackgroundTexA.mRender = true;
-          choiceBackgroundTexB.mRender = true;
-          responseBackgroundTexA.mRender = false;
-          responseBackgroundTexB.mRender = false;
-
-          textArraySurvey[1].enabled = true;
-          textArraySurvey[2].enabled = true;
-          textArraySurvey[3].enabled = false;
-
-          gameState = STATE_GAME;
-          numDebris += 1;
-        }
 
         if (TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))
         {
@@ -513,11 +486,40 @@ int main(int argv, char **args)
 
           cout << textArraySurvey[4].mString << "\n";
         }
-      }
 
-      if(RenderSurveyText(renderer, fontTex, textArraySurvey, NUM_TEXT_SURVEY))
-      {
-        cout << "worrrrddddd";
+        if (texCol == BTN_CONTINUE)
+        {
+          //Reset text
+          textArraySurvey[0].mString = "";
+          textArraySurvey[0].mLetters = 0;
+
+          textArraySurvey[1].mString = "";
+          textArraySurvey[1].mLetters = 0;
+
+          textArraySurvey[2].mString = "";
+          textArraySurvey[2].mLetters = 0;
+
+          textArraySurvey[3].mString = "";
+          textArraySurvey[3].mLetters = 0;
+
+          textArraySurvey[4].mString = "";
+          textArraySurvey[4].mLetters = 0;
+
+          //Reset renders
+          choiceBackgroundTexA.mRender = true;
+          choiceBackgroundTexB.mRender = true;
+          responseBackgroundTexA.mRender = false;
+          responseBackgroundTexB.mRender = false;
+
+          textArraySurvey[1].enabled = true;
+          textArraySurvey[2].enabled = true;
+          textArraySurvey[3].enabled = false;
+
+          uiInterLevelArray[1].mRender = false;
+
+          gameState = STATE_GAME;
+          numDebris += 1;
+        }
       }
     }
     else if (gameState == STATE_INTRO)
@@ -529,7 +531,7 @@ int main(int argv, char **args)
         Mix_FadeOutMusic(1000);
         //SDL_Delay(1);
 
-        Mix_PlayMusic( levelOneMus, 1 );
+        Mix_PlayMusic(levelOneMus, 1);
 
         if (texCol == BTN_STARTGAME)
         {
@@ -544,7 +546,6 @@ int main(int argv, char **args)
       RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
 
       RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
-      
     }
 
     //Render text
@@ -568,8 +569,8 @@ int main(int argv, char **args)
   //Cleanup code
 
   //Free the sound effects
-  Mix_FreeChunk( gScratch );
-  Mix_FreeMusic( introMus );
+  Mix_FreeChunk(gScratch);
+  Mix_FreeMusic(introMus);
 
   Mix_Quit();
 
