@@ -607,13 +607,8 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
   }
 }
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xCord, int yCord)
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xMax, int yMax)
 {
-  int genXmin = xCord;
-  int genXmax = xCord + DEBRISWIDTH;
-
-  int genYmin = yCord;
-  int genYmax = yCord + DEBRISHEIGHT;
 
   //cout << "xMin: " << genXmin << "\n";
   //cout << "xMax: " << genXmax << "\n";
@@ -625,8 +620,8 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, 
     Texture dObj(debrisTex, DEBRIS_IMG);
 
     //Generate a random number between min and max
-    dObj.mX = (rand() % (genXmax - genXmin)) + genXmin;
-    dObj.mY = (rand() % (genYmax - genYmin)) + genYmin;
+    dObj.mX = (rand() % xMax) ;
+    dObj.mY = (rand() % yMax) ;
 
     debrisArray[i] = dObj;
 

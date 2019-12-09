@@ -76,7 +76,7 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int objX, int objY, int objH, int objW,
                           int speed);
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xCord, int yCord);
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xMax, int yMax);
 
 void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY);
 
