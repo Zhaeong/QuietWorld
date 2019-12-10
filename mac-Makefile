@@ -11,15 +11,13 @@
 #  patsubst
 #  $(patsubst pattern,replacement,text)
 #  Finds whitespace-separated words in text that match pattern and replaces them with replacement
-#
-#  For Mac install SDL2 and SDL2_Image using brew
 #####END REFERENCE#####
 
- CC = g++
+CC = g++
 
 #-ggdb compiles with debug symbols
 CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0 -std=c++11
-LINKERS = -lSDL2main -lSDL2 -lSDL2_image
+LINKERS = -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
 
 SRCDIR = src
 OBJDIR = obj
