@@ -625,7 +625,7 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, 
 
     if(level == 1)
     {
-      dObj.mSpeed = 1;
+      dObj.mSpeed = 0.1;
     }
 
     debrisArray[i] = dObj;

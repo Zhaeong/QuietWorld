@@ -42,7 +42,7 @@ public:
   int mPitch = 0;
 
   //Debris specific stuff
-  int mSpeed = 0;
+  float mSpeed = 0;
   vect2 mDirection;
 
 
