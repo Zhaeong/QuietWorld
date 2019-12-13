@@ -155,7 +155,7 @@ int main(int argv, char **args)
   RemoveTextureWhiteSpace(window, debrisTex);
 
   //Generate debris
-  GenerateDebris(debrisTex, debrisArray, 0, 1, gameBackground.mWidth, gameBackground.mHeight);
+  GenerateDebris(debrisTex, debrisArray, 0, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
 
   //RemoveDebris(&vDebris, camX, camY);
   bool runGame = true;
@@ -318,10 +318,10 @@ int main(int argv, char **args)
                              "Are you acquainted with your ship?",
                              "Yes",
                              "No",
-                             "That's good",
-                             "Too Bad");
+                             "I'm glad, please continue your work",
+                             "That's unfortunate, please continue your work");
 
-        GenerateDebris(debrisTex, debrisArray, 0, 2, gameBackground.mWidth, gameBackground.mHeight);
+        GenerateDebris(debrisTex, debrisArray, 0, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
       }
       else if (numDebris == 3)
       {

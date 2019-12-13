@@ -607,7 +607,7 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
   }
 }
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xMax, int yMax)
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xMax, int yMax, int level)
 {
 
   //cout << "xMin: " << genXmin << "\n";
@@ -623,6 +623,11 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, 
     dObj.mX = (rand() % xMax) ;
     dObj.mY = (rand() % yMax) ;
 
+    if(level == 1)
+    {
+      dObj.mSpeed = 1;
+    }
+
     debrisArray[i] = dObj;
 
     //cout << "x: " << dObj.mX << " y: " << dObj.mY << "\n";
@@ -633,6 +638,9 @@ void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int ca
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
+    debrisArray[i].mX += debrisArray[i].mDirection.x * debrisArray[i].mSpeed;
+    debrisArray[i].mX += debrisArray[i].mDirection.y * debrisArray[i].mSpeed; 
+
     RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
   }
 }
