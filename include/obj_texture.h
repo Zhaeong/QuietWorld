@@ -24,8 +24,8 @@ public:
   int mWidth = 0;
   int mHeight = 0;
 
-  int mX = 0;
-  int mY = 0;
+  float mX = 0;
+  float mY = 0;
 
   //Original colors
   Uint8 mColorR;
@@ -50,6 +50,7 @@ public:
   Texture(SDL_Texture *sTex, string imgLocation);
 
   void rotateByDegree(int degrees);
+  void updatePosition();
   
 };
 

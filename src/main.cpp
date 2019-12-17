@@ -155,9 +155,8 @@ int main(int argv, char **args)
   RemoveTextureWhiteSpace(window, debrisTex);
 
   //Generate debris
-  GenerateDebris(debrisTex, debrisArray, 0, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
+  GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
 
-  //RemoveDebris(&vDebris, camX, camY);
   bool runGame = true;
 
   int debrisIndex = -1;
@@ -166,8 +165,8 @@ int main(int argv, char **args)
 
   unsigned int numDebris = 0;
 
-  //Variables
   bool isMining = false;
+
   unsigned int holdDownTime = 0;
 
   bool showDialog = true;
@@ -321,7 +320,7 @@ int main(int argv, char **args)
                              "I'm glad, please continue your work",
                              "That's unfortunate, please continue your work");
 
-        GenerateDebris(debrisTex, debrisArray, 0, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
+        GenerateDebris(debrisTex, debrisArray, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
       }
       else if (numDebris == 3)
       {
@@ -337,6 +336,9 @@ int main(int argv, char **args)
 
       //Update game state
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
+
+      //Update debris position
+      UpdateDebris(debrisArray);
 
       //Update camera position
       MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,

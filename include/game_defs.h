@@ -89,7 +89,7 @@ const int NUM_INTERUI = 2;
 const string BTN_CONTINUE     = "res/dialogUI/continue.png";
 
 //DEBRIS
-const int NUM_DEBRIS = 90;
+const int NUM_DEBRIS = 10;
 const string DEBRIS_IMG  = "res/debris/debris1.png";
 
 

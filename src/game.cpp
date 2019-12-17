@@ -607,7 +607,7 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
   }
 }
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, int arrEnd, int xMax, int yMax, int level)
+void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris, int xMax, int yMax, int level)
 {
 
   //cout << "xMin: " << genXmin << "\n";
@@ -615,9 +615,14 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, 
   //cout << "yMin: " << genYmin << "\n";
   //cout << "yMax: " << genYmax << "\n";
 
-  for (int i = arrStart; i < arrEnd; ++i)
+  for (int i = 0; i < NUM_DEBRIS; ++i)
   {
     Texture dObj(debrisTex, DEBRIS_IMG);
+    dObj.mRender = false;
+    if(i < numDebris)
+    {
+      dObj.mRender = true;
+    }
 
     //Generate a random number between min and max
     dObj.mX = (rand() % xMax) ;
@@ -627,21 +632,28 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int arrStart, 
     {
       dObj.mSpeed = 0.1;
     }
-
     debrisArray[i] = dObj;
-
-    //cout << "x: " << dObj.mX << " y: " << dObj.mY << "\n";
   }
 }
 
+void UpdateDebris(Texture *debrisArray)
+{
+  for (unsigned i = 0; i < NUM_DEBRIS; ++i)
+  {
+    if(debrisArray[i].mRender)
+    {
+      debrisArray[i].updatePosition();
+    }
+  }
+}
 void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY)
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
-    debrisArray[i].mX += debrisArray[i].mDirection.x * debrisArray[i].mSpeed;
-    debrisArray[i].mX += debrisArray[i].mDirection.y * debrisArray[i].mSpeed; 
-
-    RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
+    if(debrisArray[i].mRender)
+    {
+      RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
+    }
   }
 }
 
