@@ -33,7 +33,7 @@ OBJFILES = $(patsubst $(SRCDIR)/%.cpp,$(OBJDIR)/%.o,$(SRCS))
 SRCFILES = $(patsubst $(SRCDIR)/%,%,$(SRCS))
 HEADERFILES = $(patsubst $(HDRDIR)/%,%,$(HEADERS))
 
-EXENAME = QuietWorld
+EXENAME = QuietWorld_Mac
 
 #Used brew install sdl2 and brew install sdl2_image
 INCLUDES = -Iinclude                                                     \
