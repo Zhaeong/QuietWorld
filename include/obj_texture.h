@@ -11,7 +11,6 @@
 
 #include "game_defs.h"
 
-
 using namespace std;
 
 class Texture
@@ -50,7 +49,7 @@ public:
   Texture(SDL_Texture *sTex, string imgLocation);
 
   void rotateByDegree(int degrees);
-  void updatePosition();
+  void updatePosition(int curLevelBoundX, int curLevelBoundY);
   
 };
 

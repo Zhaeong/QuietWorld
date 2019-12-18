@@ -338,7 +338,7 @@ int main(int argv, char **args)
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
 
       //Update debris position
-      UpdateDebris(debrisArray);
+      UpdateDebris(debrisArray, curLevelBoundX, curLevelBoundY);
 
       //Update camera position
       MoveCameraBaseOnShip(renderer, &camX, &camY, camW, camH,

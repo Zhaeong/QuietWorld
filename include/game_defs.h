@@ -55,14 +55,11 @@ struct TextObj
 };
 
 //GAME STATES
-
-
 const string STATE_INTRO = "INTRO";
 const string STATE_GAME = "GAME";
 const string STATE_PAUSE = "PAUSE";
 
 //SPACE UI
-
 const int NUM_SPACE_UI = 8;
 
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
@@ -79,7 +76,6 @@ const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
 
 
 //INTRO UI
-
 const int NUM_INTRO_UI = 1;
 const string BTN_STARTGAME     = "res/dialogUI/startGame.png";
 
@@ -124,6 +120,13 @@ const int NUM_TEXT_INTRO = 11;
 4 - DEBUG GameTime
 5 - DEBUG HOLDDOWNTIME
 */
+
+//Vector functions
+
+static float vect2dot(vect2 v1, vect2 v2)
+{
+  return v1.x * v2.x + v1.y * v2.y;
+}
 
 
 #endif // GAMEDEFS_H

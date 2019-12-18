@@ -630,19 +630,19 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
 
     if(level == 1)
     {
-      dObj.mSpeed = 0.1;
+      dObj.mSpeed = 1.1;
     }
     debrisArray[i] = dObj;
   }
 }
 
-void UpdateDebris(Texture *debrisArray)
+void UpdateDebris(Texture *debrisArray, int boundX, int boundY)
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
     if(debrisArray[i].mRender)
     {
-      debrisArray[i].updatePosition();
+      debrisArray[i].updatePosition(boundX, boundY);
     }
   }
 }
