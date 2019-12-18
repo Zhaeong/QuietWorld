@@ -625,14 +625,26 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
     }
 
     //Generate a random number between min and max
-    dObj.mX = (rand() % xMax) ;
-    dObj.mY = (rand() % yMax) ;
+    dObj.mX = (rand() % (xMax - dObj.mWidth)) ;
+    dObj.mY = (rand() % (yMax - dObj.mHeight)) ;
 
     if(level == 1)
     {
+      //Generate random direction
+      float randX = rand() % 10;
+      float randY = rand() % 10;
+
+      //Normalize the vector
+      float vecLength = sqrt(
+                          (randX * randX) +
+                          (randY * randY)
+                          );
+      dObj.mDirection.x = randX / vecLength;
+      dObj.mDirection.y = randY  / vecLength;
+
       dObj.mSpeed = 1.1;
     }
-    debrisArray[i] = dObj;
+      debrisArray[i] = dObj;
   }
 }
 

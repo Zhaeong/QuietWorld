@@ -10,6 +10,7 @@ Texture::Texture(SDL_Texture *sTex, string imgLocation)
 
   //Debris specific stuff
   mSpeed = 0;
+
   mDirection.x = 0.3;
   mDirection.y = 1;
 

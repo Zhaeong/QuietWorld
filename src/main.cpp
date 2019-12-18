@@ -155,7 +155,7 @@ int main(int argv, char **args)
   RemoveTextureWhiteSpace(window, debrisTex);
 
   //Generate debris
-  GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
+  GenerateDebris(debrisTex, debrisArray, 9, gameBackground.mWidth, gameBackground.mHeight, 1);
 
   bool runGame = true;
 
