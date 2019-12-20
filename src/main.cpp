@@ -114,7 +114,7 @@ int main(int argv, char **args)
   int curLevelBoundX = gameBackground.mWidth;
   int curLevelBoundY = gameBackground.mHeight;
 
-  mainShip.mPosition.x = curLevelBoundX / 2;
+  mainShip.mPosition.x = 200;
   mainShip.mPosition.y = curLevelBoundY / 2;
 
   CenterCamOnPlayer(&camX, &camY, camW, camH,
@@ -155,7 +155,12 @@ int main(int argv, char **args)
   RemoveTextureWhiteSpace(window, debrisTex);
 
   //Generate debris
-  GenerateDebris(debrisTex, debrisArray, 9, gameBackground.mWidth, gameBackground.mHeight, 1);
+  //Initial debris generation hardcoded to single area
+  Texture dObj(debrisTex, DEBRIS_IMG);
+  dObj.mRender = true;
+  dObj.mX = 300;
+  dObj.mY = 250;
+  debrisArray[0] = dObj;
 
   bool runGame = true;
 
@@ -322,7 +327,7 @@ int main(int argv, char **args)
 
         GenerateDebris(debrisTex, debrisArray, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
       }
-      else if (numDebris == 3)
+      else if (numDebris == 4)
       {
         gameState = STATE_PAUSE;
 
@@ -332,7 +337,25 @@ int main(int argv, char **args)
                              "I really like this",
                              "I appreciate your honesty",
                              "I'm glad");
+
+        GenerateDebris(debrisTex, debrisArray, 3, gameBackground.mWidth, gameBackground.mHeight, 0);
+      
       }
+      else if (numDebris == 7)
+      {
+        gameState = STATE_PAUSE;
+
+        SetInterLevelChoices(textArraySurvey,
+                             "How important do you find debris cleanup?",
+                             "A critical part of our society",
+                             "It’s something to do",
+                             "Admirable response",
+                             "That it is");
+
+        GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
+      
+      }
+      
 
       //Update game state
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);

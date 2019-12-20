@@ -642,9 +642,9 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
       dObj.mDirection.x = randX / vecLength;
       dObj.mDirection.y = randY  / vecLength;
 
-      dObj.mSpeed = 1.1;
+      dObj.mSpeed = 0.1;
     }
-      debrisArray[i] = dObj;
+    debrisArray[i] = dObj;
   }
 }
 
