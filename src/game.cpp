@@ -407,7 +407,7 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
   SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS);
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
-  harvestButton.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
+  harvestButton.mX = GAMEWIDTH / 2 - harvestButton.mWidth / 2;
   harvestButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[6] = harvestButton;
 
