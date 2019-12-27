@@ -393,18 +393,20 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   rightButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[3] = rightButton;
 
+  //Speed controls
   SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED);
   Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
-  speedincreaseButton.mX = rightButton.mX + rightButton.mWidth + 20;
-  speedincreaseButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  speedincreaseButton.mX = 450;
+  speedincreaseButton.mY = 360;
   uiArray[4] = speedincreaseButton;
 
   SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED);
   Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
-  speeddecreaseButton.mX = speedincreaseButton.mX + speedincreaseButton.mWidth + 20;
-  speeddecreaseButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  speeddecreaseButton.mX = 450;
+  speeddecreaseButton.mY = 420;
   uiArray[5] = speeddecreaseButton;
 
+  //harvest controls
   SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS);
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
   harvestButton.mX = GAMEWIDTH / 2 - harvestButton.mWidth / 2;
@@ -413,10 +415,17 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
   SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ACTIVE);
   Texture harvestButtonActive(harvestButtonActiveSDLTex, BTN_HARVESTDEBRIS_ACTIVE);
-  harvestButtonActive.mX = speeddecreaseButton.mX + speeddecreaseButton.mWidth + 20;
+  harvestButtonActive.mX = harvestButton.mX;
   harvestButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
   harvestButtonActive.mRender = false;
   uiArray[7] = harvestButtonActive;
+
+  //Debris tracker
+  SDL_Texture *debrisTrackerTex = GetSDLTexture(renderer, window, DEBRIS_TRACKER);
+  Texture debrisTracker(debrisTrackerTex, DEBRIS_TRACKER);
+  debrisTracker.mX = harvestButton.mX;
+  debrisTracker.mY = 444;
+  uiArray[8] = debrisTracker;
 }
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
@@ -1258,4 +1267,17 @@ void SetInterLevelChoices(TextObj *textArray,
   textArray[4].mY = 200;
   textArray[4].enabled = false;
   textArray[4].finished = 1;
+}
+
+int GetActiveDebrisNum(Texture *debrisArray)
+{
+  int numActive = 0;
+  for (int i = 0; i < NUM_DEBRIS; ++i)
+  {
+    if(debrisArray[i].mRender)
+    {
+      numActive += 1;
+    }
+  }
+  return numActive;
 }

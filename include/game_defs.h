@@ -60,7 +60,7 @@ const string STATE_GAME = "GAME";
 const string STATE_PAUSE = "PAUSE";
 
 //SPACE UI
-const int NUM_SPACE_UI = 8;
+const int NUM_SPACE_UI = 9;
 
 const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
 
@@ -73,6 +73,8 @@ const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
 
 const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebrisGray.png";
 const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
+
+const string DEBRIS_TRACKER  = "res/spaceUI/debrisTracker.png";
 
 
 //INTRO UI
@@ -92,8 +94,8 @@ const string DEBRIS_IMG  = "res/debris/debris1.png";
 //TEXT DISPLAY
 
 /*
-0 - Main Text
-1 - NUM Debris
+0 - Num Remaining Debris
+1 - NUM Debris gotteth
 2 - DEBUG x,y screen mouse coords
 3 - DEBUG x,y world mouse coords
 4 - DEBUG GameTime

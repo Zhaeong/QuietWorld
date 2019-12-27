@@ -138,29 +138,28 @@ int main(int argv, char **args)
 
   SetIntroText(textArrayIntro);
 
-  TextObj choiceA;
-  SetTextString(&choiceA, "");
-  choiceA.mDelay = 20;
-  textArraySurvey[0] = choiceA;
-
-  TextObj choiceB;
-  SetTextString(&choiceB, "");
-  choiceB.mDelay = 20;
-  textArraySurvey[1] = choiceB;
+  //set location of debris
+  textArray[0].mX = 320;
+  textArray[0].mY = 444;
+  textArray[0].mString = "";
 
   //Create debris Array
   Texture debrisArray[NUM_DEBRIS];
 
+  //Create debrisTexture
   SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
   RemoveTextureWhiteSpace(window, debrisTex);
 
-  //Generate debris
+  //Initize it all to none
+  GenerateDebris(debrisTex, debrisArray, 0, gameBackground.mWidth, gameBackground.mHeight, 0);
+
   //Initial debris generation hardcoded to single area
   Texture dObj(debrisTex, DEBRIS_IMG);
   dObj.mRender = true;
   dObj.mX = 300;
   dObj.mY = 250;
   debrisArray[0] = dObj;
+
 
   bool runGame = true;
 
@@ -207,6 +206,10 @@ int main(int argv, char **args)
 
     if (gameState == STATE_GAME)
     {
+
+      //Set the num debris remaining to on
+      textArray[0].enabled = true;
+
       if (eventType != "NONE")
       {
         cout << eventType << "\n";
@@ -370,6 +373,7 @@ int main(int argv, char **args)
 
       //Set num of debris gathered
       textArray[1].mString = to_string(numDebris);
+      textArray[0].mString = to_string(GetActiveDebrisNum(debrisArray));
 
       ////////////////////
       //Render to screen//
@@ -452,6 +456,9 @@ int main(int argv, char **args)
     }
     else if (gameState == STATE_PAUSE) //Interlevel UI
     {
+      //Set the num debris remaining to off
+      textArray[0].enabled = false;
+
       //Render UI
       RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
 
@@ -562,8 +569,6 @@ int main(int argv, char **args)
 
         if (texCol == BTN_STARTGAME)
         {
-          textArray[0].mString = "";
-          textArray[0].mLetters = 0;
           gameState = STATE_GAME;
           numDebris = 0;
         }
