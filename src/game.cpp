@@ -855,6 +855,8 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
   {
     TextObj prevtObj;
 
+    
+
     bool isPrevFinished = false;
     if (i == 0)
     {
@@ -874,6 +876,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
     int curPosX = tObj.mX;
     int curPosY = tObj.mY;
 
+    cout << "cur:" << tObj.mString << " wid:" << tObj.mWidth <<" x:" << tObj.mX << "\n";
     unsigned int numLetters = tObj.mLetters;
 
     if (tObj.enabled)
@@ -887,6 +890,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
         unsigned int gameTime = SDL_GetTicks();
 
         //cout << "cur:" << tObj.mString << " prev:" << prevtObj.mString << " fi:" << isPrevFinished << "\n";
+        
         //Compares the last time the letter was incremented to cur time
         //If enough time elapsed > mDelay then increment num letters by one
         //isPrevFinished is used so that text obj is rendered one by one
@@ -968,7 +972,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
         //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
 
         //Wraps to next line if the text exceeds the width
-        if (curPosX >= GAMEWIDTH)
+        if ((curPosX > 579) || curPosX >= GAMEWIDTH)
         {
           curPosX = tObj.mX;
           curPosY += 20;
@@ -1171,6 +1175,18 @@ void SetTextString(TextObj *text, string textContent)
 {
   text->mString = textContent;
   text->mWidth = textContent.length() * 20;
+
+  //Add a guard here so that text doesn't go too far off screen.
+  //Else it should be in middle of screen
+  if(GAMEWIDTH / 2 - text->mWidth / 2 > 60)
+  {
+    text->mX = GAMEWIDTH / 2 - text->mWidth / 2;
+  }
+  else
+  {
+    text->mX = 60;
+  }
+  
 }
 
 void SetIntroText(TextObj *textArray)
@@ -1237,33 +1253,33 @@ void SetInterLevelChoices(TextObj *textArray,
                           string responseB)
 {
   SetTextString(&textArray[0], question);
-  textArray[0].mX = 20;
+  textArray[0].mX = 60;
   textArray[0].mY = 20;
   textArray[0].mDelay = 20;
   textArray[0].finished = 0;
 
   SetTextString(&textArray[1], choiceA);
   textArray[1].mDelay = 20;
-  textArray[1].mX = GAMEWIDTH / 2 - textArray[1].mWidth / 2;
+  //textArray[1].mX = GAMEWIDTH / 2 - textArray[1].mWidth / 2;
   textArray[1].mY = 200;
   textArray[1].finished = 0;
 
   SetTextString(&textArray[2], choiceB);
   textArray[2].mDelay = 20;
-  textArray[2].mX = GAMEWIDTH / 2 - textArray[2].mWidth / 2;
+  //textArray[2].mX = GAMEWIDTH / 2 - textArray[2].mWidth / 2;
   textArray[2].mY = 300;
   textArray[2].finished = 0;
 
   SetTextString(&textArray[3], responseA);
   textArray[3].mDelay = 20;
-  textArray[3].mX = GAMEWIDTH / 2 - textArray[3].mWidth / 2;
+  //textArray[3].mX = GAMEWIDTH / 2 - textArray[3].mWidth / 2;
   textArray[3].mY = 200;
   textArray[3].enabled = false;
   textArray[3].finished = 1;
 
   SetTextString(&textArray[4], responseB);
   textArray[4].mDelay = 20;
-  textArray[4].mX = GAMEWIDTH / 2 - textArray[4].mWidth / 2;
+  //textArray[4].mX = GAMEWIDTH / 2 - textArray[4].mWidth / 2;
   textArray[4].mY = 200;
   textArray[4].enabled = false;
   textArray[4].finished = 1;

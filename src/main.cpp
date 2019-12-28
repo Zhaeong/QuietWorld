@@ -48,7 +48,10 @@ int main(int argv, char **args)
 
   //Play music
   //Second param is number of lopps -1 for infinite
-  Mix_PlayMusic(introMus, 1);
+  if (DEBUG == 0)
+  {
+    Mix_PlayMusic(introMus, 1);
+  }
 
   //Sounds
   Mix_Chunk *gScratch = NULL;
@@ -160,7 +163,6 @@ int main(int argv, char **args)
   dObj.mY = 250;
   debrisArray[0] = dObj;
 
-
   bool runGame = true;
 
   int debrisIndex = -1;
@@ -251,7 +253,10 @@ int main(int argv, char **args)
           isMining = false;
           holdDownTime = 0;
 
-          Mix_PlayChannel(-1, gScratch, 0);
+          if (DEBUG == 0)
+          {
+            Mix_PlayChannel(-1, gScratch, 0);
+          }
 
           cout << "going upo";
 
@@ -318,8 +323,10 @@ int main(int argv, char **args)
 
         Mix_FadeOutMusic(1000);
         //SDL_Delay(1);
-
-        Mix_PlayMusic(interLevelMus, 1);
+        if (DEBUG == 0)
+        {
+          Mix_PlayMusic(interLevelMus, 1);
+        }
 
         SetInterLevelChoices(textArraySurvey,
                              "Are you acquainted with your ship?",
@@ -342,7 +349,6 @@ int main(int argv, char **args)
                              "I'm glad");
 
         GenerateDebris(debrisTex, debrisArray, 3, gameBackground.mWidth, gameBackground.mHeight, 0);
-      
       }
       else if (numDebris == 7)
       {
@@ -356,9 +362,7 @@ int main(int argv, char **args)
                              "That it is");
 
         GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
-      
       }
-      
 
       //Update game state
       mainShip.updateBasedOnState(curLevelBoundX, curLevelBoundY);
@@ -464,20 +468,48 @@ int main(int argv, char **args)
 
       //Get position of text to render a background for it
       choiceBackgroundTexA.mX = textArraySurvey[1].mX;
-      choiceBackgroundTexA.mY = textArraySurvey[1].mY - 15;
+      choiceBackgroundTexA.mY = textArraySurvey[1].mY - 10;
       choiceBackgroundTexA.mWidth = textArraySurvey[1].mWidth;
 
+      //If the text exceeds the width of screen it will flow to next line
+      //Need to expand the height to accound for this
+      // 520 = 640 - 60 * 2
+      //Gamewidth minus the two margins
+      if(textArraySurvey[1].mWidth > 520)
+      {
+        choiceBackgroundTexA.mHeight = 60;
+        choiceBackgroundTexA.mWidth = 520;
+      }
+
       choiceBackgroundTexB.mX = textArraySurvey[2].mX;
-      choiceBackgroundTexB.mY = textArraySurvey[2].mY - 15;
+      choiceBackgroundTexB.mY = textArraySurvey[2].mY - 10;
       choiceBackgroundTexB.mWidth = textArraySurvey[2].mWidth;
 
+      if(textArraySurvey[2].mWidth > 520)
+      {
+        choiceBackgroundTexB.mHeight = 60;
+        choiceBackgroundTexB.mWidth = 520;
+      }
+
       responseBackgroundTexA.mX = textArraySurvey[3].mX;
-      responseBackgroundTexA.mY = textArraySurvey[3].mY - 15;
+      responseBackgroundTexA.mY = textArraySurvey[3].mY - 10;
       responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth;
 
+      if(textArraySurvey[3].mWidth > 520)
+      {
+        responseBackgroundTexA.mHeight = 60;
+        responseBackgroundTexA.mWidth = 520;
+      }
+
       responseBackgroundTexB.mX = textArraySurvey[4].mX;
-      responseBackgroundTexB.mY = textArraySurvey[4].mY - 15;
+      responseBackgroundTexB.mY = textArraySurvey[4].mY - 10;
       responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth;
+
+      if(textArraySurvey[4].mWidth > 520)
+      {
+        responseBackgroundTexB.mHeight = 60;
+        responseBackgroundTexB.mWidth = 520;
+      }
 
       RenderTexture(renderer, choiceBackgroundTexA);
       RenderTexture(renderer, choiceBackgroundTexB);
@@ -562,10 +594,13 @@ int main(int argv, char **args)
       {
         string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
 
-        Mix_FadeOutMusic(1000);
-        //SDL_Delay(1);
+        if (DEBUG == 0)
+        {
+          //Mix_FadeOutMusic(1000);
+          //SDL_Delay(1);
 
-        Mix_PlayMusic(levelOneMus, 1);
+          Mix_PlayMusic(levelOneMus, 1);
+        }
 
         if (texCol == BTN_STARTGAME)
         {
