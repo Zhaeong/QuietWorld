@@ -165,6 +165,8 @@ int main(int argv, char **args)
 
   bool runGame = true;
 
+  int gameLevel = 0;
+
   int debrisIndex = -1;
 
   unsigned int gameTime = 0;
@@ -284,6 +286,56 @@ int main(int argv, char **args)
         {
           debrisArray[debrisIndex].mRender = false;
           numDebris += 1;
+
+          //Check remaining debris, if 0 then add to game level and set the survey choice
+          if (GetActiveDebrisNum(debrisArray) == 0)
+          {
+            gameLevel += 1;
+            gameState = STATE_PAUSE;
+            isMining = false;
+
+            //Different num of debris which causes scene transitions
+            if (gameLevel == 1)
+            {
+              //Mix_FadeOutMusic(1000);
+              //SDL_Delay(1);
+              if (DEBUG == 0)
+              {
+                Mix_PlayMusic(interLevelMus, 1);
+              }
+
+              SetInterLevelChoices(textArraySurvey,
+                                   "Are you acquainted with your ship?",
+                                   "Yes",
+                                   "No",
+                                   "I'm glad, please continue your work",
+                                   "That's unfortunate, please continue your work");
+
+              GenerateDebris(debrisTex, debrisArray, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
+            }
+            else if (gameLevel == 2)
+            {
+              SetInterLevelChoices(textArraySurvey,
+                                   "You are doing a good job, how satisfied are you with your work?",
+                                   "This is really boring",
+                                   "I really like this",
+                                   "I appreciate your honesty",
+                                   "I'm glad");
+
+              GenerateDebris(debrisTex, debrisArray, 3, gameBackground.mWidth, gameBackground.mHeight, 0);
+            }
+            else if (gameLevel == 3)
+            {
+              SetInterLevelChoices(textArraySurvey,
+                                   "How important do you find debris cleanup?",
+                                   "A critical part of our society",
+                                   "It’s something to do",
+                                   "Admirable response",
+                                   "That it is");
+
+              GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
+            }
+          }
         }
       }
 
@@ -314,54 +366,6 @@ int main(int argv, char **args)
         debrisIndex = -1;
         isMining = false;
         holdDownTime = 0;
-      }
-
-      //Different num of debris which causes scene transitions
-      if (numDebris == 1)
-      {
-        gameState = STATE_PAUSE;
-
-        Mix_FadeOutMusic(1000);
-        //SDL_Delay(1);
-        if (DEBUG == 0)
-        {
-          Mix_PlayMusic(interLevelMus, 1);
-        }
-
-        SetInterLevelChoices(textArraySurvey,
-                             "Are you acquainted with your ship?",
-                             "Yes",
-                             "No",
-                             "I'm glad, please continue your work",
-                             "That's unfortunate, please continue your work");
-
-        GenerateDebris(debrisTex, debrisArray, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
-      }
-      else if (numDebris == 4)
-      {
-        gameState = STATE_PAUSE;
-
-        SetInterLevelChoices(textArraySurvey,
-                             "You are doing a good job, how satisfied are you with your work?",
-                             "This is really boring",
-                             "I really like this",
-                             "I appreciate your honesty",
-                             "I'm glad");
-
-        GenerateDebris(debrisTex, debrisArray, 3, gameBackground.mWidth, gameBackground.mHeight, 0);
-      }
-      else if (numDebris == 7)
-      {
-        gameState = STATE_PAUSE;
-
-        SetInterLevelChoices(textArraySurvey,
-                             "How important do you find debris cleanup?",
-                             "A critical part of our society",
-                             "It’s something to do",
-                             "Admirable response",
-                             "That it is");
-
-        GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
       }
 
       //Update game state
@@ -475,7 +479,7 @@ int main(int argv, char **args)
       //Need to expand the height to accound for this
       // 520 = 640 - 60 * 2
       //Gamewidth minus the two margins
-      if(textArraySurvey[1].mWidth > 520)
+      if (textArraySurvey[1].mWidth > 520)
       {
         choiceBackgroundTexA.mHeight = 60;
         choiceBackgroundTexA.mWidth = 520;
@@ -485,7 +489,7 @@ int main(int argv, char **args)
       choiceBackgroundTexB.mY = textArraySurvey[2].mY - 10;
       choiceBackgroundTexB.mWidth = textArraySurvey[2].mWidth;
 
-      if(textArraySurvey[2].mWidth > 520)
+      if (textArraySurvey[2].mWidth > 520)
       {
         choiceBackgroundTexB.mHeight = 60;
         choiceBackgroundTexB.mWidth = 520;
@@ -495,7 +499,7 @@ int main(int argv, char **args)
       responseBackgroundTexA.mY = textArraySurvey[3].mY - 10;
       responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth;
 
-      if(textArraySurvey[3].mWidth > 520)
+      if (textArraySurvey[3].mWidth > 520)
       {
         responseBackgroundTexA.mHeight = 60;
         responseBackgroundTexA.mWidth = 520;
@@ -505,7 +509,7 @@ int main(int argv, char **args)
       responseBackgroundTexB.mY = textArraySurvey[4].mY - 10;
       responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth;
 
-      if(textArraySurvey[4].mWidth > 520)
+      if (textArraySurvey[4].mWidth > 520)
       {
         responseBackgroundTexB.mHeight = 60;
         responseBackgroundTexB.mWidth = 520;

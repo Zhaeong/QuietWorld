@@ -876,7 +876,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
     int curPosX = tObj.mX;
     int curPosY = tObj.mY;
 
-    cout << "cur:" << tObj.mString << " wid:" << tObj.mWidth <<" x:" << tObj.mX << "\n";
+    //cout << "cur:" << tObj.mString << " wid:" << tObj.mWidth <<" x:" << tObj.mX << "\n";
     unsigned int numLetters = tObj.mLetters;
 
     if (tObj.enabled)
@@ -954,6 +954,18 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
         else if ((int)curChar == 63)
         {
           xTextPos = 2;
+          yTextPos = 60;
+        }
+        //comma
+        else if ((int)curChar == 44)
+        {
+          xTextPos = 3;
+          yTextPos = 60;
+        }
+        //apostrophy
+        else if ((int)curChar == 39)
+        {
+          xTextPos = 4;
           yTextPos = 60;
         }
         //black space
