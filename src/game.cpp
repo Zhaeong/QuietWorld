@@ -18,10 +18,10 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
                  SDL_GetError());
   }
 
-   //Initialize SDL_mixer
-  if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+  //Initialize SDL_mixer
+  if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
   {
-      printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
   //SDL_WINDOW_FULLSCREEN
@@ -459,8 +459,6 @@ void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
   {
 
     RenderTexture(renderer, uiArray[i]);
-
-    
   }
 }
 
@@ -536,8 +534,8 @@ string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos
   {
     Texture texRef = arrayTexture[i];
 
-    if (xPos >= texRef.mX && xPos <= (texRef.mX + texRef.mWidth) && 
-        yPos >= texRef.mY && yPos <= (texRef.mY + texRef.mHeight) && 
+    if (xPos >= texRef.mX && xPos <= (texRef.mX + texRef.mWidth) &&
+        yPos >= texRef.mY && yPos <= (texRef.mY + texRef.mHeight) &&
         texRef.mRender)
     {
       colTex = texRef.mImgLocation;
@@ -628,16 +626,16 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
   {
     Texture dObj(debrisTex, DEBRIS_IMG);
     dObj.mRender = false;
-    if(i < numDebris)
+    if (i < numDebris)
     {
       dObj.mRender = true;
     }
 
     //Generate a random number between min and max
-    dObj.mX = (rand() % (xMax - dObj.mWidth)) ;
-    dObj.mY = (rand() % (yMax - dObj.mHeight)) ;
+    dObj.mX = (rand() % (xMax - dObj.mWidth));
+    dObj.mY = (rand() % (yMax - dObj.mHeight));
 
-    if(level == 1)
+    if (level == 1)
     {
       //Generate random direction
       float randX = rand() % 10;
@@ -645,11 +643,10 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
 
       //Normalize the vector
       float vecLength = sqrt(
-                          (randX * randX) +
-                          (randY * randY)
-                          );
+          (randX * randX) +
+          (randY * randY));
       dObj.mDirection.x = randX / vecLength;
-      dObj.mDirection.y = randY  / vecLength;
+      dObj.mDirection.y = randY / vecLength;
 
       dObj.mSpeed = 0.1;
     }
@@ -661,7 +658,7 @@ void UpdateDebris(Texture *debrisArray, int boundX, int boundY)
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
-    if(debrisArray[i].mRender)
+    if (debrisArray[i].mRender)
     {
       debrisArray[i].updatePosition(boundX, boundY);
     }
@@ -671,7 +668,7 @@ void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int ca
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
-    if(debrisArray[i].mRender)
+    if (debrisArray[i].mRender)
     {
       RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
     }
@@ -855,8 +852,6 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
   {
     TextObj prevtObj;
 
-    
-
     bool isPrevFinished = false;
     if (i == 0)
     {
@@ -890,7 +885,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
         unsigned int gameTime = SDL_GetTicks();
 
         //cout << "cur:" << tObj.mString << " prev:" << prevtObj.mString << " fi:" << isPrevFinished << "\n";
-        
+
         //Compares the last time the letter was incremented to cur time
         //If enough time elapsed > mDelay then increment num letters by one
         //isPrevFinished is used so that text obj is rendered one by one
@@ -1002,10 +997,9 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
     }
 
     //If either of the response texts have finished rendering this render segment if complete
-    if(
-      ((i == numTexts - 1) && tObj.mLetters == tObj.mString.size()) || 
-      ((i == numTexts - 2) && tObj.mLetters == tObj.mString.size())
-      )
+    if (
+        ((i == numTexts - 1) && tObj.mLetters == tObj.mString.size()) ||
+        ((i == numTexts - 2) && tObj.mLetters == tObj.mString.size()))
     {
       finishedAllTexts = true;
     }
@@ -1048,19 +1042,16 @@ void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, Text
     {
       tObj.mLastTime = gameTime;
     }
-    
 
     unsigned int numLetters = tObj.mString.size();
 
-    if(renderText)
+    if (renderText)
     {
       for (unsigned int j = 0; j < numLetters; ++j)
       {
         char curChar = tObj.mString[j];
         int xTextPos = 0;
         int yTextPos = 0;
-
-        
 
         //Capitals
         if ((int)curChar >= 65 && (int)curChar <= 90)
@@ -1190,7 +1181,7 @@ void SetTextString(TextObj *text, string textContent)
 
   //Add a guard here so that text doesn't go too far off screen.
   //Else it should be in middle of screen
-  if(GAMEWIDTH / 2 - text->mWidth / 2 > 60)
+  if (GAMEWIDTH / 2 - text->mWidth / 2 > 60)
   {
     text->mX = GAMEWIDTH / 2 - text->mWidth / 2;
   }
@@ -1198,7 +1189,6 @@ void SetTextString(TextObj *text, string textContent)
   {
     text->mX = 60;
   }
-  
 }
 
 void SetIntroText(TextObj *textArray)
@@ -1253,9 +1243,6 @@ void SetIntroText(TextObj *textArray)
   startText6.mX = 0;
   startText6.mY = 130;
   textArray[6] = startText6;
-
-
-
 }
 void SetInterLevelChoices(TextObj *textArray,
                           string question,
@@ -1302,10 +1289,53 @@ int GetActiveDebrisNum(Texture *debrisArray)
   int numActive = 0;
   for (int i = 0; i < NUM_DEBRIS; ++i)
   {
-    if(debrisArray[i].mRender)
+    if (debrisArray[i].mRender)
     {
       numActive += 1;
     }
   }
   return numActive;
+}
+
+void SetInterLevelText(TextObj *textArraySurvey,
+                       SDL_Texture *debrisTex, 
+                       Texture *debrisArray, 
+                       int gameLevel, 
+                       int backgroundWidth, 
+                       int backgroundHeight)
+{
+  //Different num of debris which causes scene transitions
+  if (gameLevel == 1)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "Are you acquainted with your ship?",
+                         "Yes",
+                         "No",
+                         "I'm glad, please continue your work",
+                         "That's unfortunate, please continue your work");
+
+    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth , backgroundHeight, 0);
+  }
+  else if (gameLevel == 2)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "You are doing a good job, how satisfied are you with your work?",
+                         "This is really boring",
+                         "I really like this",
+                         "I appreciate your honesty",
+                         "I'm glad");
+
+    GenerateDebris(debrisTex, debrisArray, 3, backgroundWidth, backgroundHeight, 0);
+  }
+  else if (gameLevel == 3)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "How important do you find debris cleanup?",
+                         "A critical part of our society",
+                         "It's something to do",
+                         "Admirable response",
+                         "That it is");
+
+    GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 1);
+  }
 }

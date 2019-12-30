@@ -294,47 +294,20 @@ int main(int argv, char **args)
             gameState = STATE_PAUSE;
             isMining = false;
 
-            //Different num of debris which causes scene transitions
-            if (gameLevel == 1)
+            if (DEBUG == 0)
             {
               //Mix_FadeOutMusic(1000);
               //SDL_Delay(1);
-              if (DEBUG == 0)
-              {
-                Mix_PlayMusic(interLevelMus, 1);
-              }
-
-              SetInterLevelChoices(textArraySurvey,
-                                   "Are you acquainted with your ship?",
-                                   "Yes",
-                                   "No",
-                                   "I'm glad, please continue your work",
-                                   "That's unfortunate, please continue your work");
-
-              GenerateDebris(debrisTex, debrisArray, 2, gameBackground.mWidth, gameBackground.mHeight, 0);
+              Mix_PlayMusic(interLevelMus, 1);
             }
-            else if (gameLevel == 2)
-            {
-              SetInterLevelChoices(textArraySurvey,
-                                   "You are doing a good job, how satisfied are you with your work?",
-                                   "This is really boring",
-                                   "I really like this",
-                                   "I appreciate your honesty",
-                                   "I'm glad");
 
-              GenerateDebris(debrisTex, debrisArray, 3, gameBackground.mWidth, gameBackground.mHeight, 0);
-            }
-            else if (gameLevel == 3)
-            {
-              SetInterLevelChoices(textArraySurvey,
-                                   "How important do you find debris cleanup?",
-                                   "A critical part of our society",
-                                   "It’s something to do",
-                                   "Admirable response",
-                                   "That it is");
-
-              GenerateDebris(debrisTex, debrisArray, 1, gameBackground.mWidth, gameBackground.mHeight, 1);
-            }
+            //Helper func to set the inter level texts
+            SetInterLevelText(textArraySurvey, 
+                              debrisTex, 
+                              debrisArray, 
+                              gameLevel, 
+                              gameBackground.mWidth, 
+                              gameBackground.mHeight);
           }
         }
       }

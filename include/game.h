@@ -106,5 +106,13 @@ void SetInterLevelChoices(TextObj *textArray,
                           string responseB);
 
 int GetActiveDebrisNum(Texture *debrisArray);
+
+void SetInterLevelText(TextObj *textArraySurvey, 
+                       SDL_Texture *debrisTex, 
+                       Texture *debrisArray, 
+                       int gameLevel, 
+                       int backgroundWidth, 
+                       int backgroundHeight);
+
 #endif // GAME_H
  
