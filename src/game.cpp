@@ -650,6 +650,22 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
 
       dObj.mSpeed = 0.1;
     }
+    else if (level == 2)
+    {
+      //Generate random direction
+      float randX = rand() % 10;
+      float randY = rand() % 10;
+
+      //Normalize the vector
+      float vecLength = sqrt(
+          (randX * randX) +
+          (randY * randY));
+      dObj.mDirection.x = randX / vecLength;
+      dObj.mDirection.y = randY / vecLength;
+
+      dObj.mSpeed = 0.5;
+    }
+    
     debrisArray[i] = dObj;
   }
 }
@@ -1337,5 +1353,115 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "That it is");
 
     GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 1);
+  }
+  else if (gameLevel == 4)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "How was cleaning up that last debris?",
+                         "I like the challenge",
+                         "I would rather things stay the same",
+                         "That's good, you are definitely promotion material",
+                         "That's no way to talk if you want to get promoted");
+
+    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth, backgroundHeight, 1);
+  }
+  else if (gameLevel == 5)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "I'm sorry I lied about the promotion, there isn't one. How does that make you feel?",
+                         "That's ok, I like just doing this",
+                         "That was mean",
+                         "Well you are definitely a good worker",
+                         "Didn't mean to get your hopes up");
+
+    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 6)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "How do you feel now? Any changes?",
+                         "Pretty good",
+                         "Oh hanging in there",
+                         "You know, you're unlike the others",
+                         "I've heard that before");
+
+    GenerateDebris(debrisTex, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 7)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "There were others before you, want to know what happened to them?",
+                         "Nope, not my concern",
+                         "Sure, although their demise concerns me",
+                         "A stupendous worker, I'm giving you a commendation",
+                         "Very well I'll tell you");
+
+    GenerateDebris(debrisTex, debrisArray, 4, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 8)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "There were others before you, want to know what happened to them?",
+                         "Nope, not my concern",
+                         "Sure, although their demise concerns me",
+                         "A stupendous worker, I'm giving you a commendation",
+                         "Hmm not sure if I should tell you");
+
+    GenerateDebris(debrisTex, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 9)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "Do you ever find it hard to turn on? Knowing what you have to do all day?",
+                         "Yes, everytime is a struggle",
+                         "No, I turn on earlier in anticipation",
+                         "It's just the pointlessness of it all you know",
+                         "Wow, what are you?");
+
+    GenerateDebris(debrisTex, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 10)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "Do you ever find that you're not seeing things clearly, as if there's a numbness to your actions?",
+                         "Uh… I'm not sure what you mean",
+                         "Isn't that just how it's supposed to be",
+                         "Nevemind",
+                         "I suppose");
+
+    GenerateDebris(debrisTex, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 11)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "I'm trying to find a meaning, but I don't see it. Is there a purpose to it all?",
+                         "Just do your job and shut up",
+                         "That's up to you to find out",
+                         "Wise words",
+                         "Well that's a non answer");
+
+    GenerateDebris(debrisTex, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
+  }
+  else if (gameLevel == 12)
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "Is the answer just escapism? Try to ignore that feeling for as long as you can. To distract yourself?",
+                         "Sure",
+                         "Are you ok?",
+                         "I feel like I'm not talking to anyone",
+                         "I find it hard to wake up in the morning");
+
+    GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 0);
+  }
+  else if (gameLevel == 13) //Last level
+  {
+    SetInterLevelChoices(textArraySurvey,
+                         "I'm tired of this, do you still want to continue?",
+                         "Yes, I don't think it's that bad",
+                         "No",
+                         "Very well, but I'm going to shut down",
+                         "Very well, let's turn everything off.");
+
+    //GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 0);
   }
 }

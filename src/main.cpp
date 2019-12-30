@@ -293,6 +293,7 @@ int main(int argv, char **args)
             gameLevel += 1;
             gameState = STATE_PAUSE;
             isMining = false;
+            holdDownTime = 0;
 
             if (DEBUG == 0)
             {
