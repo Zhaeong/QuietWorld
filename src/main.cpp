@@ -180,6 +180,7 @@ int main(int argv, char **args)
   bool showDialog = true;
 
   string gameState = STATE_INTRO;
+  string newState = STATE_INTRO;
 
   while (runGame)
   {
@@ -206,6 +207,13 @@ int main(int argv, char **args)
     if (eventType == "EXIT")
     {
       runGame = false;
+    }
+
+    //Catch when state transition occurs
+    if(newState != gameState)
+    {
+      cout << "State Change to: " << newState << "\n";
+      gameState = newState;
     }
 
     if (gameState == STATE_GAME)
@@ -260,8 +268,6 @@ int main(int argv, char **args)
             Mix_PlayChannel(-1, gScratch, 0);
           }
 
-          cout << "going upo";
-
           if (TextureMouseCollisionSingle(dialogOKTex, xMouse, yMouse))
           {
             if (showDialog)
@@ -269,8 +275,6 @@ int main(int argv, char **args)
               showDialog = false;
 
               SHADE = 0;
-
-              cout << "Shade val:" << SHADE << '\n';
             }
           }
         }
@@ -291,7 +295,8 @@ int main(int argv, char **args)
           if (GetActiveDebrisNum(debrisArray) == 0)
           {
             gameLevel += 1;
-            gameState = STATE_PAUSE;
+            //gameState = STATE_PAUSE;
+            newState = STATE_PAUSE;
             isMining = false;
             holdDownTime = 0;
 
@@ -561,7 +566,8 @@ int main(int argv, char **args)
 
           uiInterLevelArray[1].mRender = false;
 
-          gameState = STATE_GAME;
+          //gameState = STATE_GAME;
+          newState = STATE_GAME;
           numDebris += 1;
         }
       }
@@ -582,7 +588,8 @@ int main(int argv, char **args)
 
         if (texCol == BTN_STARTGAME)
         {
-          gameState = STATE_GAME;
+          //gameState = STATE_GAME;
+          newState = STATE_GAME;
           numDebris = 0;
         }
       }
