@@ -665,7 +665,7 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
 
       dObj.mSpeed = 0.5;
     }
-    
+
     debrisArray[i] = dObj;
   }
 }
@@ -864,12 +864,11 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
   dstRect.h = 20;
   dstRect.w = 20;
 
-
   SDL_Rect srcRectBlank;
   SDL_Rect dstRectBlank;
 
   //Note hardcoded to 25th block of text array due to it having a certain color
-  srcRectBlank.x = 20*25;
+  srcRectBlank.x = 20 * 25;
   srcRectBlank.y = 60;
   srcRectBlank.h = 20;
   srcRectBlank.w = 20;
@@ -940,6 +939,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
           }
         }
       }
+
       for (unsigned int j = 0; j < numLetters; ++j)
       {
 
@@ -1009,61 +1009,42 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
 
         //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
 
-        //Check if next char exceeds width and isn't blank
-        if ((curPosX + 20 > 579) || curPosX + 20 >= GAMEWIDTH)
+        //if the current char isn't a space, look for end of word, if that exceeds max length
+        //then move the word to next line
+        if (curChar != ' ')
         {
-          char nextChar = tObj.mString[j+1];
+          //Did not end with space so we have to go back and put all previous char
+          //into new line until space
+          int finalLetterPosX = curPosX;
+          int finalLetterIndex = j;
+          char finalLetter = tObj.mString[finalLetterIndex];
 
-          //if the next char exceeds the width and isn't blank
-          //We need to go back to find the blank that doesn't exceed
-          //and also white out all characters already rendered that exceeded
-          //A hacky solution due to misplanning
-          if(nextChar != ' ')
+          //increment letter until space and final letter is less than total number of letters
+          while (finalLetter != ' ' && finalLetterIndex < numLetters)
           {
-            cout << "did not end on space: " << curChar << "\n";
-            //Did not end with space so we have to go back and put all previous char 
-            //into new line until space
-            
-            int blankPosX = curPosX;
-            
-            int loopbackIndex = j;
-            char loopedChar = tObj.mString[loopbackIndex];
+            finalLetterPosX += 20;
+            finalLetterIndex += 1;
+            finalLetter = tObj.mString[finalLetterIndex];
+          }
 
-            while(loopedChar != ' ')
-            {
-              //Need to render blank in previous position
-              dstRectBlank.x = blankPosX - 20;
-              dstRectBlank.y = curPosY;
-
-              //cout << "remove: " << loopedChar << " index:" << loopbackIndex << " xval: " << dstRectBlank.x <<"\n";
-              SDL_RenderCopyEx(renderer, fontTexture, &srcRectBlank, &dstRectBlank, 0, NULL, SDL_FLIP_NONE);
-
-              blankPosX -= 20;
-
-              loopbackIndex -= 1;
-              loopedChar = tObj.mString[loopbackIndex];
-
-            }
-            //Rewind render to loopbacked index and rerender from there onto new line
-            j = loopbackIndex;
-            
+          if ((finalLetterPosX > 579) || finalLetterPosX >= GAMEWIDTH)
+          {
+            //cout << "exceeds length: " << curChar << "final i:" << finalLetterIndex << " finalpos:" << finalLetterPosX << "origX: " << tObj.mX <<"\n";
             curPosX = tObj.mX;
             curPosY += 20;
+            //Need to reset render rect due to rendering on new line
+            dstRect.x = curPosX;
+            dstRect.y = curPosY;
 
-            //Continue because we dont' want to render this char
-            continue;
           }
         }
 
         //Wraps to next line if the text exceeds the width
         if ((curPosX > 579) || curPosX >= GAMEWIDTH)
         {
-         
+
           curPosX = tObj.mX;
           curPosY += 20;
-          
-          
-
 
           //Need to reset render rect due to rendering on new line
           dstRect.x = curPosX;
@@ -1379,23 +1360,23 @@ int GetActiveDebrisNum(Texture *debrisArray)
 }
 
 void SetInterLevelText(TextObj *textArraySurvey,
-                       SDL_Texture *debrisTex, 
-                       Texture *debrisArray, 
-                       int gameLevel, 
-                       int backgroundWidth, 
+                       SDL_Texture *debrisTex,
+                       Texture *debrisArray,
+                       int gameLevel,
+                       int backgroundWidth,
                        int backgroundHeight)
 {
   //Different num of debris which causes scene transitions
   if (gameLevel == 1)
   {
     SetInterLevelChoices(textArraySurvey,
-                         "Are you acquainted with your ship? abc def ",
+                         "Are you acquainted with your ship?",
                          "Yes",
                          "No",
                          "I'm glad, please continue your work",
                          "That's unfortunate, please continue your work");
 
-    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth , backgroundHeight, 0);
+    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth, backgroundHeight, 0);
   }
   else if (gameLevel == 2)
   {

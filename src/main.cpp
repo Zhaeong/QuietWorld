@@ -141,7 +141,7 @@ int main(int argv, char **args)
 
   SetIntroText(textArrayIntro);
 
-  //set location of debris
+  //set location of debris num ui
   textArray[0].mX = 320;
   textArray[0].mY = 444;
   textArray[0].mString = "";
