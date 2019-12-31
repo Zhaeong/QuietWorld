@@ -238,35 +238,34 @@ void RenderTexture(SDL_Renderer *renderer, Texture tex)
 
 void RenderTextureByCam(int camX, int camY, SDL_Renderer *renderer, Texture tex)
 {
-  if (tex.mRender)
+
+  int xPos = tex.mX - camX;
+  int yPos = tex.mY - camY;
+
+  SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
+
+  SDL_SetTextureAlphaMod(tex.mTexture, tex.mAlpha);
+
+  SDL_Rect srcRect;
+  SDL_Rect dstRect;
+
+  srcRect.x = 0;
+  srcRect.y = 0;
+  srcRect.h = tex.mHeight;
+  srcRect.w = tex.mWidth;
+
+  dstRect.x = xPos;
+  dstRect.y = yPos;
+  dstRect.h = tex.mHeight;
+  dstRect.w = tex.mWidth;
+
+  SetTextureColorMod(tex);
+
+  SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
+
+  if (DEBUG == 1)
   {
-    //Convert character world coord to screen coord
-    int xPos = tex.mX - camX;
-    int yPos = tex.mY - camY;
-
-    SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
-
-    SDL_Rect srcRect;
-    SDL_Rect dstRect;
-
-    srcRect.x = 0;
-    srcRect.y = 0;
-    srcRect.h = tex.mHeight;
-    srcRect.w = tex.mWidth;
-
-    dstRect.x = xPos;
-    dstRect.y = yPos;
-    dstRect.h = tex.mHeight;
-    dstRect.w = tex.mWidth;
-
-    SetTextureColorMod(tex);
-
-    SDL_RenderCopyEx(renderer, tex.mTexture, &srcRect, &dstRect, tex.mRotation, tex.mCenter, tex.mFlip);
-
-    if (DEBUG == 1)
-    {
-      DrawBoundingBox(renderer, xPos, yPos, tex.mWidth, tex.mHeight, 255, 55, 0);
-    }
+    DrawBoundingBox(renderer, xPos, yPos, tex.mWidth, tex.mHeight, 255, 55, 0);
   }
 }
 
@@ -630,6 +629,12 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
     {
       dObj.mRender = true;
     }
+    else
+    {
+      //make non active debris invisible
+      dObj.mAlpha = 0;
+    }
+    
 
     //Generate a random number between min and max
     dObj.mX = (rand() % (xMax - dObj.mWidth));
@@ -678,16 +683,20 @@ void UpdateDebris(Texture *debrisArray, int boundX, int boundY)
     {
       debrisArray[i].updatePosition(boundX, boundY);
     }
+    else
+    {
+      if (debrisArray[i].mAlpha > 0)
+      {
+        debrisArray[i].mAlpha -= 5;
+      }
+    }
   }
 }
 void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY)
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
-    if (debrisArray[i].mRender)
-    {
-      RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
-    }
+    RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
   }
 }
 
@@ -1021,7 +1030,6 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
             //Need to reset render rect due to rendering on new line
             dstRect.x = curPosX;
             dstRect.y = curPosY;
-
           }
         }
 

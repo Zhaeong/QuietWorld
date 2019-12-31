@@ -31,6 +31,8 @@ public:
   Uint8 mColorG;
   Uint8 mColorB;
 
+  Uint8 mAlpha = 255;
+
   int mRotation = 0;
   SDL_Point *mCenter = NULL;
   SDL_RendererFlip mFlip = SDL_FLIP_NONE;
