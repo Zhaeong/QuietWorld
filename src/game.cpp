@@ -864,6 +864,21 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
   dstRect.h = 20;
   dstRect.w = 20;
 
+
+  SDL_Rect srcRectBlank;
+  SDL_Rect dstRectBlank;
+
+  //Note hardcoded to 25th block of text array due to it having a certain color
+  srcRectBlank.x = 20*25;
+  srcRectBlank.y = 60;
+  srcRectBlank.h = 20;
+  srcRectBlank.w = 20;
+
+  dstRectBlank.x = 0;
+  dstRectBlank.y = 0;
+  dstRectBlank.h = 20;
+  dstRectBlank.w = 20;
+
   for (int i = 0; i < numTexts; i++)
   {
     TextObj prevtObj;
@@ -982,8 +997,8 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
         //black space
         else
         {
-          xTextPos = 200;
-          yTextPos = 40;
+          xTextPos = 24;
+          yTextPos = 60;
         }
 
         srcRect.x = 20 * xTextPos;
@@ -994,11 +1009,61 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
 
         //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
 
+        //Check if next char exceeds width and isn't blank
+        if ((curPosX + 20 > 579) || curPosX + 20 >= GAMEWIDTH)
+        {
+          char nextChar = tObj.mString[j+1];
+
+          //if the next char exceeds the width and isn't blank
+          //We need to go back to find the blank that doesn't exceed
+          //and also white out all characters already rendered that exceeded
+          //A hacky solution due to misplanning
+          if(nextChar != ' ')
+          {
+            cout << "did not end on space: " << curChar << "\n";
+            //Did not end with space so we have to go back and put all previous char 
+            //into new line until space
+            
+            int blankPosX = curPosX;
+            
+            int loopbackIndex = j;
+            char loopedChar = tObj.mString[loopbackIndex];
+
+            while(loopedChar != ' ')
+            {
+              //Need to render blank in previous position
+              dstRectBlank.x = blankPosX - 20;
+              dstRectBlank.y = curPosY;
+
+              //cout << "remove: " << loopedChar << " index:" << loopbackIndex << " xval: " << dstRectBlank.x <<"\n";
+              SDL_RenderCopyEx(renderer, fontTexture, &srcRectBlank, &dstRectBlank, 0, NULL, SDL_FLIP_NONE);
+
+              blankPosX -= 20;
+
+              loopbackIndex -= 1;
+              loopedChar = tObj.mString[loopbackIndex];
+
+            }
+            //Rewind render to loopbacked index and rerender from there onto new line
+            j = loopbackIndex;
+            
+            curPosX = tObj.mX;
+            curPosY += 20;
+
+            //Continue because we dont' want to render this char
+            continue;
+          }
+        }
+
         //Wraps to next line if the text exceeds the width
         if ((curPosX > 579) || curPosX >= GAMEWIDTH)
         {
+         
           curPosX = tObj.mX;
           curPosY += 20;
+          
+          
+
 
           //Need to reset render rect due to rendering on new line
           dstRect.x = curPosX;
@@ -1324,7 +1389,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
   if (gameLevel == 1)
   {
     SetInterLevelChoices(textArraySurvey,
-                         "Are you acquainted with your ship?",
+                         "Are you acquainted with your ship? abc def ",
                          "Yes",
                          "No",
                          "I'm glad, please continue your work",
