@@ -157,11 +157,11 @@ int main(int argv, char **args)
   GenerateDebris(debrisTex, debrisArray, 0, gameBackground.mWidth, gameBackground.mHeight, 0);
 
   //Initial debris generation hardcoded to single area
-  Texture dObj(debrisTex, DEBRIS_IMG);
-  dObj.mRender = true;
-  dObj.mX = 300;
-  dObj.mY = 250;
-  debrisArray[0] = dObj;
+  Texture initdObj(debrisTex, DEBRIS_IMG);
+  initdObj.mRender = true;
+  initdObj.mX = 300;
+  initdObj.mY = 250;
+  debrisArray[0] = initdObj;
 
   bool runGame = true;
 

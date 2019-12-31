@@ -864,20 +864,6 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
   dstRect.h = 20;
   dstRect.w = 20;
 
-  SDL_Rect srcRectBlank;
-  SDL_Rect dstRectBlank;
-
-  //Note hardcoded to 25th block of text array due to it having a certain color
-  srcRectBlank.x = 20 * 25;
-  srcRectBlank.y = 60;
-  srcRectBlank.h = 20;
-  srcRectBlank.w = 20;
-
-  dstRectBlank.x = 0;
-  dstRectBlank.y = 0;
-  dstRectBlank.h = 20;
-  dstRectBlank.w = 20;
-
   for (int i = 0; i < numTexts; i++)
   {
     TextObj prevtObj;
@@ -997,7 +983,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
         //black space
         else
         {
-          xTextPos = 24;
+          xTextPos = 25;
           yTextPos = 60;
         }
 
@@ -1016,7 +1002,7 @@ bool RenderSurveyText(SDL_Renderer *renderer, SDL_Texture *fontTexture, TextObj 
           //Did not end with space so we have to go back and put all previous char
           //into new line until space
           int finalLetterPosX = curPosX;
-          int finalLetterIndex = j;
+          unsigned int finalLetterIndex = j;
           char finalLetter = tObj.mString[finalLetterIndex];
 
           //increment letter until space and final letter is less than total number of letters
