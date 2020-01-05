@@ -221,8 +221,6 @@ int main(int argv, char **args)
     {
       runGame = false;
     }
-
-    cout << "conValu:" << uiInterLevelArray[1].mRender << "\n";
     
     //Catch when state transition occurs
     if(newState != gameState)
