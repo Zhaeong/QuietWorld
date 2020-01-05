@@ -130,9 +130,16 @@ int main(int argv, char **args)
   srand(time(NULL));
 
   //Create texture handling
+
+  //Fonts
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
   RemoveTextureWhiteSpace(window, fontTex);
 
+  //Fadeout image
+  SDL_Texture *fadeOutTex = GetSDLTexture(renderer, window, "res/background/blackOverlay.png");
+  Texture blackFade(fadeOutTex, "fadeOut");
+  blackFade.mAlpha = 0;
+  
   TextObj textArray[NUM_TEXT];
 
   TextObj textArrayIntro[NUM_TEXT_INTRO];
@@ -182,6 +189,12 @@ int main(int argv, char **args)
   string gameState = STATE_INTRO;
   string newState = STATE_INTRO;
 
+  int delayTime = 0;
+
+  //255/x = 2
+  //We want it to cleaning divid into 255 because we add a certain alpha value per frame
+  int delayPeriod = 127;
+
   while (runGame)
   {
     frameStart = SDL_GetTicks();
@@ -209,11 +222,22 @@ int main(int argv, char **args)
       runGame = false;
     }
 
+    cout << "conValu:" << uiInterLevelArray[1].mRender << "\n";
+    
     //Catch when state transition occurs
     if(newState != gameState)
     {
-      cout << "State Change to: " << newState << "\n";
-      gameState = newState;
+      if(delayTime < delayPeriod)
+      {
+        blackFade.mAlpha += 2;
+        delayTime++;
+      }
+      else
+      {
+        gameState = newState;
+        delayTime = 0;
+        blackFade.mAlpha = 0;
+      }
     }
 
     if (gameState == STATE_GAME)
@@ -565,8 +589,8 @@ int main(int argv, char **args)
           textArraySurvey[3].enabled = false;
 
           uiInterLevelArray[1].mRender = false;
+          
 
-          //gameState = STATE_GAME;
           newState = STATE_GAME;
           numDebris += 1;
         }
@@ -585,10 +609,9 @@ int main(int argv, char **args)
 
           Mix_PlayMusic(levelOneMus, 1);
         }
-
+        
         if (texCol == BTN_STARTGAME)
         {
-          //gameState = STATE_GAME;
           newState = STATE_GAME;
           numDebris = 0;
         }
@@ -602,6 +625,9 @@ int main(int argv, char **args)
 
     //Render text
     RenderText(renderer, fontTex, textArray);
+
+    //Render the fadeoutTexture
+    RenderTexture(renderer, blackFade);
 
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);

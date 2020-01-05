@@ -114,5 +114,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                        int backgroundWidth, 
                        int backgroundHeight);
 
+void ReduceAlphaArray(Texture *textureArray, int numTexture, int alphaDecrementValue);
+
 #endif // GAME_H
  

@@ -219,6 +219,8 @@ void RenderTexture(SDL_Renderer *renderer, Texture tex)
   {
     SDL_SetTextureBlendMode(tex.mTexture, SDL_BLENDMODE_BLEND);
 
+    SDL_SetTextureAlphaMod(tex.mTexture, tex.mAlpha);
+
     SDL_Rect srcRect;
     SDL_Rect dstRect;
 
@@ -1502,5 +1504,13 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "Very well, let's turn everything off.");
 
     //GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 0);
+  }
+}
+
+void ReduceAlphaArray(Texture *textureArray, int numTexture, int alphaDecrementValue)
+{
+  for (unsigned i = 0; i < numTexture; ++i)
+  {
+      textureArray[i].mAlpha -= alphaDecrementValue;
   }
 }
