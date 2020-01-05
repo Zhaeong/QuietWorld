@@ -616,13 +616,23 @@ int main(int argv, char **args)
           numDebris = 0;
         }
       }
-
-      //Render UI
-      RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
-
-      RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
     }
 
+    //Render Area
+    if (gameState == STATE_GAME)
+    {
+    }
+    else if (gameState == STATE_PAUSE)
+    {
+    }
+    else if (gameState == STATE_INTRO)
+    {
+      //Render UI
+      RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
+      //Render each text
+      RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
+    }
+    
     //Render text
     RenderText(renderer, fontTex, textArray);
 
