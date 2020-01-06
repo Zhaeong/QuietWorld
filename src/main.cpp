@@ -531,11 +531,12 @@ int main(int argv, char **args)
       }
     }
 
+    ////////////////////////////
     //Render based on game State
+    ////////////////////////////
     
     if (gameState == STATE_GAME)
     {
-
       //Render Background
       RenderTextureByCam(camX, camY, renderer, gameBackground);
 
