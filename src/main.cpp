@@ -232,6 +232,7 @@ int main(int argv, char **args)
       }
       else
       {
+        cout << "New State: " << newState << "\n";
         gameState = newState;
         delayTime = 0;
         blackFade.mAlpha = 0;
@@ -317,7 +318,6 @@ int main(int argv, char **args)
           if (GetActiveDebrisNum(debrisArray) == 0)
           {
             gameLevel += 1;
-            //gameState = STATE_PAUSE;
             newState = STATE_PAUSE;
             isMining = false;
             holdDownTime = 0;
@@ -468,9 +468,6 @@ int main(int argv, char **args)
       //Set the num debris remaining to off
       textArray[0].enabled = false;
 
-      //Render UI
-      RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
-
       //Get position of text to render a background for it
       choiceBackgroundTexA.mX = textArraySurvey[1].mX;
       choiceBackgroundTexA.mY = textArraySurvey[1].mY - 10;
@@ -514,18 +511,7 @@ int main(int argv, char **args)
       {
         responseBackgroundTexB.mHeight = 60;
         responseBackgroundTexB.mWidth = 520;
-      }
-
-      RenderTexture(renderer, choiceBackgroundTexA);
-      RenderTexture(renderer, choiceBackgroundTexB);
-      RenderTexture(renderer, responseBackgroundTexA);
-      RenderTexture(renderer, responseBackgroundTexB);
-
-      //Render button when player made a choice
-      if (RenderSurveyText(renderer, fontTex, textArraySurvey, NUM_TEXT_SURVEY))
-      {
-        uiInterLevelArray[1].mRender = true;
-      }
+      }     
 
       if (eventType == "MOUSE_UP")
       {
@@ -588,7 +574,6 @@ int main(int argv, char **args)
 
           uiInterLevelArray[1].mRender = false;
           
-
           newState = STATE_GAME;
           numDebris += 1;
         }
@@ -616,12 +601,27 @@ int main(int argv, char **args)
       }
     }
 
-    //Render Area
+    //Render based on game State
+    
     if (gameState == STATE_GAME)
     {
     }
     else if (gameState == STATE_PAUSE)
     {
+      //Render UI
+      RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
+
+      RenderTexture(renderer, choiceBackgroundTexA);
+      RenderTexture(renderer, choiceBackgroundTexB);
+      RenderTexture(renderer, responseBackgroundTexA);
+      RenderTexture(renderer, responseBackgroundTexB);
+
+       //Render button when player made a choice
+      if (RenderSurveyText(renderer, fontTex, textArraySurvey, NUM_TEXT_SURVEY))
+      {
+        //Continue button
+        uiInterLevelArray[1].mRender = true;
+      }
     }
     else if (gameState == STATE_INTRO)
     {
