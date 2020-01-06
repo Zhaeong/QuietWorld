@@ -683,20 +683,19 @@ void UpdateDebris(Texture *debrisArray, int boundX, int boundY)
     if (debrisArray[i].mRender)
     {
       debrisArray[i].updatePosition(boundX, boundY);
-    }
-    else
-    {
-      if (debrisArray[i].mAlpha > 0)
-      {
-        debrisArray[i].mAlpha -= 5;
-      }
-    }
+    }    
   }
 }
 void RenderDebris(SDL_Renderer *renderer, Texture *debrisArray, int camX, int camY)
 {
   for (unsigned i = 0; i < NUM_DEBRIS; ++i)
   {
+
+    if (!debrisArray[i].mRender && debrisArray[i].mAlpha > 0)
+    {
+      debrisArray[i].mAlpha -= 5;
+    }
+    
     RenderTextureByCam(camX, camY, renderer, debrisArray[i]);
   }
 }

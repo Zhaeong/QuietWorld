@@ -189,6 +189,8 @@ int main(int argv, char **args)
   string gameState = STATE_INTRO;
   string newState = STATE_INTRO;
 
+  bool inTransition = false;
+
   int delayTime = 0;
 
   //255/x = 2
@@ -225,6 +227,7 @@ int main(int argv, char **args)
     //Catch when state transition occurs
     if(newState != gameState)
     {
+      inTransition = true;
       if(delayTime < delayPeriod)
       {
         blackFade.mAlpha += 2;
@@ -236,12 +239,57 @@ int main(int argv, char **args)
         gameState = newState;
         delayTime = 0;
         blackFade.mAlpha = 0;
+        inTransition = false;
+        if(newState == STATE_GAME || newState == STATE_PAUSE)
+        {
+          //Helper func to set the inter level texts
+          SetInterLevelText(textArraySurvey, 
+                            debrisTex, 
+                            debrisArray, 
+                            gameLevel, 
+                            gameBackground.mWidth, 
+                            gameBackground.mHeight);
+          if(newState == STATE_GAME)
+          {
+            //Reset inter level text
+            textArraySurvey[0].mString = "";
+            textArraySurvey[0].mLetters = 0;
+
+            textArraySurvey[1].mString = "";
+            textArraySurvey[1].mLetters = 0;
+
+            textArraySurvey[2].mString = "";
+            textArraySurvey[2].mLetters = 0;
+
+            textArraySurvey[3].mString = "";
+            textArraySurvey[3].mLetters = 0;
+
+            textArraySurvey[4].mString = "";
+            textArraySurvey[4].mLetters = 0;
+
+            //Reset renders
+            choiceBackgroundTexA.mRender = true;
+            choiceBackgroundTexB.mRender = true;
+            responseBackgroundTexA.mRender = false;
+            responseBackgroundTexB.mRender = false;
+
+            textArraySurvey[1].enabled = true;
+            textArraySurvey[2].enabled = true;
+            textArraySurvey[3].enabled = false;
+
+            uiInterLevelArray[1].mRender = false;
+          }
+        }
       }
     }
 
-    if (gameState == STATE_GAME)
+    if(inTransition)
     {
-
+      //In transition means that we don't want any game states to update
+      //But we still want it to render as it fades to black
+    }
+    else if (gameState == STATE_GAME)
+    {
       //Set the num debris remaining to on
       textArray[0].enabled = true;
 
@@ -325,23 +373,11 @@ int main(int argv, char **args)
             if (DEBUG == 0)
             {
               //Mix_FadeOutMusic(1000);
-              //SDL_Delay(1);
               Mix_PlayMusic(interLevelMus, 1);
             }
-
-            //Helper func to set the inter level texts
-            SetInterLevelText(textArraySurvey, 
-                              debrisTex, 
-                              debrisArray, 
-                              gameLevel, 
-                              gameBackground.mWidth, 
-                              gameBackground.mHeight);
           }
         }
       }
-
-      int worldMouseX = camX + xMouse;
-      int worldMouseY = camY + yMouse;
 
       bool debrisCol = false;
 
@@ -382,86 +418,8 @@ int main(int argv, char **args)
 
       //Set num of debris gathered
       textArray[1].mString = to_string(numDebris);
-      textArray[0].mString = to_string(GetActiveDebrisNum(debrisArray));
-
-      ////////////////////
-      //Render to screen//
-      ////////////////////
-
-      //Render Background
-      RenderTextureByCam(camX, camY, renderer, gameBackground);
-
-      //Render Debris
-      RenderDebris(renderer, debrisArray, camX, camY);
-
-      //Render Ship
-      RenderShip(renderer, camX, camY, mainShip);
-
-      //Render Miningbar
-      if (isMining)
-      {
-        //Convert player world position to screen position
-        int playCamX = mainShip.mPosition.x - camX;
-        int playCamY = mainShip.mPosition.y - camY;
-        miningBarEmptyTex.mX = playCamX;
-        miningBarEmptyTex.mY = playCamY + mainShip.mHeight;
-
-        RenderTexture(renderer, miningBarEmptyTex);
-
-        //Now render the progress based on
-        miningBarColorTex.mX = playCamX;
-        miningBarColorTex.mY = playCamY + mainShip.mHeight;
-        miningBarColorTex.mWidth = holdDownTime;
-
-        RenderTexture(renderer, miningBarColorTex);
-
-        //Draws the debis render trail
-        int debrisCamX = debrisArray[debrisIndex].mX - camX;
-        int debrisCamY = debrisArray[debrisIndex].mY - camY;
-
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
-
-        SDL_RenderDrawLine(renderer,
-                           playCamX + mainShip.mWidth / 2,
-                           playCamY + mainShip.mHeight / 2,
-                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
-                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
-      }
-
-      //Render UI
-      RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
-
-      //Popup dialogs rendering
-
-      if (showDialog)
-      {
-        RenderTexture(renderer, tutorialDiagTex);
-        RenderTexture(renderer, dialogOKTex);
-      }
-
-      //Render DEBUG items if turned on
-      if (DEBUG == 1)
-      {
-        textArray[2].mY = 30;
-        textArray[2].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
-
-        textArray[3].mY = 60;
-        textArray[3].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
-
-        textArray[4].mY = 90;
-        textArray[4].mString = "GameTime:" + to_string(gameTime);
-
-        textArray[5].mY = 120;
-        textArray[5].mString = "HoldDown:" + to_string(holdDownTime);
-
-        SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
-
-        SDL_RenderDrawLine(renderer,
-                           mainShip.mPosition.x,
-                           mainShip.mPosition.y,
-                           mainShip.mPosition.x + mainShip.mDirection.x * 10,
-                           mainShip.mPosition.y + mainShip.mDirection.y * 10);
-      }
+      textArray[0].mString = to_string(GetActiveDebrisNum(debrisArray));      
+      
     }
     else if (gameState == STATE_PAUSE) //Interlevel UI
     {
@@ -545,35 +503,7 @@ int main(int argv, char **args)
         }
 
         if (texCol == BTN_CONTINUE)
-        {
-          //Reset text
-          textArraySurvey[0].mString = "";
-          textArraySurvey[0].mLetters = 0;
-
-          textArraySurvey[1].mString = "";
-          textArraySurvey[1].mLetters = 0;
-
-          textArraySurvey[2].mString = "";
-          textArraySurvey[2].mLetters = 0;
-
-          textArraySurvey[3].mString = "";
-          textArraySurvey[3].mLetters = 0;
-
-          textArraySurvey[4].mString = "";
-          textArraySurvey[4].mLetters = 0;
-
-          //Reset renders
-          choiceBackgroundTexA.mRender = true;
-          choiceBackgroundTexB.mRender = true;
-          responseBackgroundTexA.mRender = false;
-          responseBackgroundTexB.mRender = false;
-
-          textArraySurvey[1].enabled = true;
-          textArraySurvey[2].enabled = true;
-          textArraySurvey[3].enabled = false;
-
-          uiInterLevelArray[1].mRender = false;
-          
+        {        
           newState = STATE_GAME;
           numDebris += 1;
         }
@@ -605,6 +535,85 @@ int main(int argv, char **args)
     
     if (gameState == STATE_GAME)
     {
+
+      //Render Background
+      RenderTextureByCam(camX, camY, renderer, gameBackground);
+
+      //Render Debris
+      RenderDebris(renderer, debrisArray, camX, camY);
+
+      //Render Ship
+      RenderShip(renderer, camX, camY, mainShip);
+
+      //Render Miningbar
+      if (isMining)
+      {
+        //Convert player world position to screen position
+        int playCamX = mainShip.mPosition.x - camX;
+        int playCamY = mainShip.mPosition.y - camY;
+        miningBarEmptyTex.mX = playCamX;
+        miningBarEmptyTex.mY = playCamY + mainShip.mHeight;
+
+        RenderTexture(renderer, miningBarEmptyTex);
+
+        //Now render the progress based on
+        miningBarColorTex.mX = playCamX;
+        miningBarColorTex.mY = playCamY + mainShip.mHeight;
+        miningBarColorTex.mWidth = holdDownTime;
+
+        RenderTexture(renderer, miningBarColorTex);
+
+        //Draws the debis render trail
+        int debrisCamX = debrisArray[debrisIndex].mX - camX;
+        int debrisCamY = debrisArray[debrisIndex].mY - camY;
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, SDL_ALPHA_OPAQUE);
+
+        SDL_RenderDrawLine(renderer,
+                           playCamX + mainShip.mWidth / 2,
+                           playCamY + mainShip.mHeight / 2,
+                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
+      }
+
+      //Render UI
+      RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
+
+      //Popup dialogs rendering
+      if (showDialog)
+      {
+        RenderTexture(renderer, tutorialDiagTex);
+        RenderTexture(renderer, dialogOKTex);
+      }
+
+      //Render DEBUG items if turned on
+      if (DEBUG == 1)
+      {
+
+        int worldMouseX = camX + xMouse;
+        int worldMouseY = camY + yMouse;
+      
+        textArray[2].mY = 30;
+        textArray[2].mString = "x:" + to_string(xMouse) + " y:" + to_string(yMouse);
+
+        textArray[3].mY = 60;
+        textArray[3].mString = "x:" + to_string(worldMouseX) + " y:" + to_string(worldMouseY);
+
+        textArray[4].mY = 90;
+        textArray[4].mString = "GameTime:" + to_string(gameTime);
+
+        textArray[5].mY = 120;
+        textArray[5].mString = "HoldDown:" + to_string(holdDownTime);
+
+        SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
+
+        SDL_RenderDrawLine(renderer,
+                           mainShip.mPosition.x,
+                           mainShip.mPosition.y,
+                           mainShip.mPosition.x + mainShip.mDirection.x * 10,
+                           mainShip.mPosition.y + mainShip.mDirection.y * 10);
+      }
+
     }
     else if (gameState == STATE_PAUSE)
     {
