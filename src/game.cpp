@@ -375,58 +375,107 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   background.mY = 0;
   uiArray[0] = background;
 
-  //Add rotation controls
+  //ROTATION
+
+  //Left
   SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR);
   Texture leftButton(leftButtonSDLTex, BTN_LEFTCURSOR);
   leftButton.mX = 50;
   leftButton.mY = GAMEHEIGHT * 2 / 3 + 50;
   uiArray[1] = leftButton;
 
+  SDL_Texture *leftButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR_ACTIVE);
+  Texture leftButtonActive(leftButtonActiveSDLTex, BTN_LEFTCURSOR_ACTIVE);
+  leftButtonActive.mX = 50;
+  leftButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  leftButtonActive.mRender = false;
+  uiArray[2] = leftButtonActive;
+
+  //Stop
   SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT);
   Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButton.mY = GAMEHEIGHT * 2 / 3 + 50;
-  uiArray[2] = stopButton;
+  uiArray[3] = stopButton;
 
+  SDL_Texture *stopButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT_ACTIVE);
+  Texture stopButtonActive(stopButtonActiveSDLTex, BTN_STOPROT_ACTIVE);
+  stopButtonActive.mX = leftButton.mX + leftButton.mWidth + 20;
+  stopButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  stopButtonActive.mRender = false;
+  uiArray[4] = stopButtonActive;
+
+  //Right
   SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR);
   Texture rightButton(rightButtonSDLTex, BTN_RIGHTCURSOR);
   rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
   rightButton.mY = GAMEHEIGHT * 2 / 3 + 50;
-  uiArray[3] = rightButton;
+  uiArray[5] = rightButton;
 
-  //Speed controls
+  SDL_Texture *rightButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR_ACTIVE);
+  Texture rightButtonActive(rightButtonActiveSDLTex, BTN_RIGHTCURSOR_ACTIVE);
+  rightButtonActive.mX = stopButton.mX + stopButton.mWidth + 20;
+  rightButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  rightButtonActive.mRender = false;
+  uiArray[6] = rightButtonActive;
+
+  //SPEED
+
+  //increase
   SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED);
   Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
   speedincreaseButton.mX = 450;
   speedincreaseButton.mY = 360;
-  uiArray[4] = speedincreaseButton;
+  uiArray[7] = speedincreaseButton;
 
+  SDL_Texture *speedincreaseButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED_ACTIVE);
+  Texture speedincreaseButtonActive(speedincreaseButtonActiveSDLTex, BTN_INCREASESPEED_ACTIVE);
+  speedincreaseButtonActive.mX = 450;
+  speedincreaseButtonActive.mY = 360;
+  speedincreaseButtonActive.mRender = false;
+  uiArray[8] = speedincreaseButtonActive;
+
+  //decrease
   SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED);
   Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
   speeddecreaseButton.mX = 450;
   speeddecreaseButton.mY = 420;
-  uiArray[5] = speeddecreaseButton;
+  uiArray[9] = speeddecreaseButton;
+
+  SDL_Texture *speeddecreaseButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED_ACTIVE);
+  Texture speeddecreaseButtonActive(speeddecreaseButtonActiveSDLTex, BTN_DECREASESPEED_ACTIVE);
+  speeddecreaseButtonActive.mX = 450;
+  speeddecreaseButtonActive.mY = 420;
+  speeddecreaseButtonActive.mRender = false;
+  uiArray[10] = speeddecreaseButtonActive;
 
   //harvest controls
   SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS);
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
   harvestButton.mX = GAMEWIDTH / 2 - harvestButton.mWidth / 2;
   harvestButton.mY = GAMEHEIGHT * 2 / 3 + 50;
-  uiArray[6] = harvestButton;
+  uiArray[11] = harvestButton;
+
+  SDL_Texture *harvestButtonEnableSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ENABLE);
+  Texture harvestButtonEnable(harvestButtonEnableSDLTex, BTN_HARVESTDEBRIS_ENABLE);
+  harvestButtonEnable.mX = harvestButton.mX;
+  harvestButtonEnable.mY = GAMEHEIGHT * 2 / 3 + 50;
+  harvestButtonEnable.mRender = false;
+  uiArray[12] = harvestButtonEnable;
 
   SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ACTIVE);
   Texture harvestButtonActive(harvestButtonActiveSDLTex, BTN_HARVESTDEBRIS_ACTIVE);
   harvestButtonActive.mX = harvestButton.mX;
   harvestButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
   harvestButtonActive.mRender = false;
-  uiArray[7] = harvestButtonActive;
+  uiArray[13] = harvestButtonActive;
 
   //Debris tracker
   SDL_Texture *debrisTrackerTex = GetSDLTexture(renderer, window, DEBRIS_TRACKER);
   Texture debrisTracker(debrisTrackerTex, DEBRIS_TRACKER);
   debrisTracker.mX = harvestButton.mX;
   debrisTracker.mY = 444;
-  uiArray[8] = debrisTracker;
+  uiArray[14] = debrisTracker;
 }
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
@@ -456,9 +505,25 @@ void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArr
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)
 {
+  //cout << "render\n\n";
   for (int i = 0; i < size; ++i)
   {
-    RenderTexture(renderer, uiArray[i]);
+    //cout << i << ":render: " << uiArray[i].mImgLocation << " render:" << uiArray[i].mRender << "\n";
+    if(uiArray[i].mRender)
+    {
+      RenderTexture(renderer, uiArray[i]);
+    }
+  }
+}
+
+void SetRenderUIElement(Texture *uiArray, int size, string uiElement, bool value)
+{
+  for (int i = 0; i < size; ++i)
+  {
+    if(uiArray[i].mImgLocation == uiElement)
+    {
+      uiArray[i].mRender = value;
+    }
   }
 }
 
@@ -1508,7 +1573,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
 
 void ReduceAlphaArray(Texture *textureArray, int numTexture, int alphaDecrementValue)
 {
-  for (unsigned i = 0; i < numTexture; ++i)
+  for (int i = 0; i < numTexture; ++i)
   {
       textureArray[i].mAlpha -= alphaDecrementValue;
   }
