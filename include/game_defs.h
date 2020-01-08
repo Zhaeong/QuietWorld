@@ -60,18 +60,27 @@ const string STATE_GAME = "GAME";
 const string STATE_PAUSE = "PAUSE";
 
 //SPACE UI
-const int NUM_SPACE_UI = 9;
+const int NUM_SPACE_UI = 15;
 
-const string GRAYBACKGROUND     = "res/spaceUI/uiGray.png";
+const string GRAYBACKGROUND            = "res/spaceUI/uiGray.png";
 
-const string BTN_LEFTCURSOR     = "res/spaceUI/leftCursor.png";
-const string BTN_RIGHTCURSOR    = "res/spaceUI/rightCursor.png";
-const string BTN_STOPROT        = "res/spaceUI/stopRotate.png";
+const string BTN_LEFTCURSOR            = "res/spaceUI/leftCursor.png";
+const string BTN_LEFTCURSOR_ACTIVE     = "res/spaceUI/leftCursorActive.png";
 
-const string BTN_INCREASESPEED  = "res/spaceUI/increaseSpeed.png";
-const string BTN_DECREASESPEED  = "res/spaceUI/decreaseSpeed.png";
+const string BTN_RIGHTCURSOR           = "res/spaceUI/rightCursor.png";
+const string BTN_RIGHTCURSOR_ACTIVE    = "res/spaceUI/rightCursorActive.png";
 
-const string BTN_HARVESTDEBRIS  = "res/spaceUI/harvestDebrisGray.png";
+const string BTN_STOPROT               = "res/spaceUI/stopRotate.png";
+const string BTN_STOPROT_ACTIVE        = "res/spaceUI/stopRotateActive.png";
+
+const string BTN_INCREASESPEED         = "res/spaceUI/increaseSpeed.png";
+const string BTN_INCREASESPEED_ACTIVE  = "res/spaceUI/increaseSpeedActive.png";
+
+const string BTN_DECREASESPEED         = "res/spaceUI/decreaseSpeed.png";
+const string BTN_DECREASESPEED_ACTIVE  = "res/spaceUI/decreaseSpeedActive.png";
+
+const string BTN_HARVESTDEBRIS         = "res/spaceUI/harvestDebrisGray.png";
+const string BTN_HARVESTDEBRIS_ENABLE  = "res/spaceUI/harvestDebrisEnable.png";
 const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
 
 const string DEBRIS_TRACKER  = "res/spaceUI/debrisTracker.png";

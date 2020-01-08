@@ -56,6 +56,8 @@ void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArr
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 
+void SetRenderUIElement(Texture *uiArray, int size, string uiElement, bool value);
+
 string GetAction(int *mouseXpos, int *mouseYpos);
 
 string TextureMouseCollision(Texture *arrayTexture, int size, int xPos, int yPos);

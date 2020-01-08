@@ -16,7 +16,7 @@
  CC = g++
 
 #-ggdb compiles with debug symbols
-CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0
+CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0 -g
 LINKERS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer
 
 SRCDIR = src

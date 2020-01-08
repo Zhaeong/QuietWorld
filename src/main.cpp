@@ -320,8 +320,11 @@ int main(int argv, char **args)
           {
             mainShip.changeSpeed(-1);
           }
-          else if (texCol == BTN_HARVESTDEBRIS_ACTIVE)
+          else if (texCol == BTN_HARVESTDEBRIS_ENABLE)
           {
+            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, true);
+            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
+            
             if (debrisIndex != -1)
             {
               isMining = true;
@@ -333,6 +336,7 @@ int main(int argv, char **args)
         {
           isMining = false;
           holdDownTime = 0;
+          SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
 
           if (DEBUG == 0)
           {
@@ -393,13 +397,13 @@ int main(int argv, char **args)
       }
       if (debrisCol)
       {
-        uiSpaceArray[6].mRender = false;
-        uiSpaceArray[7].mRender = true;
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, true);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS, false);        
       }
       else
       {
-        uiSpaceArray[6].mRender = true;
-        uiSpaceArray[7].mRender = false;
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS, true);
         debrisIndex = -1;
         isMining = false;
         holdDownTime = 0;
