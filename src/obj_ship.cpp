@@ -97,5 +97,9 @@ void Ship::changeSpeed(int speed)
   {
     newSpeed = 0;
   }
+  else if(newSpeed > 3)
+  {
+    newSpeed = 3;
+  }
   mSpeed = newSpeed;
 }

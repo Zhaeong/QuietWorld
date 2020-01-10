@@ -355,6 +355,36 @@ int main(int argv, char **args)
         }
       }
 
+      //change the speed display
+      if(mainShip.mSpeed == 0)
+      {
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_0, true);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
+      }
+      else if(mainShip.mSpeed == 1)
+      {
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_0, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, true);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
+      }
+      else if(mainShip.mSpeed == 2)
+      {
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_0, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, true);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
+      }
+      else if(mainShip.mSpeed == 3)
+      {
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_0, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, true);
+      }
+
       //Check if mining and increment
       if (isMining)
       {

@@ -424,13 +424,13 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   //increase
   SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED);
   Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
-  speedincreaseButton.mX = 450;
+  speedincreaseButton.mX = 425;
   speedincreaseButton.mY = 360;
   uiArray[7] = speedincreaseButton;
 
   SDL_Texture *speedincreaseButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED_ACTIVE);
   Texture speedincreaseButtonActive(speedincreaseButtonActiveSDLTex, BTN_INCREASESPEED_ACTIVE);
-  speedincreaseButtonActive.mX = 450;
+  speedincreaseButtonActive.mX = 425;
   speedincreaseButtonActive.mY = 360;
   speedincreaseButtonActive.mRender = false;
   uiArray[8] = speedincreaseButtonActive;
@@ -438,13 +438,13 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   //decrease
   SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED);
   Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
-  speeddecreaseButton.mX = 450;
+  speeddecreaseButton.mX = 425;
   speeddecreaseButton.mY = 420;
   uiArray[9] = speeddecreaseButton;
 
   SDL_Texture *speeddecreaseButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED_ACTIVE);
   Texture speeddecreaseButtonActive(speeddecreaseButtonActiveSDLTex, BTN_DECREASESPEED_ACTIVE);
-  speeddecreaseButtonActive.mX = 450;
+  speeddecreaseButtonActive.mX = 425;
   speeddecreaseButtonActive.mY = 420;
   speeddecreaseButtonActive.mRender = false;
   uiArray[10] = speeddecreaseButtonActive;
@@ -476,6 +476,34 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   debrisTracker.mX = harvestButton.mX;
   debrisTracker.mY = 444;
   uiArray[14] = debrisTracker;
+
+  //speed notification
+  SDL_Texture *speed0Tex = GetSDLTexture(renderer, window, SPEED_0);
+  Texture speed0(speed0Tex, SPEED_0);
+  speed0.mX = 500;
+  speed0.mY = 360;
+  uiArray[15] = speed0;
+  
+  SDL_Texture *speed1Tex = GetSDLTexture(renderer, window, SPEED_1);
+  Texture speed1(speed1Tex, SPEED_1);
+  speed1.mX = 500;
+  speed1.mY = 360;
+  speed1.mRender = false;
+  uiArray[16] = speed1;
+
+  SDL_Texture *speed2Tex = GetSDLTexture(renderer, window, SPEED_2);
+  Texture speed2(speed2Tex, SPEED_2);
+  speed2.mX = 500;
+  speed2.mY = 360;
+  speed2.mRender = false;
+  uiArray[17] = speed2;
+
+  SDL_Texture *speed3Tex = GetSDLTexture(renderer, window, SPEED_3);
+  Texture speed3(speed3Tex, SPEED_3);
+  speed3.mX = 500;
+  speed3.mY = 360;
+  speed3.mRender = false;
+  uiArray[18] = speed3;
 }
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)

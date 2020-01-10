@@ -60,7 +60,7 @@ const string STATE_GAME = "GAME";
 const string STATE_PAUSE = "PAUSE";
 
 //SPACE UI
-const int NUM_SPACE_UI = 15;
+const int NUM_SPACE_UI = 19;
 
 const string GRAYBACKGROUND            = "res/spaceUI/uiGray.png";
 
@@ -85,6 +85,10 @@ const string BTN_HARVESTDEBRIS_ACTIVE  = "res/spaceUI/harvestDebrisActive.png";
 
 const string DEBRIS_TRACKER  = "res/spaceUI/debrisTracker.png";
 
+const string SPEED_0  = "res/spaceUI/speed0.png";
+const string SPEED_1  = "res/spaceUI/speed1.png";
+const string SPEED_2  = "res/spaceUI/speed2.png";
+const string SPEED_3  = "res/spaceUI/speed3.png";
 
 //INTRO UI
 const int NUM_INTRO_UI = 1;
