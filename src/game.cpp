@@ -396,13 +396,13 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  stopButton.mRender = false;
   uiArray[3] = stopButton;
 
   SDL_Texture *stopButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT_ACTIVE);
   Texture stopButtonActive(stopButtonActiveSDLTex, BTN_STOPROT_ACTIVE);
   stopButtonActive.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
-  stopButtonActive.mRender = false;
   uiArray[4] = stopButtonActive;
 
   //Right
