@@ -376,18 +376,18 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   uiArray[0] = background;
 
   //ROTATION
-
+  int rotationY = 390;
   //Left
   SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR);
   Texture leftButton(leftButtonSDLTex, BTN_LEFTCURSOR);
   leftButton.mX = 50;
-  leftButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  leftButton.mY = rotationY;
   uiArray[1] = leftButton;
 
   SDL_Texture *leftButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR_ACTIVE);
   Texture leftButtonActive(leftButtonActiveSDLTex, BTN_LEFTCURSOR_ACTIVE);
   leftButtonActive.mX = 50;
-  leftButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  leftButtonActive.mY = rotationY;
   leftButtonActive.mRender = false;
   uiArray[2] = leftButtonActive;
 
@@ -395,27 +395,27 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT);
   Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
-  stopButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  stopButton.mY = rotationY;
   stopButton.mRender = false;
   uiArray[3] = stopButton;
 
   SDL_Texture *stopButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT_ACTIVE);
   Texture stopButtonActive(stopButtonActiveSDLTex, BTN_STOPROT_ACTIVE);
   stopButtonActive.mX = leftButton.mX + leftButton.mWidth + 20;
-  stopButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  stopButtonActive.mY = rotationY;
   uiArray[4] = stopButtonActive;
 
   //Right
   SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR);
   Texture rightButton(rightButtonSDLTex, BTN_RIGHTCURSOR);
   rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
-  rightButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  rightButton.mY = rotationY;
   uiArray[5] = rightButton;
 
   SDL_Texture *rightButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR_ACTIVE);
   Texture rightButtonActive(rightButtonActiveSDLTex, BTN_RIGHTCURSOR_ACTIVE);
   rightButtonActive.mX = stopButton.mX + stopButton.mWidth + 20;
-  rightButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  rightButtonActive.mY = rotationY;
   rightButtonActive.mRender = false;
   uiArray[6] = rightButtonActive;
 
