@@ -484,7 +484,7 @@ int main(int argv, char **args)
                            mainShip.mSpeed);
 
       //Set num of debris gathered
-      textArray[1].mString = to_string(numDebris);
+      //textArray[1].mString = to_string(numDebris);
       textArray[0].mString = to_string(GetActiveDebrisNum(debrisArray));      
       
     }
@@ -642,6 +642,31 @@ int main(int argv, char **args)
                            playCamY + mainShip.mHeight / 2,
                            debrisCamX + debrisArray[debrisIndex].mWidth / 2,
                            debrisCamY + debrisArray[debrisIndex].mHeight / 2);
+
+        SDL_RenderDrawLine(renderer,
+                           playCamX + mainShip.mWidth / 2,
+                           playCamY + mainShip.mHeight / 2 + 1,
+                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
+
+        SDL_RenderDrawLine(renderer,
+                           playCamX + mainShip.mWidth / 2,
+                           playCamY + mainShip.mHeight / 2 - 1,
+                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
+
+        SDL_RenderDrawLine(renderer,
+                           playCamX + mainShip.mWidth / 2 + 1,
+                           playCamY + mainShip.mHeight / 2,
+                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
+
+        SDL_RenderDrawLine(renderer,
+                           playCamX + mainShip.mWidth / 2 - 1,
+                           playCamY + mainShip.mHeight / 2,
+                           debrisCamX + debrisArray[debrisIndex].mWidth / 2,
+                           debrisCamY + debrisArray[debrisIndex].mHeight / 2);
+        
       }
 
       //Render UI
