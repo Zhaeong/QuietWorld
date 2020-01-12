@@ -150,7 +150,7 @@ int main(int argv, char **args)
 
   //set location of debris num ui
   textArray[0].mX = 320;
-  textArray[0].mY = 444;
+  textArray[0].mY = 448;
   textArray[0].mString = "";
 
   //Create debris Array

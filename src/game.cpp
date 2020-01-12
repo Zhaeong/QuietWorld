@@ -379,12 +379,14 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   int rotationY = 390;
   //Left
   SDL_Texture *leftButtonSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR);
+  RemoveTextureWhiteSpace(window, leftButtonSDLTex);
   Texture leftButton(leftButtonSDLTex, BTN_LEFTCURSOR);
   leftButton.mX = 50;
   leftButton.mY = rotationY;
   uiArray[1] = leftButton;
 
   SDL_Texture *leftButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_LEFTCURSOR_ACTIVE);
+  RemoveTextureWhiteSpace(window, leftButtonActiveSDLTex);
   Texture leftButtonActive(leftButtonActiveSDLTex, BTN_LEFTCURSOR_ACTIVE);
   leftButtonActive.mX = 50;
   leftButtonActive.mY = rotationY;
@@ -393,6 +395,7 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
   //Stop
   SDL_Texture *stopButtonSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT);
+  RemoveTextureWhiteSpace(window, stopButtonSDLTex);
   Texture stopButton(stopButtonSDLTex, BTN_STOPROT);
   stopButton.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButton.mY = rotationY;
@@ -400,6 +403,7 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   uiArray[3] = stopButton;
 
   SDL_Texture *stopButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_STOPROT_ACTIVE);
+  RemoveTextureWhiteSpace(window, stopButtonActiveSDLTex);
   Texture stopButtonActive(stopButtonActiveSDLTex, BTN_STOPROT_ACTIVE);
   stopButtonActive.mX = leftButton.mX + leftButton.mWidth + 20;
   stopButtonActive.mY = rotationY;
@@ -407,12 +411,14 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
   //Right
   SDL_Texture *rightButtonSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR);
+  RemoveTextureWhiteSpace(window, rightButtonSDLTex);
   Texture rightButton(rightButtonSDLTex, BTN_RIGHTCURSOR);
   rightButton.mX = stopButton.mX + stopButton.mWidth + 20;
   rightButton.mY = rotationY;
   uiArray[5] = rightButton;
 
   SDL_Texture *rightButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_RIGHTCURSOR_ACTIVE);
+  RemoveTextureWhiteSpace(window, rightButtonActiveSDLTex);
   Texture rightButtonActive(rightButtonActiveSDLTex, BTN_RIGHTCURSOR_ACTIVE);
   rightButtonActive.mX = stopButton.mX + stopButton.mWidth + 20;
   rightButtonActive.mY = rotationY;
@@ -423,26 +429,30 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
   //increase
   SDL_Texture *speedincreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED);
+  RemoveTextureWhiteSpace(window, speedincreaseButtonSDLTex);
   Texture speedincreaseButton(speedincreaseButtonSDLTex, BTN_INCREASESPEED);
   speedincreaseButton.mX = 425;
-  speedincreaseButton.mY = 360;
+  speedincreaseButton.mY = 380;
   uiArray[7] = speedincreaseButton;
 
   SDL_Texture *speedincreaseButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_INCREASESPEED_ACTIVE);
+  RemoveTextureWhiteSpace(window, speedincreaseButtonActiveSDLTex);
   Texture speedincreaseButtonActive(speedincreaseButtonActiveSDLTex, BTN_INCREASESPEED_ACTIVE);
   speedincreaseButtonActive.mX = 425;
-  speedincreaseButtonActive.mY = 360;
+  speedincreaseButtonActive.mY = 380;
   speedincreaseButtonActive.mRender = false;
   uiArray[8] = speedincreaseButtonActive;
 
   //decrease
   SDL_Texture *speeddecreaseButtonSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED);
+  RemoveTextureWhiteSpace(window, speeddecreaseButtonSDLTex);
   Texture speeddecreaseButton(speeddecreaseButtonSDLTex, BTN_DECREASESPEED);
   speeddecreaseButton.mX = 425;
   speeddecreaseButton.mY = 420;
   uiArray[9] = speeddecreaseButton;
 
   SDL_Texture *speeddecreaseButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_DECREASESPEED_ACTIVE);
+  RemoveTextureWhiteSpace(window, speeddecreaseButtonActiveSDLTex);
   Texture speeddecreaseButtonActive(speeddecreaseButtonActiveSDLTex, BTN_DECREASESPEED_ACTIVE);
   speeddecreaseButtonActive.mX = 425;
   speeddecreaseButtonActive.mY = 420;
@@ -451,57 +461,65 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
   //harvest controls
   SDL_Texture *harvestButtonSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS);
+  RemoveTextureWhiteSpace(window, harvestButtonSDLTex);
   Texture harvestButton(harvestButtonSDLTex, BTN_HARVESTDEBRIS);
   harvestButton.mX = GAMEWIDTH / 2 - harvestButton.mWidth / 2;
-  harvestButton.mY = GAMEHEIGHT * 2 / 3 + 50;
+  harvestButton.mY = rotationY;
   uiArray[11] = harvestButton;
 
   SDL_Texture *harvestButtonEnableSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ENABLE);
+  RemoveTextureWhiteSpace(window, harvestButtonEnableSDLTex);
   Texture harvestButtonEnable(harvestButtonEnableSDLTex, BTN_HARVESTDEBRIS_ENABLE);
   harvestButtonEnable.mX = harvestButton.mX;
-  harvestButtonEnable.mY = GAMEHEIGHT * 2 / 3 + 50;
+  harvestButtonEnable.mY = rotationY;
   harvestButtonEnable.mRender = false;
   uiArray[12] = harvestButtonEnable;
 
   SDL_Texture *harvestButtonActiveSDLTex = GetSDLTexture(renderer, window, BTN_HARVESTDEBRIS_ACTIVE);
+  RemoveTextureWhiteSpace(window, harvestButtonActiveSDLTex);
   Texture harvestButtonActive(harvestButtonActiveSDLTex, BTN_HARVESTDEBRIS_ACTIVE);
   harvestButtonActive.mX = harvestButton.mX;
-  harvestButtonActive.mY = GAMEHEIGHT * 2 / 3 + 50;
+  harvestButtonActive.mY = rotationY;
   harvestButtonActive.mRender = false;
   uiArray[13] = harvestButtonActive;
 
   //Debris tracker
   SDL_Texture *debrisTrackerTex = GetSDLTexture(renderer, window, DEBRIS_TRACKER);
+  RemoveTextureWhiteSpace(window, debrisTrackerTex);
   Texture debrisTracker(debrisTrackerTex, DEBRIS_TRACKER);
   debrisTracker.mX = harvestButton.mX;
-  debrisTracker.mY = 444;
+  debrisTracker.mY = 448;
   uiArray[14] = debrisTracker;
 
   //speed notification
   SDL_Texture *speed0Tex = GetSDLTexture(renderer, window, SPEED_0);
+  RemoveTextureWhiteSpace(window, speed0Tex);
   Texture speed0(speed0Tex, SPEED_0);
   speed0.mX = 500;
-  speed0.mY = 360;
+  speed0.mY = 380;
   uiArray[15] = speed0;
   
   SDL_Texture *speed1Tex = GetSDLTexture(renderer, window, SPEED_1);
+  RemoveTextureWhiteSpace(window, speed1Tex);
   Texture speed1(speed1Tex, SPEED_1);
   speed1.mX = 500;
-  speed1.mY = 360;
+  speed1.mY = 380;
   speed1.mRender = false;
   uiArray[16] = speed1;
 
   SDL_Texture *speed2Tex = GetSDLTexture(renderer, window, SPEED_2);
+  RemoveTextureWhiteSpace(window, speed2Tex);
   Texture speed2(speed2Tex, SPEED_2);
   speed2.mX = 500;
-  speed2.mY = 360;
+  speed2.mY = 380;
   speed2.mRender = false;
   uiArray[17] = speed2;
 
   SDL_Texture *speed3Tex = GetSDLTexture(renderer, window, SPEED_3);
+  RemoveTextureWhiteSpace(window, speed3Tex);
   Texture speed3(speed3Tex, SPEED_3);
   speed3.mX = 500;
-  speed3.mY = 360;
+  speed3.mY = 380;
   speed3.mRender = false;
   uiArray[18] = speed3;
 }
