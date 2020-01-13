@@ -57,7 +57,7 @@ int main(int argv, char **args)
   Mix_Chunk *gScratch = NULL;
 
   //Load sound effects
-  gScratch = Mix_LoadWAV("res/wavs/fNote.wav");
+  gScratch = Mix_LoadWAV("res/wavs/mouseclickdown.wav");
   if (gScratch == NULL)
   {
     printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
