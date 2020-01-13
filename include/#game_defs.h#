@@ -9,7 +9,7 @@ using namespace std;
 //Colors
 /*
 Base: 192
-
+Light: 236
 
  */
 
