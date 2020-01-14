@@ -98,7 +98,7 @@ void SetShipColorMod(Ship ship);
 
 void SetTextString(TextObj *text, string textContent);
 
-void SetIntroText(TextObj *textArray);
+int SetIntroText(TextObj *textArray);
 
 void SetInterLevelChoices(TextObj *textArray,
                           string question,

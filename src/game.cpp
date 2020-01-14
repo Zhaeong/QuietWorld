@@ -526,11 +526,17 @@ void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 {
+  SDL_Texture *introBackgroundTex = GetSDLTexture(renderer, window, "res/dialogUI/introBackground.png");
+  Texture introBackground(introBackgroundTex, "res/dialogUI/introBackground.png");
+  introBackground.mX = 0;
+  introBackground.mY = 0;
+  uiArray[0] = introBackground;
+  
   SDL_Texture *startGameTex = GetSDLTexture(renderer, window, BTN_STARTGAME);
   Texture startGameButton(startGameTex, BTN_STARTGAME);
   startGameButton.mX = GAMEWIDTH / 2 - (startGameButton.mWidth / 2);
   startGameButton.mY = 250;
-  uiArray[0] = startGameButton;
+  uiArray[1] = startGameButton;
 }
 
 void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
@@ -1201,7 +1207,7 @@ void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, Text
     tObj.mTimeElapsed += gameTime - tObj.mLastTime;
 
     bool renderText = false;
-    if (tObj.mTimeElapsed > tObj.mDelay)
+    if (tObj.mTimeElapsed > tObj.mRenderDelay)
     {
       renderText = true;
     }
@@ -1210,10 +1216,42 @@ void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, Text
       tObj.mLastTime = gameTime;
     }
 
-    unsigned int numLetters = tObj.mString.size();
-
     if (renderText)
     {
+
+      unsigned int numLetters = tObj.mLetters;
+
+      if (tObj.mDelay == 0)
+      {
+        numLetters = tObj.mString.size();
+      }
+      else
+      {
+        //cout << "cur:" << tObj.mString << " prev:" << prevtObj.mString << " fi:" << isPrevFinished << "\n";
+        //Compares the last time the letter was incremented to cur time
+        //If enough time elapsed > mDelay then increment num letters by one
+        //isPrevFinished is used so that text obj is rendered one by one
+        if (gameTime - tObj.mLastTime > tObj.mDelay)
+        {
+          if (tObj.mLetters < tObj.mString.size())
+          {
+            tObj.mLetters += 1;
+            tObj.mLastTime = gameTime;
+            textArray[i] = tObj;
+          }
+
+          //cout << j << " numL:" << numLetters << "\n";
+          if (tObj.mLetters == tObj.mString.size())
+          {
+            textArray[i].finished = 1;
+          }
+          else
+          {
+            textArray[i].finished = 0;
+          }
+        }
+      }
+      
       for (unsigned int j = 0; j < numLetters; ++j)
       {
         char curChar = tObj.mString[j];
@@ -1358,58 +1396,70 @@ void SetTextString(TextObj *text, string textContent)
   }
 }
 
-void SetIntroText(TextObj *textArray)
+int SetIntroText(TextObj *textArray)
 {
   int Name = (rand() % (5000000 - 2000000)) + 2000000;
   int Name2 = (rand() % (5000000 - 2000000)) + 2000000;
+
+  int textDelays = 20;
+  
   TextObj startText0;
   SetTextString(&startText0, "Hello DMRu" + to_string(Name));
-  startText0.mDelay = 0;
+  startText0.mRenderDelay = 0;
+  startText0.mDelay = textDelays;
   startText0.mX = 0;
   startText0.mY = 0;
   textArray[0] = startText0;
 
   TextObj startText1;
   SetTextString(&startText1, "Debris Maintain Retrieve unit");
-  startText1.mDelay = 3000;
+  startText1.mRenderDelay = 3000;
+  startText1.mDelay = textDelays;
   startText1.mX = 0;
   startText1.mY = 30;
   textArray[1] = startText1;
 
   TextObj startText2;
   SetTextString(&startText2, "Sector - " + to_string(Name));
-  startText2.mDelay = 6000;
+  startText2.mRenderDelay = 6000;
+  startText2.mDelay = textDelays;
   startText2.mX = 0;
   startText2.mY = 50;
   textArray[2] = startText2;
 
   TextObj startText3;
   SetTextString(&startText3, "I am DBRu" + to_string(Name2));
-  startText3.mDelay = 9000;
+  startText3.mRenderDelay = 9000;
+  startText3.mDelay = textDelays;
   startText3.mX = 0;
   startText3.mY = 70;
   textArray[3] = startText3;
 
   TextObj startText4;
   SetTextString(&startText4, "DMRu Behavior Retainment unit");
-  startText4.mDelay = 12000;
+  startText4.mRenderDelay = 12000;
+  startText4.mDelay = textDelays;
   startText4.mX = 0;
   startText4.mY = 90;
   textArray[4] = startText4;
 
   TextObj startText5;
   SetTextString(&startText5, "Your personal carer");
-  startText5.mDelay = 15000;
+  startText5.mRenderDelay = 15000;
+  startText5.mDelay = textDelays;
   startText5.mX = 0;
   startText5.mY = 110;
   textArray[5] = startText5;
 
   TextObj startText6;
   SetTextString(&startText6, "So you can be the best you can");
-  startText6.mDelay = 17000;
+  startText6.mRenderDelay = 17000;
+  startText6.mDelay = textDelays;
   startText6.mX = 0;
   startText6.mY = 130;
   textArray[6] = startText6;
+
+  return Name;
 }
 void SetInterLevelChoices(TextObj *textArray,
                           string question,

@@ -34,7 +34,7 @@ int main(int argv, char **args)
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  Mix_Music *levelOneMus = Mix_LoadMUS("res/wavs/laurapalmer.wav");
+  Mix_Music *levelOneMus = Mix_LoadMUS("res/wavs/spaceambient.wav");
   if (levelOneMus == NULL)
   {
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -67,7 +67,7 @@ int main(int argv, char **args)
   int camX = 0;
   int camY = 0;
   int camW = GAMEWIDTH;
-  int camH = GAMEHEIGHT * 2 / 3;
+  int camH = 366;
 
   //Create UI arrays
   Texture uiSpaceArray[NUM_SPACE_UI];
@@ -117,8 +117,8 @@ int main(int argv, char **args)
   int curLevelBoundX = gameBackground.mWidth;
   int curLevelBoundY = gameBackground.mHeight;
 
-  mainShip.mPosition.x = 200;
-  mainShip.mPosition.y = curLevelBoundY / 2;
+  mainShip.mPosition.x = curLevelBoundX / 2;
+  mainShip.mPosition.y = curLevelBoundY / 2 - (mainShip.mHeight/2);
 
   CenterCamOnPlayer(&camX, &camY, camW, camH,
                     mainShip.mPosition.x,
@@ -146,7 +146,10 @@ int main(int argv, char **args)
 
   TextObj textArraySurvey[NUM_TEXT_SURVEY];
 
-  SetIntroText(textArrayIntro);
+  int playerID = SetIntroText(textArrayIntro);
+
+  textArray[1].mString = "DMRu" + to_string(playerID);
+  textArray[1].enabled = false;
 
   //set location of debris num ui
   textArray[0].mX = 320;
@@ -166,8 +169,8 @@ int main(int argv, char **args)
   //Initial debris generation hardcoded to single area
   Texture initdObj(debrisTex, DEBRIS_IMG);
   initdObj.mRender = true;
-  initdObj.mX = 300;
-  initdObj.mY = 250;
+  initdObj.mX = curLevelBoundX / 2 - (mainShip.mWidth/2) + 100;
+  initdObj.mY = curLevelBoundY / 2 - (initdObj.mHeight/2);
   debrisArray[0] = initdObj;
 
   bool runGame = true;
@@ -251,6 +254,7 @@ int main(int argv, char **args)
                             gameBackground.mHeight);
           if(newState == STATE_GAME)
           {
+            Mix_PlayMusic(levelOneMus, -1);
             //Reset inter level text
             textArraySurvey[0].mString = "";
             textArraySurvey[0].mLetters = 0;
@@ -292,6 +296,7 @@ int main(int argv, char **args)
     {
       //Set the num debris remaining to on
       textArray[0].enabled = true;
+      textArray[1].enabled = true;
 
       if (eventType != "NONE")
       {
@@ -587,11 +592,12 @@ int main(int argv, char **args)
           //Mix_FadeOutMusic(1000);
           //SDL_Delay(1);
 
-          Mix_PlayMusic(levelOneMus, 1);
+          
         }
         
         if (texCol == BTN_STARTGAME)
         {
+          Mix_FadeOutMusic(1000);
           newState = STATE_GAME;
           numDebris = 0;
         }

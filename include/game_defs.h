@@ -55,6 +55,7 @@ struct TextObj
   int mY = 0;
   int mWidth = 0;
   unsigned int mDelay = 0;
+  unsigned int mRenderDelay = 0;
   unsigned int mLastTime = 0;
   unsigned int mLetters = 0;
   unsigned int mTimeElapsed = 0;
@@ -99,7 +100,7 @@ const string SPEED_2  = "res/spaceUI/speed2.png";
 const string SPEED_3  = "res/spaceUI/speed3.png";
 
 //INTRO UI
-const int NUM_INTRO_UI = 1;
+const int NUM_INTRO_UI = 2;
 const string BTN_STARTGAME     = "res/dialogUI/startGame.png";
 
 
