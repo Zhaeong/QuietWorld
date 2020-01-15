@@ -1306,8 +1306,34 @@ void RenderTextWithDelays(SDL_Renderer *renderer, SDL_Texture *fontTexture, Text
         dstRect.x = curPosX;
         dstRect.y = curPosY;
 
-        //cout << "Cur X:" << curPosX << " Y:" << curPosY <<" Let:" << curChar << "\n";
+        //if the current char isn't a space, look for end of word, if that exceeds max length
+        //then move the word to next line
+        if (curChar != ' ')
+        {
+          //Did not end with space so we have to go back and put all previous char
+          //into new line until space
+          int finalLetterPosX = curPosX;
+          unsigned int finalLetterIndex = j;
+          char finalLetter = tObj.mString[finalLetterIndex];
 
+          //increment letter until space and final letter is less than total number of letters
+          while (finalLetter != ' ' && finalLetterIndex < numLetters)
+          {
+            finalLetterPosX += 20;
+            finalLetterIndex += 1;
+            finalLetter = tObj.mString[finalLetterIndex];
+          }
+
+          if ((finalLetterPosX > 579) || finalLetterPosX >= GAMEWIDTH)
+          {
+            //cout << "exceeds length: " << curChar << "final i:" << finalLetterIndex << " finalpos:" << finalLetterPosX << "origX: " << tObj.mX <<"\n";
+            curPosX = tObj.mX;
+            curPosY += 20;
+            //Need to reset render rect due to rendering on new line
+            dstRect.x = curPosX;
+            dstRect.y = curPosY;
+          }
+        }
         //Wraps to next line if the text exceeds the width
         if (curPosX >= GAMEWIDTH)
         {
@@ -1404,7 +1430,8 @@ int SetIntroText(TextObj *textArray)
   int textDelays = 20;
   
   TextObj startText0;
-  SetTextString(&startText0, "Hello DMRu" + to_string(Name));
+  SetTextString(&startText0, "Hello DMaRu" + to_string(Name));
+  //SetTextString(&startText0, "Rotation Begin Start Continue");
   startText0.mRenderDelay = 0;
   startText0.mDelay = textDelays;
   startText0.mX = 0;
@@ -1412,7 +1439,8 @@ int SetIntroText(TextObj *textArray)
   textArray[0] = startText0;
 
   TextObj startText1;
-  SetTextString(&startText1, "Debris Maintain Retrieve unit");
+  SetTextString(&startText1, "Debris Maintainenance and Retrieval unit.");
+  //SetTextString(&startText1, "Debris Laser DMRu Controls");
   startText1.mRenderDelay = 3000;
   startText1.mDelay = textDelays;
   startText1.mX = 0;
@@ -1420,43 +1448,43 @@ int SetIntroText(TextObj *textArray)
   textArray[1] = startText1;
 
   TextObj startText2;
-  SetTextString(&startText2, "Sector - " + to_string(Name));
+  SetTextString(&startText2, "Assigned to Sector - " + to_string(Name));
   startText2.mRenderDelay = 6000;
   startText2.mDelay = textDelays;
   startText2.mX = 0;
-  startText2.mY = 50;
+  startText2.mY = 70;
   textArray[2] = startText2;
 
   TextObj startText3;
-  SetTextString(&startText3, "I am DBRu" + to_string(Name2));
+  SetTextString(&startText3, "I am DEaBRA" + to_string(Name2) + ".");
   startText3.mRenderDelay = 9000;
   startText3.mDelay = textDelays;
   startText3.mX = 0;
-  startText3.mY = 70;
+  startText3.mY = 90;
   textArray[3] = startText3;
 
   TextObj startText4;
-  SetTextString(&startText4, "DMRu Behavior Retainment unit");
+  SetTextString(&startText4, "DMaRu Engagement and Behavior Retainment Assistant");
   startText4.mRenderDelay = 12000;
   startText4.mDelay = textDelays;
   startText4.mX = 0;
-  startText4.mY = 90;
+  startText4.mY = 110;
   textArray[4] = startText4;
 
   TextObj startText5;
-  SetTextString(&startText5, "Your personal carer");
+  SetTextString(&startText5, "Your personal companion and supervisor.");
   startText5.mRenderDelay = 15000;
   startText5.mDelay = textDelays;
   startText5.mX = 0;
-  startText5.mY = 110;
+  startText5.mY = 150;
   textArray[5] = startText5;
 
   TextObj startText6;
-  SetTextString(&startText6, "So you can be the best you can");
+  SetTextString(&startText6, "Making sure that you can be the best you can be.");
   startText6.mRenderDelay = 17000;
   startText6.mDelay = textDelays;
   startText6.mX = 0;
-  startText6.mY = 130;
+  startText6.mY = 180;
   textArray[6] = startText6;
 
   return Name;

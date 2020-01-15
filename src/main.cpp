@@ -86,8 +86,8 @@ int main(int argv, char **args)
 
   SDL_Texture *dialogOK = GetSDLTexture(renderer, window, "res/dialogUI/dialogOK.png");
   Texture dialogOKTex = Texture(dialogOK, "res/dialogUI/dialogOK.png");
-  dialogOKTex.mX = GAMEWIDTH / 2 - (dialogOKTex.mWidth / 2);
-  dialogOKTex.mY = 300;
+  dialogOKTex.mX = 524;
+  dialogOKTex.mY = 271;
 
   SDL_Texture *choiceBackground = GetSDLTexture(renderer, window, "res/dialogUI/choiceBackground.png");
   Texture choiceBackgroundTexA = Texture(choiceBackground, "res/dialogUI/choiceBackgroundA.png");
@@ -193,6 +193,8 @@ int main(int argv, char **args)
   string newState = STATE_INTRO;
 
   bool inTransition = false;
+
+  bool allowControl = false;
 
   int delayTime = 0;
 
@@ -305,64 +307,67 @@ int main(int argv, char **args)
         {
           string texCol = TextureMouseCollision(uiSpaceArray, NUM_SPACE_UI, xMouse, yMouse);
 
-          if (texCol == BTN_LEFTCURSOR)
+          if(allowControl)
           {
-            mainShip.curState = Ship::ShipStates::ROTATELEFT;
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR_ACTIVE, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR, false);
-
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR_ACTIVE, false);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR, true);
-
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT_ACTIVE, false);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT, true);
-          }
-          else if (texCol == BTN_RIGHTCURSOR)
-          {
-            mainShip.curState = Ship::ShipStates::ROTATERIGHT;
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR_ACTIVE, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR, false);
-
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR_ACTIVE, false);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR, true);
-
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT_ACTIVE, false);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT, true);
-          }
-          else if (texCol == BTN_STOPROT)
-          {
-            mainShip.curState = Ship::ShipStates::IDLE;
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT_ACTIVE, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT, false);
-
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR_ACTIVE, false);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR_ACTIVE, false);
-          }
-          else if (texCol == BTN_INCREASESPEED)
-          {
-            mainShip.changeSpeed(1);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED_ACTIVE, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED, false);
-          }
-          else if (texCol == BTN_DECREASESPEED)
-          {
-            mainShip.changeSpeed(-1);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_DECREASESPEED_ACTIVE, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_DECREASESPEED, false);
-          }
-          else if (texCol == BTN_HARVESTDEBRIS_ENABLE)
-          {
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, true);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
-            
-            if (debrisIndex != -1)
+            if (texCol == BTN_LEFTCURSOR)
             {
-              isMining = true;
+              mainShip.curState = Ship::ShipStates::ROTATELEFT;
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR_ACTIVE, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR, false);
+
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR_ACTIVE, false);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR, true);
+
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT_ACTIVE, false);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT, true);
             }
+            else if (texCol == BTN_RIGHTCURSOR)
+            {
+              mainShip.curState = Ship::ShipStates::ROTATERIGHT;
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR_ACTIVE, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR, false);
+
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR_ACTIVE, false);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR, true);
+
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT_ACTIVE, false);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT, true);
+            }
+            else if (texCol == BTN_STOPROT)
+            {
+              mainShip.curState = Ship::ShipStates::IDLE;
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT_ACTIVE, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_STOPROT, false);
+
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_LEFTCURSOR_ACTIVE, false);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_RIGHTCURSOR_ACTIVE, false);
+            }
+            else if (texCol == BTN_INCREASESPEED)
+            {
+              mainShip.changeSpeed(1);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED_ACTIVE, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED, false);
+            }
+            else if (texCol == BTN_DECREASESPEED)
+            {
+              mainShip.changeSpeed(-1);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_DECREASESPEED_ACTIVE, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_DECREASESPEED, false);
+            }
+            else if (texCol == BTN_HARVESTDEBRIS_ENABLE)
+            {
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, true);
+              SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
+            
+              if (debrisIndex != -1)
+              {
+                isMining = true;
+              }
+            }
+            cout << texCol << "\n";
           }
-          cout << texCol << "\n";
         }
         else if (eventType == "MOUSE_UP")
         {
@@ -386,6 +391,7 @@ int main(int argv, char **args)
             if (showDialog)
             {
               showDialog = false;
+              allowControl = true;
 
               SHADE = 0;
             }
