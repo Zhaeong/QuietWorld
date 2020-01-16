@@ -103,6 +103,27 @@ int main(int argv, char **args)
   RemoveTextureWhiteSpace(window, shipTex);
   Ship mainShip(shipTex);
 
+  //Ship thrust textures
+  SDL_Texture *leftThrustTex = GetSDLTexture(renderer, window, "res/ship/shipLeftThrust.png");
+  RemoveTextureWhiteSpace(window, leftThrustTex);
+  mainShip.mLeftThrust = leftThrustTex;
+
+  SDL_Texture *rightThrustTex = GetSDLTexture(renderer, window, "res/ship/shipRightThrust.png");
+  RemoveTextureWhiteSpace(window, rightThrustTex);
+  mainShip.mRightThrust = rightThrustTex;
+
+  SDL_Texture *bottomThrust1Tex = GetSDLTexture(renderer, window, "res/ship/bottomThrust1.png");
+  RemoveTextureWhiteSpace(window, bottomThrust1Tex);
+  mainShip.mBottomThrust1 = bottomThrust1Tex;
+
+  SDL_Texture *bottomThrust2Tex = GetSDLTexture(renderer, window, "res/ship/bottomThrust2.png");
+  RemoveTextureWhiteSpace(window, bottomThrust2Tex);
+  mainShip.mBottomThrust2 = bottomThrust2Tex;
+
+  SDL_Texture *bottomThrust3Tex = GetSDLTexture(renderer, window, "res/ship/bottomThrust3.png");
+  RemoveTextureWhiteSpace(window, bottomThrust3Tex);
+  mainShip.mBottomThrust3 = bottomThrust3Tex;
+  
   //Load textures for mining progress
   SDL_Texture *miningBarEmpty = GetSDLTexture(renderer, window, "res/dialogUI/mineBarEmpty.png");
   Texture miningBarEmptyTex = Texture(miningBarEmpty, "res/dialogUI/mineBarEmpty.png");
@@ -256,7 +277,10 @@ int main(int argv, char **args)
                             gameBackground.mHeight);
           if(newState == STATE_GAME)
           {
-            Mix_PlayMusic(levelOneMus, -1);
+            if (DEBUG == 0)
+            {
+              Mix_PlayMusic(levelOneMus, -1);
+            }
             //Reset inter level text
             textArraySurvey[0].mString = "";
             textArraySurvey[0].mLetters = 0;
@@ -631,14 +655,16 @@ int main(int argv, char **args)
         //Convert player world position to screen position
         int playCamX = mainShip.mPosition.x - camX;
         int playCamY = mainShip.mPosition.y - camY;
+
+        int miningBarY = playCamY + mainShip.mHeight + 2;
         miningBarEmptyTex.mX = playCamX;
-        miningBarEmptyTex.mY = playCamY + mainShip.mHeight;
+        miningBarEmptyTex.mY = miningBarY;
 
         RenderTexture(renderer, miningBarEmptyTex);
 
         //Now render the progress based on
         miningBarColorTex.mX = playCamX;
-        miningBarColorTex.mY = playCamY + mainShip.mHeight;
+        miningBarColorTex.mY = miningBarY;
         miningBarColorTex.mWidth = holdDownTime;
 
         RenderTexture(renderer, miningBarColorTex);
@@ -695,6 +721,7 @@ int main(int argv, char **args)
       if (DEBUG == 1)
       {
 
+        //Screen cam coords to world cam coords
         int worldMouseX = camX + xMouse;
         int worldMouseY = camY + yMouse;
       
@@ -712,11 +739,15 @@ int main(int argv, char **args)
 
         SDL_SetRenderDrawColor(renderer, 100, 255, 255, SDL_ALPHA_OPAQUE);
 
+        //convert ship world pos to screen coord
+        int shipWorldPosX = mainShip.mPosition.x - camX;
+        int shipWorldPosY = mainShip.mPosition.y - camY;
+
         SDL_RenderDrawLine(renderer,
-                           mainShip.mPosition.x,
-                           mainShip.mPosition.y,
-                           mainShip.mPosition.x + mainShip.mDirection.x * 10,
-                           mainShip.mPosition.y + mainShip.mDirection.y * 10);
+                           shipWorldPosX,
+                           shipWorldPosY,
+                           shipWorldPosX + mainShip.mDirection.x * 10,
+                           shipWorldPosY + mainShip.mDirection.y * 10);
       }
 
     }

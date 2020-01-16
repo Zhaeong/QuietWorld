@@ -24,11 +24,16 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
     printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
+  Uint32 windowType = SDL_WINDOW_FULLSCREEN;
+  if(DEBUG == 1)
+  {
+    windowType = SDL_WINDOW_RESIZABLE;
+  }
   //SDL_WINDOW_FULLSCREEN
   //SDL_WINDOW_RESIZABLE
   if (SDL_CreateWindowAndRenderer(GAMEWIDTH,
                                   GAMEHEIGHT,
-                                  SDL_WINDOW_RESIZABLE,
+                                  windowType,
                                   window,
                                   renderer))
   {
@@ -359,6 +364,38 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
   SetShipColorMod(ship);
 
   SDL_RenderCopyEx(renderer, ship.mShipTexture, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+
+  switch(ship.curState)
+  {
+  case Ship::ShipStates::IDLE:
+    //Do stuff
+    break;
+  case Ship::ShipStates::ROTATELEFT:
+    SDL_RenderCopyEx(renderer, ship.mLeftThrust, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    break;
+  case Ship::ShipStates::ROTATERIGHT:
+    SDL_RenderCopyEx(renderer, ship.mRightThrust, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    break; 
+  default:
+    cout << "ERROR: ShipState not Recognized";
+    break;
+  }
+
+  switch(ship.mSpeed)
+  {
+  case 1:
+    SDL_RenderCopyEx(renderer, ship.mBottomThrust1, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    break;
+  case 2:
+    SDL_RenderCopyEx(renderer, ship.mBottomThrust2, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    break;
+  case 3:
+    SDL_RenderCopyEx(renderer, ship.mBottomThrust3, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    break; 
+  default:
+    break;
+  }
+  
 
   if (DEBUG == 1)
   {

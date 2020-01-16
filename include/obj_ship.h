@@ -19,6 +19,12 @@ public:
   
   SDL_Texture *mShipTexture;
 
+  SDL_Texture *mLeftThrust;
+  SDL_Texture *mRightThrust;
+  SDL_Texture *mBottomThrust1;
+  SDL_Texture *mBottomThrust2;
+  SDL_Texture *mBottomThrust3;
+  
   vect2 mPosition;
   vect2 mOrigDirection;
   vect2 mDirection;

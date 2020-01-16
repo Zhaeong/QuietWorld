@@ -61,7 +61,6 @@ void Ship::updateBasedOnState(int curLevelBoundX, int curLevelBoundY)
   switch(curState)
   {
   case IDLE:
-    //Do stuff
     break;
   case ROTATELEFT:
     changeRotation(true);
