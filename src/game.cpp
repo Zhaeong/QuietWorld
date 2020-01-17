@@ -768,7 +768,7 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
   }
 }
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris, int xMax, int yMax, int level)
+void GenerateDebris(SDL_Texture **debrisTexArray, Texture *debrisArray, int numDebris, int xMax, int yMax, int level)
 {
 
   //cout << "xMin: " << genXmin << "\n";
@@ -778,7 +778,9 @@ void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris,
 
   for (int i = 0; i < NUM_DEBRIS; ++i)
   {
-    Texture dObj(debrisTex, DEBRIS_IMG);
+    int debrisTexIndex = rand() % NUM_DEBRIS_TEX;
+    
+    Texture dObj(debrisTexArray[debrisTexIndex], DEBRIS_IMG);
     dObj.mRender = false;
     if (i < numDebris)
     {
@@ -1580,7 +1582,7 @@ int GetActiveDebrisNum(Texture *debrisArray)
 }
 
 void SetInterLevelText(TextObj *textArraySurvey,
-                       SDL_Texture *debrisTex,
+                       SDL_Texture **debrisTexArray,
                        Texture *debrisArray,
                        int gameLevel,
                        int backgroundWidth,
@@ -1596,7 +1598,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "I'm glad, please continue your work",
                          "That's unfortunate, please continue your work");
 
-    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth, backgroundHeight, 0);
+    GenerateDebris(debrisTexArray, debrisArray, 2, backgroundWidth, backgroundHeight, 0);
   }
   else if (gameLevel == 2)
   {
@@ -1607,7 +1609,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "I appreciate your honesty",
                          "I'm glad");
 
-    GenerateDebris(debrisTex, debrisArray, 3, backgroundWidth, backgroundHeight, 0);
+    GenerateDebris(debrisTexArray, debrisArray, 3, backgroundWidth, backgroundHeight, 0);
   }
   else if (gameLevel == 3)
   {
@@ -1618,7 +1620,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "Admirable response",
                          "That it is");
 
-    GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 1);
+    GenerateDebris(debrisTexArray, debrisArray, 1, backgroundWidth, backgroundHeight, 1);
   }
   else if (gameLevel == 4)
   {
@@ -1629,7 +1631,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "That's good, you are definitely promotion material",
                          "That's no way to talk if you want to get promoted");
 
-    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth, backgroundHeight, 1);
+    GenerateDebris(debrisTexArray, debrisArray, 2, backgroundWidth, backgroundHeight, 1);
   }
   else if (gameLevel == 5)
   {
@@ -1640,7 +1642,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "Well you are definitely a good worker",
                          "Didn't mean to get your hopes up");
 
-    GenerateDebris(debrisTex, debrisArray, 2, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 2, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 6)
   {
@@ -1651,7 +1653,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "You know, you're unlike the others",
                          "I've heard that before");
 
-    GenerateDebris(debrisTex, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 7)
   {
@@ -1662,7 +1664,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "A stupendous worker, I'm giving you a commendation",
                          "Very well I'll tell you");
 
-    GenerateDebris(debrisTex, debrisArray, 4, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 4, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 8)
   {
@@ -1673,7 +1675,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "A stupendous worker, I'm giving you a commendation",
                          "Hmm not sure if I should tell you");
 
-    GenerateDebris(debrisTex, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 9)
   {
@@ -1684,7 +1686,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "It's just the pointlessness of it all you know",
                          "Wow, what are you?");
 
-    GenerateDebris(debrisTex, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 10)
   {
@@ -1695,7 +1697,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "Nevemind",
                          "I suppose");
 
-    GenerateDebris(debrisTex, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 11)
   {
@@ -1706,7 +1708,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "Wise words",
                          "Well that's a non answer");
 
-    GenerateDebris(debrisTex, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
+    GenerateDebris(debrisTexArray, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 12)
   {
@@ -1717,7 +1719,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
                          "I feel like I'm not talking to anyone",
                          "I find it hard to wake up in the morning");
 
-    GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 0);
+    GenerateDebris(debrisTexArray, debrisArray, 1, backgroundWidth, backgroundHeight, 0);
   }
   else if (gameLevel == 13) //Last level
   {

@@ -181,11 +181,23 @@ int main(int argv, char **args)
   Texture debrisArray[NUM_DEBRIS];
 
   //Create debrisTexture
+
+  SDL_Texture* debrisTexArray[NUM_DEBRIS_TEX];
+  
   SDL_Texture *debrisTex = GetSDLTexture(renderer, window, DEBRIS_IMG);
   RemoveTextureWhiteSpace(window, debrisTex);
+  debrisTexArray[0] = debrisTex;
+
+  SDL_Texture *debrisTex2 = GetSDLTexture(renderer, window, DEBRIS_IMG2);
+  RemoveTextureWhiteSpace(window, debrisTex2);
+  debrisTexArray[1] = debrisTex2;
+
+  SDL_Texture *debrisTex3 = GetSDLTexture(renderer, window, DEBRIS_IMG3);
+  RemoveTextureWhiteSpace(window, debrisTex3);
+  debrisTexArray[2] = debrisTex3;
 
   //Initize it all to none
-  GenerateDebris(debrisTex, debrisArray, 0, gameBackground.mWidth, gameBackground.mHeight, 0);
+  GenerateDebris(debrisTexArray, debrisArray, 0, gameBackground.mWidth, gameBackground.mHeight, 0);
 
   //Initial debris generation hardcoded to single area
   Texture initdObj(debrisTex, DEBRIS_IMG);
@@ -270,7 +282,7 @@ int main(int argv, char **args)
         {
           //Helper func to set the inter level texts
           SetInterLevelText(textArraySurvey, 
-                            debrisTex, 
+                            debrisTexArray, 
                             debrisArray, 
                             gameLevel, 
                             gameBackground.mWidth, 

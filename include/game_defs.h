@@ -25,7 +25,7 @@ Light: 236
 
 #define PI 3.14159265
 
-#define DEBUG 0
+#define DEBUG 1
 
 //Extern so that any other files that include this file will be able to use this variable
 extern int SHADE;
@@ -110,7 +110,11 @@ const string BTN_CONTINUE     = "res/dialogUI/continue.png";
 
 //DEBRIS
 const int NUM_DEBRIS = 10;
-const string DEBRIS_IMG  = "res/debris/debris1.png";
+const int NUM_DEBRIS_TEX = 3;
+
+const string DEBRIS_IMG = "res/debris/debris1.png";
+const string DEBRIS_IMG2 = "res/debris/debris2.png";
+const string DEBRIS_IMG3 = "res/debris/debris3.png";
 
 
 //TEXT DISPLAY

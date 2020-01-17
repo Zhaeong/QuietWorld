@@ -78,7 +78,7 @@ void MoveCameraBaseOnShip(SDL_Renderer *renderer,
                           int objX, int objY, int objH, int objW,
                           int speed);
 
-void GenerateDebris(SDL_Texture *debrisTex, Texture *debrisArray, int numDebris, int xMax, int yMax, int level);
+void GenerateDebris(SDL_Texture **debrisTexArray, Texture *debrisArray, int numDebris, int xMax, int yMax, int level);
 
 void UpdateDebris(Texture *debrisArray, int boundX, int boundY);
 
@@ -110,7 +110,7 @@ void SetInterLevelChoices(TextObj *textArray,
 int GetActiveDebrisNum(Texture *debrisArray);
 
 void SetInterLevelText(TextObj *textArraySurvey, 
-                       SDL_Texture *debrisTex, 
+                       SDL_Texture **debrisTexArray, 
                        Texture *debrisArray, 
                        int gameLevel, 
                        int backgroundWidth, 
