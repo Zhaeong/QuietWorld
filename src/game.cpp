@@ -1463,8 +1463,8 @@ void SetTextString(TextObj *text, string textContent)
 
 int SetIntroText(TextObj *textArray)
 {
-  int Name = (rand() % (5000000 - 2000000)) + 2000000;
-  int Name2 = (rand() % (5000000 - 2000000)) + 2000000;
+  int Name = (rand() % (90000 - 20000)) + 20000;
+  int Name2 = (rand() % (90000 - 20000)) + 20000;
 
   int textDelays = 20;
   
@@ -1479,7 +1479,7 @@ int SetIntroText(TextObj *textArray)
 
   TextObj startText1;
   SetTextString(&startText1, "Debris Maintainenance and Retrieval unit.");
-  //SetTextString(&startText1, "Debris Laser DMRu Controls");
+  //SetTextString(&startText1, "Move DMaRu over Debris and Activate Laser");
   startText1.mRenderDelay = 3000;
   startText1.mDelay = textDelays;
   startText1.mX = 0;
@@ -1536,8 +1536,8 @@ void SetInterLevelChoices(TextObj *textArray,
                           string responseB)
 {
   SetTextString(&textArray[0], question);
-  textArray[0].mX = 60;
-  textArray[0].mY = 20;
+  textArray[0].mX = 46;
+  textArray[0].mY = 64;
   textArray[0].mDelay = 20;
   textArray[0].finished = 0;
 
@@ -1604,10 +1604,10 @@ void SetInterLevelText(TextObj *textArraySurvey,
   {
     SetInterLevelChoices(textArraySurvey,
                          "You are doing a good job, how satisfied are you with your work?",
-                         "This is really boring",
                          "I really like this",
-                         "I appreciate your honesty",
-                         "I'm glad");
+                         "This is really boring",
+                         "I'm glad",
+                         "I appreciate your honesty");
 
     GenerateDebris(debrisTexArray, debrisArray, 3, backgroundWidth, backgroundHeight, 0);
   }
@@ -1669,11 +1669,11 @@ void SetInterLevelText(TextObj *textArraySurvey,
   else if (gameLevel == 8)
   {
     SetInterLevelChoices(textArraySurvey,
-                         "There were others before you, want to know what happened to them?",
-                         "Nope, not my concern",
-                         "Sure, although their demise concerns me",
-                         "A stupendous worker, I'm giving you a commendation",
-                         "Hmm not sure if I should tell you");
+                         "I don’t care, I’ll tell you. They mostly offed themselves, a real problem, which we are trying to prevent now.",
+                         "Those ingrates",
+                         "Why",
+                         "Our employer would be very happy if every DMaRu was like you",
+                         "Not sure, who wouldn't want to do this right.");
 
     GenerateDebris(debrisTexArray, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
   }
@@ -1692,7 +1692,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
   {
     SetInterLevelChoices(textArraySurvey,
                          "Do you ever find that you're not seeing things clearly, as if there's a numbness to your actions?",
-                         "Uh… I'm not sure what you mean",
+                         "Uh... I'm not sure what you mean",
                          "Isn't that just how it's supposed to be",
                          "Nevemind",
                          "I suppose");

@@ -79,6 +79,15 @@ int main(int argv, char **args)
   Texture uiInterLevelArray[NUM_INTERUI];
   InitInterLevelUI(renderer, window, uiInterLevelArray);
 
+  //Commendation textures
+  SDL_Texture *commendation1SDLTex = GetSDLTexture(renderer, window, COMMENDATION_1);
+  RemoveTextureWhiteSpace(window, commendation1SDLTex);
+  Texture commendation1(commendation1SDLTex, COMMENDATION_1);
+  commendation1.mX = 565;
+  commendation1.mY = 380;
+  commendation1.mRender = false;
+  
+
   //Init Dialog textures
   SDL_Texture *tutorialDiag = GetSDLTexture(renderer, window, "res/dialogUI/tutorial.png");
   RemoveTextureWhiteSpace(window, tutorialDiag);
@@ -169,7 +178,10 @@ int main(int argv, char **args)
 
   int playerID = SetIntroText(textArrayIntro);
 
-  textArray[1].mString = "DMRu" + to_string(playerID);
+  
+  textArray[1].mX = 16;
+  textArray[1].mY = 10;
+  textArray[1].mString = "DMaRu" + to_string(playerID);
   textArray[1].enabled = false;
 
   //set location of debris num ui
@@ -484,6 +496,11 @@ int main(int argv, char **args)
             isMining = false;
             holdDownTime = 0;
 
+            //reset ui
+            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
+            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
+            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS, true);    
+
             if (DEBUG == 0)
             {
               //Mix_FadeOutMusic(1000);
@@ -585,13 +602,14 @@ int main(int argv, char **args)
         responseBackgroundTexB.mWidth = 520;
       }     
 
-      if (eventType == "MOUSE_UP")
+      //search for inputs only after the second choice finished rendering
+      if (eventType == "MOUSE_UP" && textArraySurvey[2].finished )
       {
         string texCol = TextureMouseCollision(uiInterLevelArray, NUM_INTERUI, xMouse, yMouse);
 
         if (TextureMouseCollisionSingle(choiceBackgroundTexA, xMouse, yMouse))
         {
-          cout << "selected A";
+          cout << "selected A: " << textArraySurvey[1].mString << "\n";
           choiceBackgroundTexA.mRender = false;
           choiceBackgroundTexB.mRender = false;
 
@@ -600,11 +618,20 @@ int main(int argv, char **args)
 
           responseBackgroundTexA.mRender = true;
           textArraySurvey[3].enabled = true;
+
+          //I really like this
+          //Nope, not my concern
+            
+          if(textArraySurvey[1].mString == "I really like this")
+          {
+            cout << "commeneded\n";
+            commendation1.mRender = true;
+          }
         }
 
         if (TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
         {
-          cout << "selected B";
+          cout << "selected B: " << textArraySurvey[2].mString << "\n";
           choiceBackgroundTexA.mRender = false;
           choiceBackgroundTexB.mRender = false;
           textArraySurvey[1].enabled = false;
@@ -722,6 +749,9 @@ int main(int argv, char **args)
       //Render UI
       RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
 
+      //Render commendation
+      RenderTexture(renderer, commendation1);
+
       //Popup dialogs rendering
       if (showDialog)
       {
@@ -789,7 +819,7 @@ int main(int argv, char **args)
     }
     
     //Render text
-    RenderText(renderer, fontTex, textArray);
+    RenderText(renderer, fontTex, textArray);    
 
     //Render the fadeoutTexture
     RenderTexture(renderer, blackFade);
