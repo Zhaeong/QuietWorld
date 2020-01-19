@@ -403,6 +403,60 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
   }
 }
 
+void RenderTextBoxBorders(SDL_Renderer *renderer,
+                          int xVal,
+                          int yVal,
+                          int width,
+                          int height,
+                          int boxDim,
+                          Texture TopLeft,
+                          Texture Top,
+                          Texture TopRight,
+                          Texture Right,
+                          Texture BottomRight,
+                          Texture Bottom,
+                          Texture BottomLeft,
+                          Texture Left)
+{
+  TopLeft.mX = xVal;
+  TopLeft.mY = yVal;
+  RenderTexture(renderer, TopLeft);
+
+  Top.mX = xVal + boxDim;
+  Top.mY = yVal;
+  Top.mWidth = width - (boxDim*2);
+  RenderTexture(renderer, Top);
+
+  TopRight.mX = xVal + width - boxDim;
+  TopRight.mY = yVal;
+  RenderTexture(renderer, TopRight);
+
+  Right.mX = xVal + width - boxDim;
+  Right.mY = yVal + boxDim;
+  Right.mHeight = height - (boxDim*2);
+  RenderTexture(renderer, Right);
+
+  BottomRight.mX = xVal + width - boxDim;
+  BottomRight.mY = yVal + height - boxDim;
+  RenderTexture(renderer, BottomRight);
+
+  Bottom.mX = xVal + boxDim;
+  Bottom.mY = yVal + height - boxDim;
+  Bottom.mWidth = width - (boxDim*2);
+  RenderTexture(renderer, Bottom);
+
+  BottomLeft.mX = xVal;
+  BottomLeft.mY = yVal + height - boxDim;
+  RenderTexture(renderer, BottomLeft);
+
+  Left.mX = xVal;
+  Left.mY = yVal + boxDim;
+  Left.mHeight = height - (boxDim*2);
+  RenderTexture(renderer, Left);
+  
+
+}
+
 void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
 {
   SDL_Texture *backgroundSDLTex = GetSDLTexture(renderer, window, GRAYBACKGROUND);

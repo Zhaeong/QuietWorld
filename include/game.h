@@ -48,6 +48,21 @@ void RemoveTextureWhiteSpace(SDL_Window *window, SDL_Texture *texture);
 
 void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship);
 
+void RenderTextBoxBorders(SDL_Renderer *renderer,
+                          int xVal,
+                          int yVal,
+                          int width,
+                          int height,
+                          int boxDim,
+                          Texture TopLeft,
+                          Texture Top,
+                          Texture TopRight,
+                          Texture Right,
+                          Texture BottomRight,
+                          Texture Bottom,
+                          Texture BottomLeft,
+                          Texture Left);
+
 void InitSpaceUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
 void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);

@@ -98,14 +98,52 @@ int main(int argv, char **args)
   dialogOKTex.mX = 524;
   dialogOKTex.mY = 271;
 
-  SDL_Texture *choiceBackground = GetSDLTexture(renderer, window, "res/dialogUI/choiceBackground.png");
+  SDL_Texture *choiceBackground = GetSDLTexture(renderer, window, "res/dialogUI/buttonBackground.png");
   Texture choiceBackgroundTexA = Texture(choiceBackground, "res/dialogUI/choiceBackgroundA.png");
   Texture choiceBackgroundTexB = Texture(choiceBackground, "res/dialogUI/choiceBackgroundB.png");
 
-  Texture responseBackgroundTexA = Texture(choiceBackground, "responseBackgroundTexA");
+  
+  SDL_Texture *responseBackground = GetSDLTexture(renderer, window, "res/dialogUI/responseBackground.png");
+  Texture responseBackgroundTexA = Texture(responseBackground, "responseBackgroundTexA");
   responseBackgroundTexA.mRender = false;
-  Texture responseBackgroundTexB = Texture(choiceBackground, "responseBackgroundTexB");
+  Texture responseBackgroundTexB = Texture(responseBackground, "responseBackgroundTexB");
   responseBackgroundTexB.mRender = false;
+
+  //Button textures
+  SDL_Texture *buttonTopLeft     = GetSDLTexture(renderer, window, "res/dialogUI/buttonTopLeft.png");
+  Texture buttonTopLeftTex = Texture(buttonTopLeft, "buttonTopLeft");  
+  SDL_Texture *buttonTop         = GetSDLTexture(renderer, window, "res/dialogUI/buttonTop.png");
+  Texture buttonTopTex = Texture(buttonTop, "buttonTop");
+  SDL_Texture *buttonTopRight    = GetSDLTexture(renderer, window, "res/dialogUI/buttonTopRight.png");
+  Texture buttonTopRightTex = Texture(buttonTopRight, "buttonTopRight");  
+  SDL_Texture *buttonRight       = GetSDLTexture(renderer, window, "res/dialogUI/buttonRight.png");
+  Texture buttonRightTex = Texture(buttonRight, "buttonRight");
+  SDL_Texture *buttonBottomRight = GetSDLTexture(renderer, window, "res/dialogUI/buttonBottomRight.png");
+  Texture buttonBottomRightTex = Texture(buttonBottomRight, "buttonBottomRight");
+  SDL_Texture *buttonBottom      = GetSDLTexture(renderer, window, "res/dialogUI/buttonBottom.png");
+  Texture buttonBottomTex = Texture(buttonBottom, "buttonBottom");
+  SDL_Texture *buttonBottomLeft  = GetSDLTexture(renderer, window, "res/dialogUI/buttonBottomLeft.png");
+  Texture buttonBottomLeftTex = Texture(buttonBottomLeft, "buttonBottomLeft");
+  SDL_Texture *buttonLeft        = GetSDLTexture(renderer, window, "res/dialogUI/buttonLeft.png");
+  Texture buttonLeftTex = Texture(buttonLeft, "buttonLeft");
+
+  //response textures
+  SDL_Texture *responseTopLeft     = GetSDLTexture(renderer, window, "res/dialogUI/responseTopLeft.png");
+  Texture responseTopLeftTex       = Texture(responseTopLeft, "responseTopLeft");  
+  SDL_Texture *responseTop         = GetSDLTexture(renderer, window, "res/dialogUI/responseTop.png");
+  Texture responseTopTex           = Texture(responseTop, "responseTop");
+  SDL_Texture *responseTopRight    = GetSDLTexture(renderer, window, "res/dialogUI/responseTopRight.png");
+  Texture responseTopRightTex      = Texture(responseTopRight, "responseTopRight");  
+  SDL_Texture *responseRight       = GetSDLTexture(renderer, window, "res/dialogUI/responseRight.png");
+  Texture responseRightTex         = Texture(responseRight, "responseRight");
+  SDL_Texture *responseBottomRight = GetSDLTexture(renderer, window, "res/dialogUI/responseBottomRight.png");
+  Texture responseBottomRightTex   = Texture(responseBottomRight, "responseBottomRight");
+  SDL_Texture *responseBottom      = GetSDLTexture(renderer, window, "res/dialogUI/responseBottom.png");
+  Texture responseBottomTex        = Texture(responseBottom, "responseBottom");
+  SDL_Texture *responseBottomLeft  = GetSDLTexture(renderer, window, "res/dialogUI/responseBottomLeft.png");
+  Texture responseBottomLeftTex    = Texture(responseBottomLeft, "responseBottomLeft");
+  SDL_Texture *responseLeft        = GetSDLTexture(renderer, window, "res/dialogUI/responseLeft.png");
+  Texture responseLeftTex          = Texture(responseLeft, "responseLeft");
 
   //Create ship char
   SDL_Texture *shipTex = GetSDLTexture(renderer, window, "res/ship/ship.png");
@@ -582,7 +620,7 @@ int main(int argv, char **args)
         choiceBackgroundTexB.mWidth = 520;
       }
 
-      responseBackgroundTexA.mX = textArraySurvey[3].mX;
+      responseBackgroundTexA.mX = textArraySurvey[3].mX - 10;
       responseBackgroundTexA.mY = textArraySurvey[3].mY - 10;
       responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth;
 
@@ -592,7 +630,7 @@ int main(int argv, char **args)
         responseBackgroundTexA.mWidth = 520;
       }
 
-      responseBackgroundTexB.mX = textArraySurvey[4].mX;
+      responseBackgroundTexB.mX = textArraySurvey[4].mX - 10;
       responseBackgroundTexB.mY = textArraySurvey[4].mY - 10;
       responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth;
 
@@ -799,9 +837,84 @@ int main(int argv, char **args)
       RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
 
       RenderTexture(renderer, choiceBackgroundTexA);
+
+      if(choiceBackgroundTexA.mRender)
+      {
+        RenderTextBoxBorders(renderer,
+                             choiceBackgroundTexA.mX,
+                             choiceBackgroundTexA.mY,
+                             choiceBackgroundTexA.mWidth,
+                             choiceBackgroundTexA.mHeight,
+                             buttonTopLeftTex.mWidth,
+                             buttonTopLeftTex,
+                             buttonTopTex,
+                             buttonTopRightTex,
+                             buttonRightTex,
+                             buttonBottomRightTex,
+                             buttonBottomTex,
+                             buttonBottomLeftTex,
+                             buttonLeftTex);
+      }
+      
       RenderTexture(renderer, choiceBackgroundTexB);
+
+      if(choiceBackgroundTexB.mRender)
+      {
+        RenderTextBoxBorders(renderer,
+                             choiceBackgroundTexB.mX,
+                             choiceBackgroundTexB.mY,
+                             choiceBackgroundTexB.mWidth,
+                             choiceBackgroundTexB.mHeight,
+                             buttonTopLeftTex.mWidth,
+                             buttonTopLeftTex,
+                             buttonTopTex,
+                             buttonTopRightTex,
+                             buttonRightTex,
+                             buttonBottomRightTex,
+                             buttonBottomTex,
+                             buttonBottomLeftTex,
+                             buttonLeftTex);
+      }
+      
       RenderTexture(renderer, responseBackgroundTexA);
+
+      if(responseBackgroundTexA.mRender)
+      {
+        RenderTextBoxBorders(renderer,
+                             responseBackgroundTexA.mX,
+                             responseBackgroundTexA.mY,
+                             responseBackgroundTexA.mWidth,
+                             responseBackgroundTexA.mHeight,
+                             responseTopLeftTex.mWidth,
+                             responseTopLeftTex,
+                             responseTopTex,
+                             responseTopRightTex,
+                             responseRightTex,
+                             responseBottomRightTex,
+                             responseBottomTex,
+                             responseBottomLeftTex,
+                             responseLeftTex);
+      }
+      
       RenderTexture(renderer, responseBackgroundTexB);
+
+      if(responseBackgroundTexB.mRender)
+      {
+        RenderTextBoxBorders(renderer,
+                             responseBackgroundTexB.mX,
+                             responseBackgroundTexB.mY,
+                             responseBackgroundTexB.mWidth,
+                             responseBackgroundTexB.mHeight,
+                             responseTopLeftTex.mWidth,
+                             responseTopLeftTex,
+                             responseTopTex,
+                             responseTopRightTex,
+                             responseRightTex,
+                             responseBottomRightTex,
+                             responseBottomTex,
+                             responseBottomLeftTex,
+                             responseLeftTex);
+      }
 
        //Render button when player made a choice
       if (RenderSurveyText(renderer, fontTex, textArraySurvey, NUM_TEXT_SURVEY))
