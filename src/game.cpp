@@ -371,10 +371,10 @@ void RenderShip(SDL_Renderer *renderer, int camX, int camY, Ship ship)
     //Do stuff
     break;
   case Ship::ShipStates::ROTATELEFT:
-    SDL_RenderCopyEx(renderer, ship.mLeftThrust, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    SDL_RenderCopyEx(renderer, ship.mRightThrust, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
     break;
   case Ship::ShipStates::ROTATERIGHT:
-    SDL_RenderCopyEx(renderer, ship.mRightThrust, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
+    SDL_RenderCopyEx(renderer, ship.mLeftThrust, &srcRect, &dstRect, ship.mRotation, ship.mCenter, ship.mFlip);
     break; 
   default:
     cout << "ERROR: ShipState not Recognized";
@@ -644,6 +644,74 @@ void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArr
   continueButton.mY = GAMEHEIGHT * 2 / 3;
   continueButton.mRender = false;
   uiArray[1] = continueButton;
+}
+
+void InitStarArray(Texture *starArray, SDL_Texture *starSDLTex, int maxWidth, int maxHeight)
+{
+  for (int i = 0; i < NUM_STARS; ++i)
+  {
+    Texture sObj(starSDLTex, "StarTex");
+    //Get random coords for star
+    sObj.mX = rand() % maxWidth;
+    sObj.mY = rand() % maxHeight;
+
+    //The speed param indicates when the stars will change
+    
+    sObj.mMaxSpeed = rand() % 900;
+    sObj.mSpeed = rand() % sObj.mMaxSpeed;
+
+    //randomize 0 or 1
+    sObj.mRotation = rand() % 2;
+    
+    starArray[i] = sObj;
+  }  
+    
+}
+
+void UpdateStars(Texture *starArray, int maxWidth, int maxHeight)
+{
+  for (int i = 0; i < NUM_STARS; ++i)
+  {
+    //When speed reaches 0, assign new coords to the star
+    if(starArray[i].mSpeed == 0)
+    {
+      starArray[i].mX = rand() % maxWidth;
+      starArray[i].mY = rand() % maxHeight;
+
+      starArray[i].mSpeed = rand() % starArray[i].mMaxSpeed;
+      starArray[i].mRotation = rand() % 2;
+    }
+
+    if(starArray[i].mSpeed >= 0 && starArray[i].mSpeed <= 255)
+    {
+      starArray[i].mAlpha = starArray[i].mSpeed;
+    }
+
+    if(starArray[i].mRotation == 0)
+    {
+      starArray[i].mSpeed -= 1;
+    }
+    else
+    {
+      starArray[i].mSpeed += 1;
+      if(starArray[i].mSpeed == starArray[i].mMaxSpeed)
+      {
+        starArray[i].mRotation = 0;
+      }
+    }
+  }  
+}
+
+void RenderStars(SDL_Renderer *renderer, Texture *starArray, int camX, int camY)
+{
+  for (int i = 0; i < NUM_STARS; ++i)
+  {
+    if(starArray[i].mRender)
+    {
+      //RenderTexture(renderer, starArray[i]);
+      RenderTextureByCam(camX, camY, renderer, starArray[i]);
+    }
+  }
 }
 
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size)

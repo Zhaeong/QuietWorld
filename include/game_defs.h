@@ -25,7 +25,7 @@ Light: 236
 
 #define PI 3.14159265
 
-#define DEBUG 1
+#define DEBUG 0
 
 //Extern so that any other files that include this file will be able to use this variable
 extern int SHADE;
@@ -67,6 +67,9 @@ struct TextObj
 const string STATE_INTRO = "INTRO";
 const string STATE_GAME = "GAME";
 const string STATE_PAUSE = "PAUSE";
+
+//StarBackground
+const int NUM_STARS = 50;
 
 //SPACE UI
 const int NUM_SPACE_UI = 19;

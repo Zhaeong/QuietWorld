@@ -109,6 +109,7 @@ int main(int argv, char **args)
   Texture responseBackgroundTexB = Texture(responseBackground, "responseBackgroundTexB");
   responseBackgroundTexB.mRender = false;
 
+  
   //Button textures
   SDL_Texture *buttonTopLeft     = GetSDLTexture(renderer, window, "res/dialogUI/buttonTopLeft.png");
   Texture buttonTopLeftTex = Texture(buttonTopLeft, "buttonTopLeft");  
@@ -197,7 +198,14 @@ int main(int argv, char **args)
   //Initialize random seed for generating debris and name
   srand(time(NULL));
 
-  //Create texture handling
+  //star texture
+  //star texture
+  SDL_Texture *starSDLTex = GetSDLTexture(renderer, window, "res/background/star.png");
+  
+  Texture starArray[NUM_STARS];
+
+  InitStarArray(starArray, starSDLTex, gameBackground.mWidth, gameBackground.mHeight);
+
 
   //Fonts
   SDL_Texture *fontTex = GetSDLTexture(renderer, window, "res/text/mainText.png");
@@ -385,6 +393,9 @@ int main(int argv, char **args)
       //Set the num debris remaining to on
       textArray[0].enabled = true;
       textArray[1].enabled = true;
+
+      //Update stars
+      UpdateStars(starArray, gameBackground.mWidth, gameBackground.mHeight);
 
       if (eventType != "NONE")
       {
@@ -622,7 +633,7 @@ int main(int argv, char **args)
 
       responseBackgroundTexA.mX = textArraySurvey[3].mX - 10;
       responseBackgroundTexA.mY = textArraySurvey[3].mY - 10;
-      responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth;
+      responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth + 18;
 
       if (textArraySurvey[3].mWidth > 520)
       {
@@ -632,7 +643,7 @@ int main(int argv, char **args)
 
       responseBackgroundTexB.mX = textArraySurvey[4].mX - 10;
       responseBackgroundTexB.mY = textArraySurvey[4].mY - 10;
-      responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth;
+      responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth + 18;
 
       if (textArraySurvey[4].mWidth > 520)
       {
@@ -719,6 +730,9 @@ int main(int argv, char **args)
     {
       //Render Background
       RenderTextureByCam(camX, camY, renderer, gameBackground);
+
+      //Render Stars
+      RenderStars(renderer, starArray, camX, camY);
 
       //Render Debris
       RenderDebris(renderer, debrisArray, camX, camY);

@@ -46,6 +46,9 @@ public:
   float mSpeed = 0;
   vect2 mDirection;
 
+  //Star specific
+  int mMaxSpeed = 0;
+
 
   Texture();
   Texture(SDL_Texture *sTex, string imgLocation);

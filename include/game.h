@@ -69,6 +69,12 @@ void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
 void InitInterLevelUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray);
 
+void InitStarArray(Texture *starArray, SDL_Texture *starSDLTex, int maxWidth, int maxHeight);
+
+void UpdateStars(Texture *starArray, int maxWidth, int maxHeight);
+
+void RenderStars(SDL_Renderer *renderer, Texture *starArray, int camX, int camY);
+
 void RenderUI(SDL_Renderer *renderer, Texture *uiArray, int size);
 
 void SetRenderUIElement(Texture *uiArray, int size, string uiElement, bool value);
