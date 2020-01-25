@@ -40,7 +40,7 @@ int main(int argv, char **args)
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  Mix_Music *interLevelMus = Mix_LoadMUS("res/wavs/engagementparty.wav");
+  Mix_Music *interLevelMus = Mix_LoadMUS("res/wavs/girlfrombar.wav");
   if (interLevelMus == NULL)
   {
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
