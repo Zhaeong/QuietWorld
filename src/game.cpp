@@ -1617,7 +1617,7 @@ int SetIntroText(TextObj *textArray)
   textArray[2] = startText2;
 
   TextObj startText3;
-  SetTextString(&startText3, "I am DEaBRA" + to_string(Name2) + ".");
+  SetTextString(&startText3, "I am DEBRA" + to_string(Name2) + ".");
   startText3.mRenderDelay = 9000;
   startText3.mDelay = textDelays;
   startText3.mX = 0;
@@ -1847,8 +1847,8 @@ void SetInterLevelText(TextObj *textArraySurvey,
   {
     SetInterLevelChoices(textArraySurvey,
                          "I'm tired of this, do you still want to continue?",
-                         "Yes, I don't think it's that bad",
-                         "No",
+                         "Yes, this isn't so bad",
+                         "No, I want to stop",
                          "Very well, but I'm going to shut down",
                          "Very well, let's turn everything off.");
 
@@ -1860,6 +1860,9 @@ void ReduceAlphaArray(Texture *textureArray, int numTexture, int alphaDecrementV
 {
   for (int i = 0; i < numTexture; ++i)
   {
+    if(textureArray[i].mAlpha - alphaDecrementValue >= 0)
+    {
       textureArray[i].mAlpha -= alphaDecrementValue;
+    }
   }
 }

@@ -266,7 +266,7 @@ int main(int argv, char **args)
 
   bool runGame = true;
 
-  int gameLevel = 0;
+  int gameLevel = 12;
 
   int debrisIndex = -1;
 
@@ -286,6 +286,8 @@ int main(int argv, char **args)
   bool inTransition = false;
 
   bool allowControl = false;
+
+  bool fadeUI = false;
 
   int delayTime = 0;
 
@@ -676,6 +678,21 @@ int main(int argv, char **args)
             cout << "commeneded\n";
             commendation1.mRender = true;
           }
+
+          if(textArraySurvey[1].mString == "Yes, this isn't so bad")
+          {
+            fadeUI = true;
+            mainShip.mPosition.x = curLevelBoundX / 2 - 20;
+            mainShip.mPosition.y = curLevelBoundY / 2 - (mainShip.mHeight/2);
+
+            CenterCamOnPlayer(&camX, &camY, camW, camH,
+                    mainShip.mPosition.x,
+                    mainShip.mPosition.y,
+                    mainShip.mWidth,
+                    mainShip.mHeight);
+
+            allowControl = false;
+          }
         }
 
         if (TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
@@ -798,6 +815,10 @@ int main(int argv, char **args)
         
       }
 
+      if(fadeUI)
+      {
+        ReduceAlphaArray(uiSpaceArray, NUM_SPACE_UI, 1);
+      }
       //Render UI
       RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
 
