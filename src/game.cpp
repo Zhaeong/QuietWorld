@@ -25,10 +25,10 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
   }
 
   Uint32 windowType = SDL_WINDOW_FULLSCREEN;
-  if(DEBUG == 1)
-  {
+  //if(DEBUG == 1)
+  //{
     windowType = SDL_WINDOW_RESIZABLE;
-  }
+    //}
   //SDL_WINDOW_FULLSCREEN
   //SDL_WINDOW_RESIZABLE
   if (SDL_CreateWindowAndRenderer(GAMEWIDTH,

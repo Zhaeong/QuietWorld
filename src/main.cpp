@@ -46,6 +46,12 @@ int main(int argv, char **args)
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
+  Mix_Music *endMus = Mix_LoadMUS("res/wavs/heyyabye.wav");
+  if (endMus == NULL)
+  {
+    printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
   //Play music
   //Second param is number of lopps -1 for infinite
   if (DEBUG == 0)
@@ -291,6 +297,8 @@ int main(int argv, char **args)
 
   int delayTime = 0;
 
+  unsigned int modulusValue = 0;
+
   //255/x = 2
   //We want it to cleaning divid into 255 because we add a certain alpha value per frame
   int delayPeriod = 127;
@@ -351,7 +359,14 @@ int main(int argv, char **args)
           {
             if (DEBUG == 0)
             {
-              Mix_PlayMusic(levelOneMus, -1);
+              if(fadeUI)
+              {
+                Mix_PlayMusic(endMus, 1);
+              }
+              else
+              {
+                Mix_PlayMusic(levelOneMus, -1);
+              }
             }
             //Reset inter level text
             textArraySurvey[0].mString = "";
@@ -685,6 +700,8 @@ int main(int argv, char **args)
             mainShip.mPosition.x = curLevelBoundX / 2 - 20;
             mainShip.mPosition.y = curLevelBoundY / 2 - (mainShip.mHeight/2);
 
+            mainShip.mSpeed = 0;
+
             CenterCamOnPlayer(&camX, &camY, camW, camH,
                     mainShip.mPosition.x,
                     mainShip.mPosition.y,
@@ -713,6 +730,7 @@ int main(int argv, char **args)
         {        
           newState = STATE_GAME;
           numDebris += 1;
+          Mix_FadeOutMusic(1000);
         }
       }
     }
@@ -817,7 +835,32 @@ int main(int argv, char **args)
 
       if(fadeUI)
       {
-        ReduceAlphaArray(uiSpaceArray, NUM_SPACE_UI, 1);
+        //Reduce the speed of fadeout by factor of 2
+        if(modulusValue % 3 == 0)
+        {
+          ReduceAlphaArray(uiSpaceArray, NUM_SPACE_UI, 1);
+        }
+        modulusValue += 1;
+        cout << "modval:" <<modulusValue << "\n";
+        
+        //Start fading to black after ui fades
+        if(modulusValue >= 1700)
+        {
+          if(blackFade.mAlpha <= 254)
+          {
+            blackFade.mAlpha += 1;
+          }
+        }
+        //Fade out song
+        if(modulusValue > 2100)
+        {
+          Mix_FadeOutMusic(1000);
+        }
+        //Exit game
+        if(modulusValue > 2300)
+        {
+          runGame = false;
+        }
       }
       //Render UI
       RenderUI(renderer, uiSpaceArray, NUM_SPACE_UI);
