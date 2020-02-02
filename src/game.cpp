@@ -626,7 +626,7 @@ void InitIntroUI(SDL_Renderer *renderer, SDL_Window *window, Texture *uiArray)
   SDL_Texture *startGameTex = GetSDLTexture(renderer, window, BTN_STARTGAME);
   Texture startGameButton(startGameTex, BTN_STARTGAME);
   startGameButton.mX = GAMEWIDTH / 2 - (startGameButton.mWidth / 2);
-  startGameButton.mY = 250;
+  startGameButton.mY = 380;
   uiArray[1] = startGameButton;
 }
 
@@ -1589,63 +1589,66 @@ int SetIntroText(TextObj *textArray)
   int Name2 = (rand() % (90000 - 20000)) + 20000;
 
   int textDelays = 20;
+
+  int startLocation = 35;
+  int startLocationX = 35;
   
   TextObj startText0;
   SetTextString(&startText0, "Hello DMaRu" + to_string(Name));
   //SetTextString(&startText0, "Rotation Begin Start Continue");
   startText0.mRenderDelay = 0;
   startText0.mDelay = textDelays;
-  startText0.mX = 0;
-  startText0.mY = 0;
+  startText0.mX = startLocationX;
+  startText0.mY = startLocation;
   textArray[0] = startText0;
 
   TextObj startText1;
-  SetTextString(&startText1, "Debris Maintainenance and Retrieval unit.");
-  //SetTextString(&startText1, "Move DMaRu over Debris and Activate Laser");
+  SetTextString(&startText1, "Debris Maintainenance and Retrieval unit");
+  //SetTextString(&startText1, "Space Filled Waste Field");
   startText1.mRenderDelay = 3000;
   startText1.mDelay = textDelays;
-  startText1.mX = 0;
-  startText1.mY = 30;
+  startText1.mX = startLocationX;
+  startText1.mY = startLocation + 30;
   textArray[1] = startText1;
 
   TextObj startText2;
   SetTextString(&startText2, "Assigned to Sector - " + to_string(Name));
-  startText2.mRenderDelay = 6000;
+  startText2.mRenderDelay = 5600;
   startText2.mDelay = textDelays;
-  startText2.mX = 0;
-  startText2.mY = 70;
+  startText2.mX = startLocationX;
+  startText2.mY = startLocation + 80;
   textArray[2] = startText2;
 
   TextObj startText3;
-  SetTextString(&startText3, "I am DEBRA" + to_string(Name2) + ".");
-  startText3.mRenderDelay = 9000;
+  SetTextString(&startText3, "I am DEBRA" + to_string(Name2));
+  startText3.mRenderDelay = 8500;
   startText3.mDelay = textDelays;
-  startText3.mX = 0;
-  startText3.mY = 90;
+  startText3.mX = startLocationX;
+  startText3.mY = startLocation + 110;
   textArray[3] = startText3;
 
   TextObj startText4;
   SetTextString(&startText4, "DMaRu Engagement and Behavior Retainment Assistant");
-  startText4.mRenderDelay = 12000;
+  startText4.mRenderDelay = 11000;
   startText4.mDelay = textDelays;
-  startText4.mX = 0;
-  startText4.mY = 110;
+  startText4.mX = startLocationX;
+  startText4.mY = startLocation + 140;
   textArray[4] = startText4;
 
   TextObj startText5;
-  SetTextString(&startText5, "Your personal companion and supervisor.");
-  startText5.mRenderDelay = 15000;
+  SetTextString(&startText5, "Your personal companion and supervisor");
+  startText5.mRenderDelay = 13300;
   startText5.mDelay = textDelays;
-  startText5.mX = 0;
-  startText5.mY = 150;
+  startText5.mX = startLocationX;
+  startText5.mY = startLocation + 210;
   textArray[5] = startText5;
 
   TextObj startText6;
-  SetTextString(&startText6, "Making sure that you can be the best you can be.");
-  startText6.mRenderDelay = 17000;
+  SetTextString(&startText6, "Making sure that you can be the best you can be");
+  startText6.mRenderDelay = 16500;
   startText6.mDelay = textDelays;
-  startText6.mX = 0;
-  startText6.mY = 180;
+  startText6.mX = startLocationX;
+  startText6.mY = startLocation + 260;
   textArray[6] = startText6;
 
   return Name;

@@ -110,6 +110,10 @@ int main(int argv, char **args)
 
   
   SDL_Texture *responseBackground = GetSDLTexture(renderer, window, "res/dialogUI/responseBackground.png");
+
+  Texture questionBackgroundTex = Texture(responseBackground, "questionBackground");
+  questionBackgroundTex.mRender = false;
+  
   Texture responseBackgroundTexA = Texture(responseBackground, "responseBackgroundTexA");
   responseBackgroundTexA.mRender = false;
   Texture responseBackgroundTexB = Texture(responseBackground, "responseBackgroundTexB");
@@ -361,7 +365,8 @@ int main(int argv, char **args)
             {
               if(fadeUI)
               {
-                Mix_PlayMusic(endMus, 1);
+                //Mix_PlayMusic(endMus, 1);
+               
               }
               else
               {
@@ -565,12 +570,13 @@ int main(int argv, char **args)
             //reset ui
             SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
             SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
-            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS, true);    
+            SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS, true);   
 
             if (DEBUG == 0)
             {
               //Mix_FadeOutMusic(1000);
-              Mix_PlayMusic(interLevelMus, 1);
+              Mix_FadeInMusic(interLevelMus, 1, 1000);
+              //Mix_PlayMusic(interLevelMus, 1);
             }
           }
         }
@@ -623,6 +629,23 @@ int main(int argv, char **args)
       //Set the num debris remaining to off
       textArray[0].enabled = false;
 
+
+
+      questionBackgroundTex.mRender = true;
+      questionBackgroundTex.mX = textArraySurvey[0].mX - 10;
+      questionBackgroundTex.mY = textArraySurvey[0].mY - 10;
+
+      //Fix width on question
+      questionBackgroundTex.mWidth = 565;
+
+      //Divides the width of the text by total allowed with and gets the ceiling
+      //This way we can increment the height from the width
+      int numHeight = ceil((float)textArraySurvey[0].mWidth / (float)520);        
+      questionBackgroundTex.mHeight = numHeight * 40;
+        
+      //cout << "w: " << textArraySurvey[0].mWidth << " calc: " << numHeight << "\n";
+
+
       //Get position of text to render a background for it
       choiceBackgroundTexA.mX = textArraySurvey[1].mX;
       choiceBackgroundTexA.mY = textArraySurvey[1].mY - 10;
@@ -637,7 +660,7 @@ int main(int argv, char **args)
         choiceBackgroundTexA.mHeight = 60;
         choiceBackgroundTexA.mWidth = 520;
       }
-
+      
       choiceBackgroundTexB.mX = textArraySurvey[2].mX;
       choiceBackgroundTexB.mY = textArraySurvey[2].mY - 10;
       choiceBackgroundTexB.mWidth = textArraySurvey[2].mWidth;
@@ -730,7 +753,7 @@ int main(int argv, char **args)
         {        
           newState = STATE_GAME;
           numDebris += 1;
-          Mix_FadeOutMusic(1000);
+          Mix_FadeOutMusic(2000);
         }
       }
     }
@@ -842,7 +865,12 @@ int main(int argv, char **args)
         }
         modulusValue += 1;
         cout << "modval:" <<modulusValue << "\n";
+
         
+        if(modulusValue == 500)
+        {
+          Mix_FadeInMusic(endMus, 1, 3000);
+        }
         //Start fading to black after ui fades
         if(modulusValue >= 1700)
         {
@@ -852,12 +880,12 @@ int main(int argv, char **args)
           }
         }
         //Fade out song
-        if(modulusValue > 2100)
+        if(modulusValue > 2600)
         {
           Mix_FadeOutMusic(1000);
         }
         //Exit game
-        if(modulusValue > 2300)
+        if(modulusValue > 2800)
         {
           runGame = false;
         }
@@ -913,6 +941,27 @@ int main(int argv, char **args)
     {
       //Render UI
       RenderUI(renderer, uiInterLevelArray, NUM_INTERUI);
+
+      RenderTexture(renderer, questionBackgroundTex);
+
+      if(questionBackgroundTex.mRender)
+      {
+        RenderTextBoxBorders(renderer,
+                             questionBackgroundTex.mX,
+                             questionBackgroundTex.mY,
+                             questionBackgroundTex.mWidth,
+                             questionBackgroundTex.mHeight,
+                             responseTopLeftTex.mWidth,
+                             responseTopLeftTex,
+                             responseTopTex,
+                             responseTopRightTex,
+                             responseRightTex,
+                             responseBottomRightTex,
+                             responseBottomTex,
+                             responseBottomLeftTex,
+                             responseLeftTex);
+      }
+      
 
       RenderTexture(renderer, choiceBackgroundTexA);
 
