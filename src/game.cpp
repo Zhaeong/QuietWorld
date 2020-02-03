@@ -25,10 +25,10 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
   }
 
   Uint32 windowType = SDL_WINDOW_FULLSCREEN;
-  //if(DEBUG == 1)
-  //{
+  if(DEBUG == 1)
+  {
     windowType = SDL_WINDOW_RESIZABLE;
-    //}
+  }
   //SDL_WINDOW_FULLSCREEN
   //SDL_WINDOW_RESIZABLE
   if (SDL_CreateWindowAndRenderer(GAMEWIDTH,
@@ -1750,7 +1750,7 @@ void SetInterLevelText(TextObj *textArraySurvey,
   else if (gameLevel == 4)
   {
     SetInterLevelChoices(textArraySurvey,
-                         "How was cleaning up that last debris?",
+                         "That one was moving slightly, did you like the challenge?",
                          "I like the challenge",
                          "I would rather things stay the same",
                          "That's good, you are definitely promotion material",
@@ -1785,19 +1785,19 @@ void SetInterLevelText(TextObj *textArraySurvey,
     SetInterLevelChoices(textArraySurvey,
                          "There were others before you, want to know what happened to them?",
                          "Nope, not my concern",
-                         "Sure, although their demise concerns me",
-                         "A stupendous worker, I'm giving you a commendation",
-                         "Very well I'll tell you");
+                         "I'd guess they probably offed themselves",
+                         "A stupendous worker, I'm giving you a commendation.",
+                         "That's very negative, I'm giving you a citation.");
 
     GenerateDebris(debrisTexArray, debrisArray, 4, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 8)
   {
     SetInterLevelChoices(textArraySurvey,
-                         "I don’t care, I’ll tell you. They mostly offed themselves, a real problem, which we are trying to prevent now.",
-                         "Those ingrates",
+                         "Well the others keep leaving, a real problem.",
+                         "Those selfish bastards.",
                          "Why",
-                         "Our employer would be very happy if every DMaRu was like you",
+                         "That's a bit harsh, they were your peers.",
                          "Not sure, who wouldn't want to do this right.");
 
     GenerateDebris(debrisTexArray, debrisArray, 5, backgroundWidth, backgroundHeight, 2);
@@ -1849,11 +1849,11 @@ void SetInterLevelText(TextObj *textArraySurvey,
   else if (gameLevel == 13) //Last level
   {
     SetInterLevelChoices(textArraySurvey,
-                         "I'm tired of this, do you still want to continue?",
-                         "Yes, this isn't so bad",
-                         "No, I want to stop",
-                         "Very well, but I'm going to shut down",
-                         "Very well, let's turn everything off.");
+                         "I've had enough, I'm wasting away. Do you still want to continue?",
+                         "Yes",
+                         "No",
+                         "I don't care, I'm turning everything off",
+                         "Very well, I'm turning everything off.");
 
     //GenerateDebris(debrisTex, debrisArray, 1, backgroundWidth, backgroundHeight, 0);
   }

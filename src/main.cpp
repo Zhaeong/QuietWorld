@@ -92,6 +92,13 @@ int main(int argv, char **args)
   commendation1.mX = 565;
   commendation1.mY = 380;
   commendation1.mRender = false;
+
+  SDL_Texture *commendation2SDLTex = GetSDLTexture(renderer, window, CITATION);
+  RemoveTextureWhiteSpace(window, commendation2SDLTex);
+  Texture commendation2(commendation1SDLTex, CITATION);
+  commendation2.mX = 565;
+  commendation2.mY = 380;
+  commendation2.mRender = false;
   
 
   //Init Dialog textures
@@ -286,7 +293,7 @@ int main(int argv, char **args)
 
   bool runGame = true;
 
-  int gameLevel = 12;
+  int gameLevel = 0;
 
   int debrisIndex = -1;
 
@@ -654,8 +661,11 @@ int main(int argv, char **args)
 
       //Divides the width of the text by total allowed with and gets the ceiling
       //This way we can increment the height from the width
-      int numHeight = ceil((float)textArraySurvey[0].mWidth / (float)520);        
-      questionBackgroundTex.mHeight = numHeight * 40;
+      //int numHeight = ceil((float)textArraySurvey[0].mWidth / (float)520);        
+      //questionBackgroundTex.mHeight = numHeight * 40;
+
+      //fuck it just fix the height
+      questionBackgroundTex.mHeight = 120;
         
       //cout << "w: " << textArraySurvey[0].mWidth << " calc: " << numHeight << "\n";
 
@@ -725,7 +735,7 @@ int main(int argv, char **args)
           //I really like this
           //Nope, not my concern
             
-          if(textArraySurvey[1].mString == "I really like this")
+          if(textArraySurvey[1].mString == "Nope, not my concern")
           {
             cout << "commeneded\n";
             commendation1.mRender = true;
@@ -742,6 +752,12 @@ int main(int argv, char **args)
 
           responseBackgroundTexB.mRender = true;
           textArraySurvey[4].enabled = true;
+
+          if(textArraySurvey[2].mString == "I'd guess they probably offed themselves")
+          {
+            cout << "citated\n";
+            commendation2.mRender = true;
+          }          
 
           cout << textArraySurvey[4].mString << "\n";
         }

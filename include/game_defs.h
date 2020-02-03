@@ -103,6 +103,7 @@ const string SPEED_2  = "res/spaceUI/speed2.png";
 const string SPEED_3  = "res/spaceUI/speed3.png";
 
 const string COMMENDATION_1 = "res/spaceUI/commendation1.png";
+const string CITATION = "res/spaceUI/commendation2.png";
 
 //INTRO UI
 const int NUM_INTRO_UI = 2;
