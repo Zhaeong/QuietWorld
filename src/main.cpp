@@ -729,24 +729,7 @@ int main(int argv, char **args)
           {
             cout << "commeneded\n";
             commendation1.mRender = true;
-          }
-
-          if(textArraySurvey[1].mString == "Yes, this isn't so bad")
-          {
-            fadeUI = true;
-            mainShip.mPosition.x = curLevelBoundX / 2 - 20;
-            mainShip.mPosition.y = curLevelBoundY / 2 - (mainShip.mHeight/2);
-
-            mainShip.mSpeed = 0;
-
-            CenterCamOnPlayer(&camX, &camY, camW, camH,
-                    mainShip.mPosition.x,
-                    mainShip.mPosition.y,
-                    mainShip.mWidth,
-                    mainShip.mHeight);
-
-            allowControl = false;
-          }
+          }          
         }
 
         if (TextureMouseCollisionSingle(choiceBackgroundTexB, xMouse, yMouse))
@@ -764,7 +747,24 @@ int main(int argv, char **args)
         }
 
         if (texCol == BTN_CONTINUE)
-        {        
+        {
+          //Last level, play the ending
+          if(gameLevel == 13)
+          {
+            fadeUI = true;
+            mainShip.mPosition.x = curLevelBoundX / 2 - 20;
+            mainShip.mPosition.y = curLevelBoundY / 2 - (mainShip.mHeight/2);
+
+            mainShip.mSpeed = 0;
+
+            CenterCamOnPlayer(&camX, &camY, camW, camH,
+                    mainShip.mPosition.x,
+                              mainShip.mPosition.y,
+                              mainShip.mWidth,
+                              mainShip.mHeight);            
+      
+            allowControl = false;
+          }
           newState = STATE_GAME;
           numDebris += 1;
           Mix_FadeOutMusic(2000);
@@ -883,14 +883,23 @@ int main(int argv, char **args)
         modulusValue += 1;
         cout << "modval:" <<modulusValue << "\n";
 
+        if(modulusValue >= 700)
+        {
+          //remove rendering of remaining debris and text
+          textArray[0].enabled = false;
+          textArray[1].enabled = false;
+        }
         
         if(modulusValue == 500)
         {
+          
           Mix_FadeInMusic(endMus, 1, 3000);
         }
         //Start fading to black after ui fades
         if(modulusValue >= 1700)
         {
+          
+            
           if(endFade.mAlpha <= 254)
           {
             endFade.mAlpha += 1;
