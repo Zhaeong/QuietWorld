@@ -895,6 +895,8 @@ int main(int argv, char **args)
         if(modulusValue % 3 == 0)
         {
           ReduceAlphaArray(uiSpaceArray, NUM_SPACE_UI, 1);
+          commendation1.mAlpha -= 1;
+          commendation2.mAlpha -= 1;
         }
         modulusValue += 1;
         cout << "modval:" <<modulusValue << "\n";
@@ -937,6 +939,8 @@ int main(int argv, char **args)
 
       //Render commendation
       RenderTexture(renderer, commendation1);
+      RenderTexture(renderer, commendation2);
+      
 
       //Popup dialogs rendering
       if (showDialog)
