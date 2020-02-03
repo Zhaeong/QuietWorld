@@ -193,6 +193,12 @@ int main(int argv, char **args)
   SDL_Texture *backgroundTex = GetSDLTexture(renderer, window, "res/background/level1.png");
   Texture gameBackground = Texture(backgroundTex, "res/background/level1.png");
 
+  SDL_Texture *backgroundOfflimitTex = GetSDLTexture(renderer, window, "res/background/backgroundOfflimit.png");
+  Texture backGroundOfflimit = Texture(backgroundOfflimitTex, "res/background/backgroundOfflimit.png");
+
+  backGroundOfflimit.mX = -350;
+  backGroundOfflimit.mY = -350;
+
   int curLevelBoundX = gameBackground.mWidth;
   int curLevelBoundY = gameBackground.mHeight;
 
@@ -225,6 +231,10 @@ int main(int argv, char **args)
   SDL_Texture *fadeOutTex = GetSDLTexture(renderer, window, "res/background/blackOverlay.png");
   Texture blackFade(fadeOutTex, "fadeOut");
   blackFade.mAlpha = 0;
+
+  SDL_Texture *endfadeOutTex = GetSDLTexture(renderer, window, "res/background/endOverlay.png");
+  Texture endFade(endfadeOutTex, "fadeOut");
+  endFade.mAlpha = 0;
   
   TextObj textArray[NUM_TEXT];
 
@@ -312,7 +322,7 @@ int main(int argv, char **args)
     frameStart = SDL_GetTicks();
 
     //The color at which the screen will be if alpha = 0 on all textures
-    SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+    SDL_SetRenderDrawColor(renderer, 17, 17, 17, 255);
 
     SDL_RenderClear(renderer);
 
@@ -400,6 +410,10 @@ int main(int argv, char **args)
             textArraySurvey[3].enabled = false;
 
             uiInterLevelArray[1].mRender = false;
+          }
+          else if(newState == STATE_PAUSE)
+          {
+            Mix_FadeInMusic(interLevelMus, 1, 1000);
           }
         }
       }
@@ -574,8 +588,8 @@ int main(int argv, char **args)
 
             if (DEBUG == 0)
             {
-              //Mix_FadeOutMusic(1000);
-              Mix_FadeInMusic(interLevelMus, 1, 1000);
+              Mix_FadeOutMusic(1000);
+              
               //Mix_PlayMusic(interLevelMus, 1);
             }
           }
@@ -786,6 +800,9 @@ int main(int argv, char **args)
     
     if (gameState == STATE_GAME)
     {
+      //Render offlimit background
+      RenderTextureByCam(camX, camY, renderer, backGroundOfflimit);
+      
       //Render Background
       RenderTextureByCam(camX, camY, renderer, gameBackground);
 
@@ -874,9 +891,9 @@ int main(int argv, char **args)
         //Start fading to black after ui fades
         if(modulusValue >= 1700)
         {
-          if(blackFade.mAlpha <= 254)
+          if(endFade.mAlpha <= 254)
           {
-            blackFade.mAlpha += 1;
+            endFade.mAlpha += 1;
           }
         }
         //Fade out song
@@ -1063,6 +1080,8 @@ int main(int argv, char **args)
 
     //Render the fadeoutTexture
     RenderTexture(renderer, blackFade);
+
+    RenderTexture(renderer, endFade);
 
     //Swap buffers to present backbuffer to screen
     SDL_RenderPresent(renderer);
