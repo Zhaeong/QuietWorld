@@ -699,9 +699,11 @@ int main(int argv, char **args)
       responseBackgroundTexA.mY = textArraySurvey[3].mY - 10;
       responseBackgroundTexA.mWidth = textArraySurvey[3].mWidth + 18;
 
+      int numHeight = ceil((float)textArraySurvey[3].mWidth / (float)520);        
+      responseBackgroundTexA.mHeight = numHeight * 40;
+
       if (textArraySurvey[3].mWidth > 520)
       {
-        responseBackgroundTexA.mHeight = 60;
         responseBackgroundTexA.mWidth = 520;
       }
 
@@ -709,9 +711,11 @@ int main(int argv, char **args)
       responseBackgroundTexB.mY = textArraySurvey[4].mY - 10;
       responseBackgroundTexB.mWidth = textArraySurvey[4].mWidth + 18;
 
+      numHeight = ceil((float)textArraySurvey[4].mWidth / (float)520);        
+      responseBackgroundTexB.mHeight = numHeight * 40;
+
       if (textArraySurvey[4].mWidth > 520)
       {
-        responseBackgroundTexB.mHeight = 60;
         responseBackgroundTexB.mWidth = 520;
       }     
 
