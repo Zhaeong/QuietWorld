@@ -95,7 +95,7 @@ int main(int argv, char **args)
 
   SDL_Texture *commendation2SDLTex = GetSDLTexture(renderer, window, CITATION);
   RemoveTextureWhiteSpace(window, commendation2SDLTex);
-  Texture commendation2(commendation1SDLTex, CITATION);
+  Texture commendation2(commendation2SDLTex, CITATION);
   commendation2.mX = 565;
   commendation2.mY = 380;
   commendation2.mRender = false;
@@ -440,13 +440,16 @@ int main(int argv, char **args)
       //Update stars
       UpdateStars(starArray, gameBackground.mWidth, gameBackground.mHeight);
 
+
       if (eventType != "NONE")
       {
         cout << eventType << "\n";
+
+        string texCol = TextureMouseCollision(uiSpaceArray, NUM_SPACE_UI, xMouse, yMouse);
+
         if (eventType == "MOUSE_DOWN")
         {
-          string texCol = TextureMouseCollision(uiSpaceArray, NUM_SPACE_UI, xMouse, yMouse);
-
+          
           if(allowControl)
           {
             if (texCol == BTN_LEFTCURSOR)
@@ -514,17 +517,24 @@ int main(int argv, char **args)
           isMining = false;
           holdDownTime = 0;
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
-          
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED, true);
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED_ACTIVE, false);
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_DECREASESPEED, true);
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_DECREASESPEED_ACTIVE, false);
-          
 
-          if (DEBUG == 0)
+          //Only play click sounds when clicked a button
+          if(texCol == BTN_LEFTCURSOR_ACTIVE  ||
+             texCol == BTN_RIGHTCURSOR_ACTIVE ||
+             texCol == BTN_STOPROT_ACTIVE ||
+             texCol == BTN_INCREASESPEED_ACTIVE ||
+             texCol == BTN_INCREASESPEED_ACTIVE ||
+             texCol == BTN_DECREASESPEED_ACTIVE)
           {
             Mix_PlayChannel(-1, gScratch, 0);
           }
+               
+            
+          
 
           if (TextureMouseCollisionSingle(dialogOKTex, xMouse, yMouse))
           {
