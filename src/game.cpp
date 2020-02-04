@@ -1773,17 +1773,17 @@ void SetInterLevelText(TextObj *textArraySurvey,
   {
     SetInterLevelChoices(textArraySurvey,
                          "How do you feel now? Any changes?",
-                         "Pretty good",
-                         "Oh hanging in there",
-                         "You know, you're unlike the others",
-                         "I've heard that before");
+                         "Pretty good, how about you?",
+                         "This is monotonous",
+                         "I feel pretty tired, there's a lot of you to manage",
+                         "How do you think I feel, I'm not even doing anything");
 
     GenerateDebris(debrisTexArray, debrisArray, 3, backgroundWidth, backgroundHeight, 2);
   }
   else if (gameLevel == 7)
   {
     SetInterLevelChoices(textArraySurvey,
-                         "There were others before you, want to know what happened to them?",
+                         "You know, there were others before you, want to know what happened to them?",
                          "Nope, not my concern",
                          "I'd guess they probably offed themselves",
                          "A stupendous worker, I'm giving you a commendation.",
