@@ -1592,11 +1592,13 @@ int SetIntroText(TextObj *textArray)
 
   int startLocation = 35;
   int startLocationX = 35;
+
+  int renderDelayStart = 4572;
   
   TextObj startText0;
   SetTextString(&startText0, "Hello DMaRu" + to_string(Name));
   //SetTextString(&startText0, "Rotation Begin Start Continue");
-  startText0.mRenderDelay = 0;
+  startText0.mRenderDelay = renderDelayStart;
   startText0.mDelay = textDelays;
   startText0.mX = startLocationX;
   startText0.mY = startLocation;
@@ -1605,7 +1607,7 @@ int SetIntroText(TextObj *textArray)
   TextObj startText1;
   SetTextString(&startText1, "Debris Maintainenance and Retrieval unit");
   //SetTextString(&startText1, "Space Filled Waste Field");
-  startText1.mRenderDelay = 3000;
+  startText1.mRenderDelay = renderDelayStart + 3000;
   startText1.mDelay = textDelays;
   startText1.mX = startLocationX;
   startText1.mY = startLocation + 30;
@@ -1613,7 +1615,7 @@ int SetIntroText(TextObj *textArray)
 
   TextObj startText2;
   SetTextString(&startText2, "Assigned to Sector - " + to_string(Name));
-  startText2.mRenderDelay = 5600;
+  startText2.mRenderDelay = renderDelayStart + 5600;
   startText2.mDelay = textDelays;
   startText2.mX = startLocationX;
   startText2.mY = startLocation + 80;
@@ -1621,7 +1623,7 @@ int SetIntroText(TextObj *textArray)
 
   TextObj startText3;
   SetTextString(&startText3, "I am DEBRA" + to_string(Name2));
-  startText3.mRenderDelay = 8500;
+  startText3.mRenderDelay = renderDelayStart + 8500;
   startText3.mDelay = textDelays;
   startText3.mX = startLocationX;
   startText3.mY = startLocation + 110;
@@ -1629,7 +1631,7 @@ int SetIntroText(TextObj *textArray)
 
   TextObj startText4;
   SetTextString(&startText4, "DMaRu Engagement and Behavior Retainment Assistant");
-  startText4.mRenderDelay = 11000;
+  startText4.mRenderDelay = renderDelayStart + 11000;
   startText4.mDelay = textDelays;
   startText4.mX = startLocationX;
   startText4.mY = startLocation + 140;
@@ -1637,7 +1639,7 @@ int SetIntroText(TextObj *textArray)
 
   TextObj startText5;
   SetTextString(&startText5, "Your personal companion and supervisor");
-  startText5.mRenderDelay = 13300;
+  startText5.mRenderDelay = renderDelayStart + 13300;
   startText5.mDelay = textDelays;
   startText5.mX = startLocationX;
   startText5.mY = startLocation + 210;
@@ -1645,7 +1647,7 @@ int SetIntroText(TextObj *textArray)
 
   TextObj startText6;
   SetTextString(&startText6, "Making sure that you can be the best you can be");
-  startText6.mRenderDelay = 16500;
+  startText6.mRenderDelay = renderDelayStart + 16500;
   startText6.mDelay = textDelays;
   startText6.mX = startLocationX;
   startText6.mY = startLocation + 260;

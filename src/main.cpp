@@ -52,13 +52,6 @@ int main(int argv, char **args)
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  //Play music
-  //Second param is number of lopps -1 for infinite
-  if (DEBUG == 0)
-  {
-    Mix_PlayMusic(introMus, 1);
-  }
-
   //Sounds
   Mix_Chunk *gScratch = NULL;
 
@@ -242,6 +235,10 @@ int main(int argv, char **args)
   SDL_Texture *endfadeOutTex = GetSDLTexture(renderer, window, "res/background/endOverlay.png");
   Texture endFade(endfadeOutTex, "fadeOut");
   endFade.mAlpha = 0;
+
+  SDL_Texture *startOverlayTex = GetSDLTexture(renderer, window, "res/background/introOverlay.png");
+  Texture startFade(startOverlayTex, "fadeOut");
+  startFade.mAlpha = 255;
   
   TextObj textArray[NUM_TEXT];
 
@@ -803,17 +800,13 @@ int main(int argv, char **args)
     }
     else if (gameState == STATE_INTRO)
     {
+      if(startFade.mAlpha == 1)
+      {
+        Mix_PlayMusic(introMus, 1);
+      }
       if (eventType == "MOUSE_DOWN")
       {
-        string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);
-
-        if (DEBUG == 0)
-        {
-          //Mix_FadeOutMusic(1000);
-          //SDL_Delay(1);
-
-          
-        }
+        string texCol = TextureMouseCollision(uiIntroArray, NUM_INTRO_UI, xMouse, yMouse);        
         
         if (texCol == BTN_STARTGAME)
         {
@@ -1112,10 +1105,22 @@ int main(int argv, char **args)
     }
     else if (gameState == STATE_INTRO)
     {
-      //Render UI
-      RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
-      //Render each text
-      RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
+      RenderTexture(renderer, startFade);
+
+      if(startFade.mAlpha > 0)
+      {
+        startFade.mAlpha -= 1;
+      }
+
+     
+
+      if(startFade.mAlpha == 0)
+      {        
+        //Render UI
+        RenderUI(renderer, uiIntroArray, NUM_INTRO_UI);
+        //Render each text
+        RenderTextWithDelays(renderer, fontTex, textArrayIntro, NUM_TEXT_INTRO);
+      }
     }
     
     //Render text
