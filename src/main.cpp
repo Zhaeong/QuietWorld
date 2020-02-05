@@ -52,15 +52,38 @@ int main(int argv, char **args)
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  //Sounds
+  //Load sound effects
+
   Mix_Chunk *gScratch = NULL;
 
-  //Load sound effects
   gScratch = Mix_LoadWAV("res/wavs/mouseclickdown.wav");
   if (gScratch == NULL)
   {
     printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
   }
+
+  Mix_Chunk *humOne = NULL;
+  humOne = Mix_LoadWAV("res/wavs/humOne.wav");
+  if (humOne == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  Mix_Chunk *humTwo = NULL;
+  humTwo = Mix_LoadWAV("res/wavs/humTwo.wav");
+  if (humTwo == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  Mix_Chunk *humThree = NULL;
+  humThree = Mix_LoadWAV("res/wavs/humThree.wav");
+  if (humThree == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  
 
   //Initiate Camera coords
   int camX = 0;
@@ -321,6 +344,9 @@ int main(int argv, char **args)
   //We want it to cleaning divid into 255 because we add a certain alpha value per frame
   int delayPeriod = 127;
 
+  int curPlay = 0;
+  int nextPlay = 0;
+
   while (runGame)
   {
     frameStart = SDL_GetTicks();
@@ -546,6 +572,7 @@ int main(int argv, char **args)
         }
       }
 
+      
       //change the speed display
       if(mainShip.mSpeed == 0)
       {
@@ -553,13 +580,16 @@ int main(int argv, char **args)
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
+        nextPlay = 0;
+        
       }
       else if(mainShip.mSpeed == 1)
       {
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_0, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, true);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
-        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
+        SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);        
+        nextPlay = 1;
       }
       else if(mainShip.mSpeed == 2)
       {
@@ -567,6 +597,7 @@ int main(int argv, char **args)
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, true);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
+        nextPlay = 2;
       }
       else if(mainShip.mSpeed == 3)
       {
@@ -574,8 +605,44 @@ int main(int argv, char **args)
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_1, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, true);
+        nextPlay = 3;
       }
 
+      if(nextPlay < 2 && (
+                         mainShip.curState == Ship::ShipStates::ROTATELEFT ||
+                         mainShip.curState == Ship::ShipStates::ROTATERIGHT))
+      {
+        nextPlay = 1;
+      }
+
+      if(nextPlay == 0 && mainShip.curState == Ship::ShipStates::IDLE)
+      {
+        nextPlay = 0;
+      }
+
+      if(curPlay != nextPlay)
+      {
+        Mix_HaltChannel(-1); 
+        if(nextPlay == 0)
+        {
+         Mix_HaltChannel(-1); 
+        }
+        else if(nextPlay == 1)
+        {
+         Mix_PlayChannel(-1, humOne, -1);
+         cout << "play humone\n";
+        }
+        else if(nextPlay == 2)
+        {
+         Mix_PlayChannel(-1, humTwo, -1);
+        }
+        else if(nextPlay == 3)
+        {
+         Mix_PlayChannel(-1, humThree, -1);
+        }
+        curPlay = nextPlay;
+      }
+      
       //Check if mining and increment
       if (isMining)
       {
