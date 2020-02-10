@@ -83,7 +83,12 @@ int main(int argv, char **args)
     printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  
+  Mix_Chunk *mining = NULL;
+  mining = Mix_LoadWAV("res/wavs/mining.wav");
+  if (mining == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
 
   //Initiate Camera coords
   int camX = 0;
@@ -529,6 +534,8 @@ int main(int argv, char **args)
             
               if (debrisIndex != -1)
               {
+
+		Mix_PlayChannel(2, mining, -1);
                 isMining = true;
               }
             }
@@ -538,6 +545,8 @@ int main(int argv, char **args)
         else if (eventType == "MOUSE_UP")
         {
           isMining = false;
+
+	  Mix_HaltChannel(2); 
           holdDownTime = 0;
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED, true);
@@ -622,23 +631,23 @@ int main(int argv, char **args)
 
       if(curPlay != nextPlay)
       {
-        Mix_HaltChannel(-1); 
+        Mix_HaltChannel(1); 
         if(nextPlay == 0)
         {
-         Mix_HaltChannel(-1); 
+         Mix_HaltChannel(1); 
         }
         else if(nextPlay == 1)
         {
-         Mix_PlayChannel(-1, humOne, -1);
+         Mix_PlayChannel(1, humOne, -1);
          cout << "play humone\n";
         }
         else if(nextPlay == 2)
         {
-         Mix_PlayChannel(-1, humTwo, -1);
+         Mix_PlayChannel(1, humTwo, -1);
         }
         else if(nextPlay == 3)
         {
-         Mix_PlayChannel(-1, humThree, -1);
+         Mix_PlayChannel(1, humThree, -1);
         }
         curPlay = nextPlay;
       }
@@ -657,6 +666,7 @@ int main(int argv, char **args)
           //Check remaining debris, if 0 then add to game level and set the survey choice
           if (GetActiveDebrisNum(debrisArray) == 0)
           {
+	    Mix_HaltChannel(2);
             gameLevel += 1;
             newState = STATE_PAUSE;
             isMining = false;
