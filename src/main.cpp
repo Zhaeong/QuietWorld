@@ -12,7 +12,7 @@ int main(int argv, char **args)
   SDL_Window *window = NULL;
   SDL_Renderer *renderer = NULL;
   const int FPS = 60;
-
+  
   SHADE = 1;
   //How many miliseconds per frame
   const int frameDelay = 1000 / FPS;
@@ -86,6 +86,20 @@ int main(int argv, char **args)
   Mix_Chunk *mining = NULL;
   mining = Mix_LoadWAV("res/wavs/mining.wav");
   if (mining == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  Mix_Chunk *crumble = NULL;
+  crumble = Mix_LoadWAV("res/wavs/crumble.wav");
+  if (crumble == NULL)
+  {
+    printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+  }
+
+  Mix_Chunk *rotateSound = NULL;
+  rotateSound = Mix_LoadWAV("res/wavs/triangleAsharp.wav");
+  if (rotateSound == NULL)
   {
     printf("Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError());
   }
@@ -351,6 +365,8 @@ int main(int argv, char **args)
 
   int curPlay = 0;
   int nextPlay = 0;
+  int curRot = 0;
+  int nextRot = 0;
 
   while (runGame)
   {
@@ -564,9 +580,9 @@ int main(int argv, char **args)
           {
             Mix_PlayChannel(-1, gScratch, 0);
           }
-               
-            
-          
+
+
+
 
           if (TextureMouseCollisionSingle(dialogOKTex, xMouse, yMouse))
           {
@@ -581,7 +597,7 @@ int main(int argv, char **args)
         }
       }
 
-      
+
       //change the speed display
       if(mainShip.mSpeed == 0)
       {
@@ -590,7 +606,7 @@ int main(int argv, char **args)
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_2, false);
         SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, SPEED_3, false);
         nextPlay = 0;
-        
+
       }
       else if(mainShip.mSpeed == 1)
       {
@@ -617,14 +633,9 @@ int main(int argv, char **args)
         nextPlay = 3;
       }
 
-      if(nextPlay < 2 && (
-                         mainShip.curState == Ship::ShipStates::ROTATELEFT ||
-                         mainShip.curState == Ship::ShipStates::ROTATERIGHT))
-      {
-        nextPlay = 1;
-      }
 
-      if(nextPlay == 0 && mainShip.curState == Ship::ShipStates::IDLE)
+
+      if(nextPlay == 0) 
       {
         nextPlay = 0;
       }
@@ -634,24 +645,48 @@ int main(int argv, char **args)
         Mix_HaltChannel(1); 
         if(nextPlay == 0)
         {
-         Mix_HaltChannel(1); 
+          Mix_HaltChannel(1); 
         }
         else if(nextPlay == 1)
         {
-         Mix_PlayChannel(1, humOne, -1);
-         cout << "play humone\n";
+          Mix_PlayChannel(1, humOne, -1);
+          cout << "play humone\n";
         }
         else if(nextPlay == 2)
         {
-         Mix_PlayChannel(1, humTwo, -1);
+          Mix_PlayChannel(1, humTwo, -1);
         }
         else if(nextPlay == 3)
         {
-         Mix_PlayChannel(1, humThree, -1);
+          Mix_PlayChannel(1, humThree, -1);
         }
         curPlay = nextPlay;
       }
-      
+
+
+      if(mainShip.curState == Ship::ShipStates::ROTATELEFT ||
+          mainShip.curState == Ship::ShipStates::ROTATERIGHT)
+      {
+        nextRot = 1;
+      }
+      else
+      {
+        nextRot = 0;
+      }
+      if(curRot != nextRot)
+      {
+        if(nextRot == 0)
+        {
+          Mix_HaltChannel(4);
+        }
+        else if(nextRot == 1)
+        {
+          Mix_PlayChannel(4, rotateSound, -1);
+          cout <<"rotating\n";
+        }
+        curRot = nextRot;
+      }
+
       //Check if mining and increment
       if (isMining)
       {
@@ -662,11 +697,12 @@ int main(int argv, char **args)
         {
           debrisArray[debrisIndex].mRender = false;
           numDebris += 1;
+          Mix_PlayChannel(3, crumble, 0);
 
           //Check remaining debris, if 0 then add to game level and set the survey choice
           if (GetActiveDebrisNum(debrisArray) == 0)
           {
-	    Mix_HaltChannel(2);
+            Mix_HaltChannel(2);
             gameLevel += 1;
             newState = STATE_PAUSE;
             isMining = false;
@@ -680,7 +716,7 @@ int main(int argv, char **args)
             if (DEBUG == 0)
             {
               Mix_FadeOutMusic(1000);
-              
+
               //Mix_PlayMusic(interLevelMus, 1);
             }
           }
