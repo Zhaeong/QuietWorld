@@ -16,8 +16,9 @@
  CC = g++
 
 #-ggdb compiles with debug symbols
+#-mwindows compiles without terminal
 #CFLAGS = -Wall -Wextra -Wshadow -ggdb -O0 -g
-CFLAGS = -O3
+CFLAGS = -O3 -mwindows
 LINKERS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_mixer -static-libgcc -static-libstdc++
 
 SRCDIR = src
