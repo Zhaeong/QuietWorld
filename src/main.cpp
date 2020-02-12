@@ -46,7 +46,7 @@ int main(int argv, char **args)
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  Mix_Music *endMus = Mix_LoadMUS("res/wavs/heyyabye.wav");
+  Mix_Music *endMus = Mix_LoadMUS("res/wavs/girlfrombarSlow.wav");
   if (endMus == NULL)
   {
     printf("Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError());
@@ -411,6 +411,7 @@ int main(int argv, char **args)
         delayTime = 0;
         blackFade.mAlpha = 0;
         inTransition = false;
+        Mix_HaltChannel(-1);
         if(newState == STATE_GAME || newState == STATE_PAUSE)
         {
           //Helper func to set the inter level texts
@@ -547,11 +548,11 @@ int main(int argv, char **args)
             {
               SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, true);
               SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
-            
+
               if (debrisIndex != -1)
               {
 
-		Mix_PlayChannel(2, mining, -1);
+                Mix_PlayChannel(2, mining, -1);
                 isMining = true;
               }
             }
@@ -562,7 +563,7 @@ int main(int argv, char **args)
         {
           isMining = false;
 
-	  Mix_HaltChannel(2); 
+          Mix_HaltChannel(2); 
           holdDownTime = 0;
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
           SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_INCREASESPEED, true);
@@ -702,12 +703,14 @@ int main(int argv, char **args)
           //Check remaining debris, if 0 then add to game level and set the survey choice
           if (GetActiveDebrisNum(debrisArray) == 0)
           {
-            Mix_HaltChannel(2);
+            Mix_HaltChannel(1); 
+            Mix_HaltChannel(4); 
             gameLevel += 1;
             newState = STATE_PAUSE;
             isMining = false;
             holdDownTime = 0;
-
+            mainShip.curState == Ship::ShipStates::IDLE;
+            mainShip.mSpeed = 0; 
             //reset ui
             SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ACTIVE, false);
             SetRenderUIElement(uiSpaceArray, NUM_SPACE_UI, BTN_HARVESTDEBRIS_ENABLE, false);
@@ -1015,11 +1018,14 @@ int main(int argv, char **args)
         if(modulusValue % 3 == 0)
         {
           ReduceAlphaArray(uiSpaceArray, NUM_SPACE_UI, 1);
-          commendation1.mAlpha -= 1;
-          commendation2.mAlpha -= 1;
+          if(commendation1.mAlpha > 0 || commendation2.mAlpha > 0)
+          {
+            commendation1.mAlpha -= 1;
+            commendation2.mAlpha -= 1;
+          }
         }
         modulusValue += 1;
-        cout << "modval:" <<modulusValue << "\n";
+        //cout << "modval:" <<modulusValue << "\n";
 
         if(modulusValue >= 700)
         {
