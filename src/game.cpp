@@ -24,7 +24,8 @@ int StartSDL(SDL_Window **window, SDL_Renderer **renderer)
     printf("SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError());
   }
 
-  Uint32 windowType = SDL_WINDOW_FULLSCREEN;
+  //Uint32 windowType = SDL_WINDOW_FULLSCREEN;
+  Uint32 windowType = SDL_WINDOW_RESIZABLE;
   if(DEBUG == 1)
   {
     windowType = SDL_WINDOW_RESIZABLE;
