@@ -1,3 +1,4 @@
+```mermaid
 # QuietWorld
 SDL Proj about Ennui
 sequenceDiagram
@@ -6,3 +7,4 @@ sequenceDiagram
     John-->>-Alice: Hi Alice, I can hear you!
     John-->>-Alice: I feel great!
             
+```
